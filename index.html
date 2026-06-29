@@ -2,91 +2,63 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro | Live System</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Omni Data Pro</title>
     <style>
-        body { background: #0f172a; margin: 0; font-family: sans-serif; color: white; height: 100vh; overflow: hidden; }
-        
-        /* स्क्रीन का बेसिक सेटअप */
-        .page { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: absolute; }
-        .card { background: white; padding: 30px; border-radius: 20px; width: 300px; text-align: center; color: #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        body { background: #0f172a; margin: 0; font-family: sans-serif; color: white; }
+        .page { display: none; padding: 20px; }
+        .active { display: block; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 300px; color: #1e293b; margin: 100px auto; text-align: center; }
         .input-box { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
         .btn { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; }
-        .nav-links { margin-top: 15px; font-size: 13px; color: #2563eb; cursor: pointer; text-decoration: underline; display: block; }
-        
-        /* डैशबोर्ड */
-        #dashboard-page { display: none; flex-direction: column; align-items: stretch; }
-        .top-bar { display: flex; justify-content: space-between; padding: 15px 20px; background: #1e293b; color: white; }
-        .content { padding: 20px; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 600px; margin: 20px auto; }
-        .box { background: white; color: #1e293b; padding: 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        .link { color: #2563eb; cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="login-page" class="page">
+    <div id="login" class="page active">
         <div class="card">
             <h2>लॉगिन</h2>
-            <input type="text" id="l-uid" class="input-box" placeholder="यूजर आईडी">
-            <input type="password" id="l-pass" class="input-box" placeholder="पासवर्ड">
-            <button class="btn" style="background:#2563eb" onclick="goto('dashboard-page', 'l-uid')">लॉगिन</button>
-            <span class="nav-links" onclick="showPage('signup-page')">साइन अप</span>
-            <span class="nav-links" onclick="showPage('forgot-page')">पासवर्ड भूल गए?</span>
+            <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
+            <input type="password" class="input-box" placeholder="पासवर्ड">
+            <button class="btn" style="background:#2563eb" onclick="login()">लॉगिन</button>
+            <span class="link" onclick="nav('signup')">साइन अप</span>
+            <span class="link" onclick="nav('forgot')">फॉरगेट पासवर्ड</span>
         </div>
     </div>
 
-    <div id="signup-page" class="page" style="display:none;">
+    <div id="signup" class="page">
         <div class="card">
             <h2>रजिस्टर</h2>
-            <input type="text" id="s-uid" class="input-box" placeholder="यूजर आईडी">
-            <input type="email" id="s-email" class="input-box" placeholder="ईमेल">
-            <input type="password" id="s-pass" class="input-box" placeholder="पासवर्ड">
-            <button class="btn" style="background:#10b981" onclick="alert('ईमेल नोटिफिकेशन भेजा गया!')">अकाउंट बनाएं</button>
-            <span class="nav-links" onclick="showPage('login-page')">वापस लॉगिन</span>
+            <input type="text" class="input-box" placeholder="यूजर आईडी">
+            <input type="email" class="input-box" placeholder="ईमेल">
+            <button class="btn" style="background:#10b981" onclick="alert('ईमेल भेज दिया गया!')">अकाउंट बनाएं</button>
+            <span class="link" onclick="nav('login')">वापस लॉगिन</span>
         </div>
     </div>
 
-    <div id="forgot-page" class="page" style="display:none;">
+    <div id="forgot" class="page">
         <div class="card">
             <h2>रीसेट</h2>
             <input type="email" class="input-box" placeholder="ईमेल">
             <button class="btn" style="background:#f59e0b" onclick="alert('लिंक भेजा गया!')">भेजें</button>
-            <span class="nav-links" onclick="showPage('login-page')">वापस लॉगिन</span>
+            <span class="link" onclick="nav('login')">वापस लॉगिन</span>
         </div>
     </div>
 
-    <div id="dashboard-page" class="page">
-        <div style="width:100%; height:100%;">
-            <div class="top-bar">
-                <span>Omni Data Pro</span>
-                <span id="user-display">User: Guest</span>
-            </div>
-            <div class="content">
-                <h1>डैशबोर्ड</h1>
-                <div class="grid">
-                    <div class="box">बेसिक डेटा</div><div class="box">ऑनलाइन डेटा</div>
-                    <div class="box">ई-कॉमर्स</div><div class="box">ट्रांसक्रिप्शन</div>
-                    <div class="box">इमेज-टू-टेक्स्ट</div><div class="box">वेब रिसर्च</div>
-                    <div class="box">डेटा क्लीनिंग</div><div class="box">सर्वे फिलिंग</div>
-                    <div class="box">मेडिकल डेटा</div><div class="box">लीगल डेटा</div>
-                </div>
-                <button class="btn" style="background:#ef4444; width:150px;" onclick="location.reload()">लॉग आउट</button>
-            </div>
-        </div>
+    <div id="dashboard" class="page">
+        <h1>डैशबोर्ड</h1>
+        <button class="btn" style="width:200px; background:#ef4444;" onclick="location.reload()">लॉग आउट</button>
     </div>
 
     <script>
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = (id === 'dashboard-page') ? 'flex' : 'flex';
+        function nav(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
-
-        function goto(id, inputId) {
-            const uid = document.getElementById(inputId).value;
-            if(!uid) { alert("यूजर आईडी डालें!"); return; }
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = 'flex';
-            document.getElementById('user-display').innerText = "User: " + uid;
+        function login() {
+            const id = document.getElementById('uid').value;
+            if(id) { nav('dashboard'); }
+            else { alert("यूजर आईडी डालें"); }
         }
     </script>
 </body>
