@@ -73,6 +73,47 @@
             document.getElementById('user-display').innerText = uid;
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-    </script>
+    </script><div id="data-form" style="display:none; position:fixed; top:20%; left:10%; width:80%; background:#1e293b; padding:20px; border:2px solid #60a5fa; border-radius:10px; color:white; z-index:999;">
+    <h3 id="form-title" style="text-align:center;">एंट्री करें</h3>
+    <textarea id="data-input" style="width:100%; height:120px; background:#0f172a; color:white; border:1px solid #334155; padding:10px; border-radius:5px;" placeholder="अपना डेटा यहाँ लिखें..."></textarea>
+    <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+        <button onclick="saveFile()" style="padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">सेव करें</button>
+        <button onclick="document.getElementById('data-form').style.display='none'" style="padding:10px 20px; background:#ef4444; color:white; border:none; border-radius:5px; cursor:pointer;">बंद करें</button>
+    </div>
+</div>
+
+<script>
+    // 1. डैशबोर्ड के 10 कार्ड्स को एक्टिवेट करना
+    document.querySelectorAll('.card').forEach(card => {
+        card.onclick = function() {
+            document.getElementById('form-title').innerText = this.innerText + " एंट्री";
+            document.getElementById('data-form').style.display = 'block';
+        };
+    });
+
+    // 2. साइडबार लॉग-आउट फंक्शन
+    function logout() {
+        if(confirm("क्या आप लॉग आउट करना चाहते हैं?")) {
+            location.reload();
+        }
+    }
+
+    // 3. फाइल सेव करने का फंक्शन
+    function saveFile() {
+        const title = document.getElementById('form-title').innerText;
+        const text = document.getElementById('data-input').value;
+        const blob = new Blob([text], {type: "text/plain"});
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = title.replace(/\s+/g, '_') + ".txt";
+        link.click();
+        alert("फाइल सफलतापूर्वक सेव हो गई!");
+        document.getElementById('data-form').style.display = 'none';
+    }
+
+    // 4. AI फीचर और सर्च फंक्शन
+    function triggerAI() { alert("AI टीचर लोगो सक्रिय है..."); }
+</script>
+
 </body>
 </html>
