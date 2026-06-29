@@ -1,36 +1,14 @@
-/* [प्रोफेशनल स्टाइलिंग] */
 body { 
     margin: 0; padding: 0; 
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-    font-family: 'Segoe UI', sans-serif; 
-    color: white; height: 100vh;
-    display: flex; justify-content: center; align-items: center;
+    background: #0f172a; 
+    font-family: sans-serif; 
+    color: #1e293b; 
+    display: flex; justify-content: center; align-items: center; height: 100vh; 
 }
-
 .auth-box { 
-    width: 350px; background: #ffffff; 
-    color: #1e293b; padding: 40px; 
-    border-radius: 20px; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    text-align: center;
+    width: 350px; background: white; 
+    padding: 30px; border-radius: 16px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
 }
-
-h2 { margin-bottom: 25px; color: #0f172a; }
-
-.input-box { 
-    width: 100%; padding: 14px; margin: 10px 0; 
-    border: 2px solid #e2e8f0; border-radius: 10px; 
-    background: #f8fafc; font-size: 16px; box-sizing: border-box;
-}
-
-.btn { 
-    width: 100%; padding: 14px; 
-    background: #2563eb; color: white; 
-    border: none; border-radius: 10px; 
-    cursor: pointer; font-weight: bold; font-size: 16px;
-    margin-top: 10px; transition: 0.3s;
-}
-
-.btn:hover { background: #1d4ed8; transform: translateY(-2px); }
-
-.link { color: #64748b; cursor: pointer; margin-top: 15px; font-size: 14px; }
+.input-box { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
