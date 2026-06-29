@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Omni Data Pro | Official System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; }
         body { background: #0f172a; margin: 0; font-family: sans-serif; color: white; min-height: 100vh; }
         
-        /* ऑथेंटिकेशन कार्ड्स */
-        .card { background: white; padding: 30px; border-radius: 20px; width: 300px; text-align: center; color: #1e293b; margin: 100px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        /* कार्ड्स लेआउट */
+        .card { background: white; padding: 30px; border-radius: 20px; width: 320px; text-align: center; color: #1e293b; margin: 50px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .input-box { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
         .btn { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; }
-        .nav-links { margin-top: 15px; font-size: 13px; }
-        .nav-links span { color: #2563eb; cursor: pointer; display: block; margin-top: 10px; text-decoration: underline; }
+        .nav-links { margin-top: 15px; font-size: 13px; color: #2563eb; cursor: pointer; text-decoration: underline; display: block; }
         
-        /* डैशबोर्ड लेआउट */
+        /* डैशबोर्ड */
         #dashboard-div { display: none; }
         .top-bar { display: flex; justify-content: space-between; padding: 15px 20px; background: #1e293b; align-items: center; border-bottom: 2px solid #334155; }
         .sidebar { width: 220px; height: 100vh; background: #1e293b; position: fixed; left: -220px; top: 0; transition: 0.3s; padding: 20px; z-index: 10; }
@@ -24,42 +24,43 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 600px; margin: 20px auto; }
         .box { background: white; color: #1e293b; padding: 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
         .btn-bottom { position: fixed; bottom: 20px; left: 20px; padding: 10px 20px; background: #64748b; border: none; border-radius: 8px; color: white; cursor: pointer; }
-        .hidden { display: none; }
     </style>
 </head>
 <body>
 
+    <!-- 1. लॉगिन -->
     <div id="login-div" class="card">
         <h2>लॉगिन</h2>
-        <input type="email" class="input-box" placeholder="ईमेल">
-        <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" style="background:#2563eb" onclick="show('dashboard-div')">लॉगिन</button>
-        <div class="nav-links">
-            <span onclick="show('signup-div')">नया अकाउंट (साइन अप)</span>
-            <span onclick="show('forgot-div')" style="color:#64748b">पासवर्ड भूल गए?</span>
-        </div>
+        <input type="text" id="login-uid" class="input-box" placeholder="यूजर आईडी">
+        <input type="password" id="login-pass" class="input-box" placeholder="पासवर्ड">
+        <button class="btn" style="background:#2563eb" onclick="loginAction()">लॉगिन करें</button>
+        <span class="nav-links" onclick="show('signup-div')">नया अकाउंट (साइन अप)</span>
+        <span class="nav-links" onclick="show('forgot-div')">पासवर्ड भूल गए?</span>
     </div>
 
-    <div id="signup-div" class="card hidden">
+    <!-- 2. साइन अप -->
+    <div id="signup-div" class="card" style="display:none;">
         <h2>रजिस्टर करें</h2>
-        <input type="text" class="input-box" placeholder="नाम">
-        <input type="email" class="input-box" placeholder="ईमेल">
-        <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" style="background:#10b981" onclick="show('dashboard-div')">अकाउंट बनाएं</button>
-        <span class="nav-links" onclick="show('login-div')" style="color:#2563eb">वापस लॉगिन पर</span>
+        <input type="text" id="reg-uid" class="input-box" placeholder="यूजर आईडी बनाएं">
+        <input type="email" id="reg-email" class="input-box" placeholder="ईमेल (नोटिफिकेशन के लिए)">
+        <input type="password" id="reg-pass" class="input-box" placeholder="पासवर्ड">
+        <button class="btn" style="background:#10b981" onclick="registerAction()">अकाउंट बनाएं</button>
+        <span class="nav-links" onclick="show('login-div')">वापस लॉगिन पर</span>
     </div>
 
-    <div id="forgot-div" class="card hidden">
+    <!-- 3. फॉरगेट पासवर्ड -->
+    <div id="forgot-div" class="card" style="display:none;">
         <h2>पासवर्ड रीसेट</h2>
-        <input type="email" class="input-box" placeholder="ईमेल लिखें">
-        <button class="btn" style="background:#f59e0b" onclick="show('login-div')">लिंक भेजें</button>
-        <span class="nav-links" onclick="show('login-div')" style="color:#2563eb">वापस लॉगिन पर</span>
+        <input type="email" id="forgot-email" class="input-box" placeholder="अपना ईमेल लिखें">
+        <button class="btn" style="background:#f59e0b" onclick="forgotAction()">लिंक भेजें</button>
+        <span class="nav-links" onclick="show('login-div')">वापस लॉगिन पर</span>
     </div>
 
+    <!-- 4. डैशबोर्ड -->
     <div id="dashboard-div">
         <div class="top-bar">
             <div onclick="toggleSidebar()" style="cursor:pointer; font-weight:bold;">☰ Omni Data Pro</div>
-            <div style="font-size: 14px;">User ID: Rina_001</div>
+            <div id="user-display">User: Guest</div>
         </div>
         <div id="sidebar" class="sidebar">
             <button onclick="location.reload()" style="background:#ef4444; color:white; border:none; padding:12px; width:100%; cursor:pointer; border-radius:8px;">लॉग आउट</button>
@@ -78,13 +79,43 @@
     </div>
 
     <script>
+        const supabase = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_KEY');
+
         function show(id) {
-            document.getElementById('login-div').classList.add('hidden');
-            document.getElementById('signup-div').classList.add('hidden');
-            document.getElementById('forgot-div').classList.add('hidden');
-            document.getElementById('dashboard-div').style.display = 'block';
-            // अगर डैशबोर्ड के अलावा कोई और स्क्रीन दिखानी हो तो लॉजिक बढ़ा सकते हैं
+            document.getElementById('login-div').style.display = 'none';
+            document.getElementById('signup-div').style.display = 'none';
+            document.getElementById('forgot-div').style.display = 'none';
+            document.getElementById('dashboard-div').style.display = 'none';
+            document.getElementById(id).style.display = (id === 'dashboard-div') ? 'block' : 'block';
+            document.getElementById(id).style.display = 'block';
         }
+
+        async function registerAction() {
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value;
+            const { error } = await supabase.auth.signUp({ email, password });
+            if (error) alert(error.message);
+            else alert("सफल! ईमेल नोटिफिकेशन भेज दिया गया है।");
+        }
+
+        function loginAction() {
+            const uid = document.getElementById('login-uid').value;
+            if(uid) {
+                document.getElementById('login-div').style.display = 'none';
+                document.getElementById('dashboard-div').style.display = 'block';
+                document.getElementById('user-display').innerText = "User: " + uid;
+            } else {
+                alert("कृपया यूजर आईडी भरें");
+            }
+        }
+
+        async function forgotAction() {
+            const email = document.getElementById('forgot-email').value;
+            const { error } = await supabase.auth.resetPasswordForEmail(email);
+            if (error) alert(error.message);
+            else alert("रीसेट लिंक ईमेल पर भेज दिया गया है।");
+        }
+
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     </script>
 </body>
