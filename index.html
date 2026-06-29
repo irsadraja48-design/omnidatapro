@@ -4,47 +4,60 @@
     <meta charset="UTF-8">
     <title>Omni Data Pro</title>
     <style>
-        body { margin: 0; background: #0f172a; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; color: #1e293b; }
+        body { margin: 0; background: #0f172a; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: #1e293b; }
         .auth-box { width: 350px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.5); text-align: center; }
         .input-box { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        
-        /* बटन का मूवमेंट (Animation) */
-        .btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: transform 0.2s, background 0.3s; }
-        .btn:active { transform: scale(0.95); }
+        .btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn:hover { background: #1d4ed8; }
-
         .link { color: #2563eb; cursor: pointer; font-size: 14px; margin-top: 15px; text-decoration: underline; }
         .hidden { display: none; }
+        
+        /* डैशबोर्ड स्टाइल */
+        #dashboard-view { width: 90%; max-width: 800px; background: white; padding: 20px; border-radius: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .card { padding: 20px; background: #f1f5f9; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; border: 2px solid #e2e8f0; }
+        .card:hover { border-color: #2563eb; }
     </style>
 </head>
 <body>
 
-    <!-- लॉगिन स्क्रीन -->
     <div id="login-view" class="auth-box">
-        <h3 style="margin:0;">Omni Data Pro</h3>
-        <p style="font-size:13px; color:#64748b;">वेबसाइट में आपका स्वागत है!</p>
         <h2>लॉगिन</h2>
-        <input type="text" class="input-box" placeholder="यूजर आईडी">
+        <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <p style="text-align:right; font-size:12px; color:#ef4444; cursor:pointer;" onclick="alert('पासवर्ड रीसेट लिंक भेजा गया!')">पासवर्ड भूल गए?</p>
-        <button class="btn" onclick="alert('प्रवेश सफल!')">प्रवेश करें</button>
+        <button class="btn" onclick="showDashboard()">प्रवेश करें</button>
         <p class="link" onclick="toggleView()">नया अकाउंट (साइन अप)</p>
     </div>
 
-    <!-- साइन अप स्क्रीन -->
     <div id="signup-view" class="auth-box hidden">
         <h2>नया अकाउंट</h2>
-        <input type="text" class="input-box" placeholder="यूजर ईडी">
+        <input type="text" class="input-box" placeholder="यूजर आईडी">
         <input type="email" class="input-box" placeholder="ईमेल">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" onclick="alert('अकाउंट बन गया!')">रजिस्टर करें</button>
+        <button class="btn" onclick="showDashboard()">रजिस्टर करें</button>
         <p class="link" onclick="toggleView()">वापस लॉगिन पर जाएं</p>
+    </div>
+
+    <div id="dashboard-view" class="hidden">
+        <h2>Omni Data Pro डैशबोर्ड</h2>
+        <div class="grid">
+            <div class="card">बेसिक डेटा</div><div class="card">ऑनलाइन डेटा</div>
+            <div class="card">ई-कॉमर्स</div><div class="card">ट्रांसक्रिप्शन</div>
+            <div class="card">इमेज-टू-टेक्स्ट</div><div class="card">वेब रिसर्च</div>
+            <div class="card">डेटा क्लीनिंग</div><div class="card">सर्वे फिलिंग</div>
+            <div class="card">मेडिकल डेटा</div><div class="card">लीगल डेटा</div>
+        </div>
     </div>
 
     <script>
         function toggleView() {
             document.getElementById('login-view').classList.toggle('hidden');
             document.getElementById('signup-view').classList.toggle('hidden');
+        }
+        function showDashboard() {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('signup-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
         }
     </script>
 </body>
