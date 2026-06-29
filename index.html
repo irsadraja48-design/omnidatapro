@@ -2,49 +2,195 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Data Pro | Complete System</title>
+    <!-- सुपाबेस लाइब्रेरी (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
-        body { background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
-        .card { background: white; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .input-box { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .hidden { display: none; }
-        .link { color: #2563eb; cursor: pointer; font-size: 14px; margin-top: 15px; display: block; }
+        /* मजबूत और फिक्स CSS - ताकि वर्सेल पर टेक्स्ट कभी गायब न हो */
+        * { box-sizing: border-box; }
+        body { background: #0f172a; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        
+        /* कार्ड लेआउट (लॉगिन, साइनअप, फॉरगेट के लिए) */
+        .card-container { display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; }
+        .card { background: white; padding: 40px; border-radius: 24px; width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        
+        h1 { font-size: 26px; color: #1e293b; margin: 0 0 5px 0; font-weight: bold; }
+        .subtitle { color: #64748b; margin-bottom: 25px; font-size: 14px; display: block; }
+        
+        /* इनपुट बॉक्स स्टाइल */
+        .input-box { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; display: block; }
+        .input-box:focus { border-color: #2563eb; }
+        
+        /* बटन्स स्टाइल - कलर्स एकदम फिक्स */
+        .btn { width: 100%; padding: 14px; margin-top: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; display: block; text-align: center; }
+        .btn-blue { background: #2563eb; color: white !important; }
+        .btn-green { background: #10b981; color: white !important; }
+        .btn-orange { background: #f59e0b; color: white !important; }
+        
+        /* लिंक्स स्टाइल */
+        .links-row { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 15px; border-top: 1px solid #f1f5f9; }
+        .link { color: #2563eb; cursor: pointer; font-size: 14px; text-decoration: none; font-weight: 600; }
+        .link-secondary { color: #64748b; cursor: pointer; font-size: 14px; text-decoration: none; }
+        
+        /* डैशबोर्ड स्टाइल */
+        .dashboard-container { display: none; width: 100%; max-width: 1200px; padding: 40px; color: white; align-self: flex-start; }
+        .dashboard-title { font-size: 28px; margin-bottom: 25px; font-weight: bold; text-align: left; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .box { background: white; color: #0f172a; padding: 25px; border-radius: 16px; font-weight: bold; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .box:hover { transform: translateY(-5px); }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; float: right; margin-top: -50px; }
+        
+        /* स्क्रीन छुपाने के लिए क्लास */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="card">
-        <h1>लॉगिन</h1>
-        <input type="text" class="input-box" placeholder="ईमेल">
-        <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" style="background:#2563eb; color:white;">लॉगिन करें</button>
-        <span class="link" onclick="showScreen('signup-screen')">नया अकाउंट बनाएँ (साइन अप)</span>
-        <span class="link" onclick="showScreen('forgot-screen')" style="color:#64748b;">पासवर्ड भूल गए?</span>
+    <!-- सभी फॉर्म्स का कंटेनर -->
+    <div id="auth-flow" class="card-container">
+        
+        <!-- 1. लॉगिन स्क्रीन -->
+        <div id="login-screen" class="card">
+            <h1>Omni Data Pro</h1>
+            <span class="subtitle">Welcome to the pro website</span>
+            
+            <input type="email" id="login-email" class="input-box" placeholder="ईमेल आईडी" required>
+            <input type="password" id="login-pass" class="input-box" placeholder="पासवर्ड" required>
+            <button onclick="loginUser()" class="btn btn-blue">लॉगिन</button>
+            
+            <div class="links-row">
+                <span class="link" onclick="showScreen('signup-screen')">साइन अप</span>
+                <span class="link-secondary" onclick="showScreen('forgot-screen')">Forgot Password?</span>
+            </div>
+        </div>
+
+        <!-- 2. रजिस्टर (साइन अप) स्क्रीन -->
+        <div id="signup-screen" class="card hidden">
+            <h1>रजिस्टर करें</h1>
+            <span class="subtitle">नया अकाउंट बनाएँ</span>
+            
+            <input type="text" id="reg-name" class="input-box" placeholder="आपका नाम" required>
+            <input type="email" id="reg-email" class="input-box" placeholder="ईमेल आईडी" required>
+            <input type="password" id="reg-pass" class="input-box" placeholder="पासवर्ड बनाएं" required>
+            <button onclick="registerUser()" class="btn btn-green">रजिस्टर और लॉगिन करें</button>
+            
+            <div class="links-row" style="justify-content: center;">
+                <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पेज पर जाएँ</span>
+            </div>
+        </div>
+
+        <!-- 3. फॉरगेट पासवर्ड स्क्रीन -->
+        <div id="forgot-screen" class="card hidden">
+            <h1>पासवर्ड रीसेट</h1>
+            <span class="subtitle">अपना रजिस्टर्ड ईमेल दर्ज करें</span>
+            
+            <input type="email" id="forgot-email" class="input-box" placeholder="ईमेल आईडी" required>
+            <button onclick="forgotPassword()" class="btn btn-orange">रिकवरी लिंक भेजें</button>
+            
+            <div class="links-row" style="justify-content: center;">
+                <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पेज पर जाएँ</span>
+            </div>
+        </div>
+
     </div>
 
-    <div id="signup-screen" class="card hidden">
-        <h1>साइन अप</h1>
-        <input type="text" class="input-box" placeholder="नाम">
-        <input type="email" class="input-box" placeholder="ईमेल">
-        <input type="password" class="input-box" placeholder="नया पासवर्ड">
-        <button class="btn" style="background:#10b981; color:white;">अकाउंट बनाएँ</button>
-        <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएँ</span>
-    </div>
-
-    <div id="forgot-screen" class="card hidden">
-        <h1>पासवर्ड रिकवरी</h1>
-        <input type="email" class="input-box" placeholder="अपना ईमेल लिखें">
-        <button class="btn" style="background:#f59e0b; color:white;">लिंक भेजें</button>
-        <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएँ</span>
+    <!-- 4. मुख्य कमर्शियल डैशबोर्ड स्क्रीन -->
+    <div id="dashboard-screen" class="dashboard-container">
+        <h2 class="dashboard-title">Omni Data Pro डैशबोर्ड</h2>
+        <button onclick="logoutUser()" class="logout-btn">लॉग आउट</button>
+        
+        <div class="grid">
+            <div class="box">बेसिक डेटा एंट्री</div>
+            <div class="box">ऑनलाइन डेटा एंट्री</div>
+            <div class="box">ई-कॉमर्स डेटा एंट्री</div>
+            <div class="box">डेटा ट्रांसक्रिप्शन</div>
+            <div class="box">इमेज टू टेक्स्ट</div>
+            <div class="box">वेब रिसर्च</div>
+            <div class="box">डेटा क्लीनिंग</div>
+            <div class="box">सर्वे फिलिंग</div>
+            <div class="box">मेडिकल डेटा एंट्री</div>
+            <div class="box">लीगल डेटा एंट्री</div>
+        </div>
     </div>
 
     <script>
+        // यहाँ अपनी असली सुपाबेस क्रेडेंशियल्स डालें
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE';
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // स्क्रीन बदलने का फंक्शन
         function showScreen(screenId) {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('signup-screen').classList.add('hidden');
             document.getElementById('forgot-screen').classList.add('hidden');
             document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // 1. सुपाबेस रजिस्ट्रेशन फंक्शन (Sign Up)
+        async function registerUser() {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value;
+
+            if(!name || !email || !password) { alert("कृपया सभी जानकारी भरें"); return; }
+
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: { data: { display_name: name } }
+            });
+
+            if (error) {
+                alert("रजिस्ट्रेशन त्रुटि: " + error.message);
+            } else {
+                alert("अकाउंट सफलतापूर्वक रजिस्टर हो गया! अब आप लॉगिन कर सकते हैं।");
+                showScreen('login-screen');
+            }
+        }
+
+        // 2. सुपाबेस लॉगिन फंक्शन (Log In)
+        async function loginUser() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-pass').value;
+
+            if(!email || !password) { alert("ईमेल और पासवर्ड दर्ज करें"); return; }
+
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("लॉगिन त्रुटि: " + error.message);
+            } else {
+                // लॉगिन सफल होने पर ऑथेंटिकेशन फॉर्म छुपाएं और डैशबोर्ड दिखाएं
+                document.getElementById('auth-flow').classList.add('hidden');
+                document.body.style.display = 'block'; // ग्रिड लेआउट को ठीक करने के लिए सेंट्रलाइजिंग हटाएं
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+            }
+        }
+
+        // 3. सुपाबेस फॉरगेट पासवर्ड फंक्शन (Forgot Password)
+        async function forgotPassword() {
+            const email = document.getElementById('forgot-email').value;
+            if(!email) { alert("कृपया ईमेल दर्ज करें"); return; }
+
+            const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+
+            if (error) {
+                alert("त्रुटि: " + error.message);
+            } else {
+                alert("पासवर्ड रीसेट लिंक आपके ईमेल पर भेज दिया गया है।");
+                showScreen('login-screen');
+            }
+        }
+
+        // 4. लॉग आउट फंक्शन
+        function logoutUser() {
+            location.reload(); // सबसे सुरक्षित तरीका जो सेशन क्लियर करके ऐप को शुरुआत पर ले जाता है
         }
     </script>
 </body>
