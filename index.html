@@ -4,44 +4,52 @@
     <meta charset="UTF-8">
     <title>Omni Data Pro</title>
     <style>
-        body { margin: 0; background: #0f172a; font-family: sans-serif; min-height: 100vh; color: white; }
-        .hologram-text { color: #60a5fa; text-shadow: 0 0 10px #2563eb, 0 0 20px #2563eb; font-weight: bold; }
-        .auth-box { width: 350px; background: #1e293b; padding: 30px; border-radius: 20px; margin: 50px auto; text-align: center; border: 1px solid #334155; }
-        .input-box { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .link { color: #60a5fa; cursor: pointer; font-size: 14px; margin-top: 15px; text-decoration: underline; }
+        body { margin: 0; background: #0f172a; font-family: sans-serif; color: white; min-height: 100vh; }
+        .hologram { color: #60a5fa; text-shadow: 0 0 10px #2563eb, 0 0 20px #2563eb; font-weight: bold; }
+        .auth-box { width: 320px; background: #1e293b; padding: 25px; border-radius: 20px; margin: 50px auto; text-align: center; border: 1px solid #334155; }
+        .input-box { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #0f172a; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: #2563eb; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; }
         .hidden { display: none; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; max-width: 600px; margin: auto; }
-        .card { padding: 15px; background: #1e293b; border-radius: 10px; text-align: center; border: 1px solid #334155; cursor: pointer; }
-        .top-nav { background: #0f172a; padding: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid #334155; }
+        
+        .top-nav { background: #0f172a; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .sidebar { height: 100%; width: 200px; position: fixed; top: 0; left: -200px; background: #1e293b; padding-top: 60px; transition: 0.3s; z-index: 10; }
+        .sidebar.active { left: 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
+        .card { padding: 15px; background: #1e293b; border-radius: 10px; text-align: center; border: 1px solid #334155; }
     </style>
 </head>
 <body>
 
+    <!-- लॉगिन स्क्रीन -->
     <div id="login-view" class="auth-box">
-        <h3 class="hologram-text">✨ Omni Data Pro</h3>
+        <h3 class="hologram">✨ Omni Data Pro</h3>
         <p style="font-size:12px; color:#94a3b8;">वेबसाइट में आपका स्वागत है!</p>
         <input type="text" id="uid-login" class="input-box" placeholder="यूजर आईडी">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <p style="font-size:12px; color:#ef4444; cursor:pointer;" onclick="alert('लिंक भेजा गया!')">फॉरगेट पासवर्ड?</p>
+        <p style="font-size:12px; color:#f87171; cursor:pointer;" onclick="alert('फॉरगेट पासवर्ड लिंक भेज दिया गया है!')">फॉरगेट पासवर्ड?</p>
         <button class="btn" onclick="enterDashboard()">प्रवेश करें</button>
-        <p class="link" onclick="toggleAuth()">नया अकाउंट (साइन अप)</p>
+        <p style="color:#60a5fa; font-size:14px; cursor:pointer;" onclick="toggleAuth()">नया अकाउंट (साइन अप)</p>
     </div>
 
+    <!-- साइन अप स्क्रीन -->
     <div id="signup-view" class="auth-box hidden">
-        <h3 class="hologram-text">✨ Omni Data Pro</h3>
+        <h3 class="hologram">✨ Omni Data Pro</h3>
         <p style="font-size:12px; color:#94a3b8;">वेबसाइट में आपका स्वागत है!</p>
         <input type="text" id="uid-signup" class="input-box" placeholder="यूजर आईडी">
         <input type="email" class="input-box" placeholder="ईमेल">
         <input type="password" class="input-box" placeholder="पासवर्ड">
         <button class="btn" onclick="enterDashboard()">रजिस्टर करें</button>
-        <p class="link" onclick="toggleAuth()">वापस लॉगिन पर जाएं</p>
+        <p style="color:#60a5fa; font-size:14px; cursor:pointer;" onclick="toggleAuth()">वापस लॉगिन पर जाएं</p>
     </div>
 
+    <!-- डैशबोर्ड स्क्रीन -->
     <div id="dashboard-view" class="hidden">
         <div class="top-nav">
-            <span class="hologram-text">✨ Omni Data Pro</span>
+            <span class="hologram" onclick="toggleSidebar()" style="cursor:pointer;">☰ ✨ Omni Data Pro</span>
             <span id="user-display">यूजर: </span>
+        </div>
+        <div id="sidebar" class="sidebar">
+            <button class="btn" style="background:#ef4444; width:80%; margin-left:10%;" onclick="location.reload()">लॉग आउट</button>
         </div>
         <div class="grid">
             <div class="card">बेसिक डेटा</div><div class="card">ऑनलाइन डेटा</div>
@@ -50,9 +58,8 @@
             <div class="card">डेटा क्लीनिंग</div><div class="card">सर्वे फिलिंग</div>
             <div class="card">मेडिकल डेटा</div><div class="card">लीगल डेटा</div>
         </div>
-        <div style="text-align:center; padding:20px;">
-            <button class="btn" style="width:100px; background:#ef4444;" onclick="location.reload()">लॉग आउट</button>
-            <button class="btn" style="width:100px; background:#64748b; margin-left:10px;" onclick="location.reload()">बैक</button>
+        <div style="text-align:center;">
+            <button class="btn" style="width:100px; background:#64748b;" onclick="location.reload()">बैक</button>
         </div>
     </div>
 
@@ -68,6 +75,7 @@
             document.getElementById('dashboard-view').classList.remove('hidden');
             document.getElementById('user-display').innerText = "यूजर: " + uid;
         }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     </script>
 </body>
 </html>
