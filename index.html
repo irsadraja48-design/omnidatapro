@@ -2,17 +2,16 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Data Pro | Official</title>
+    <title>Omni Data Pro</title>
     <style>
         body { margin: 0; font-family: sans-serif; background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .card { background: white; padding: 2.5rem; border-radius: 20px; width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        h1 { margin-bottom: 5px; color: #1e293b; }
-        p { color: #64748b; margin-bottom: 20px; font-size: 0.9rem; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
-        .btn-login { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .nav-links { display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.85rem; }
-        .nav-links a { color: #2563eb; text-decoration: none; font-weight: 600; }
+        .card { background: white; padding: 40px; border-radius: 25px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { font-size: 24px; color: #1e293b; margin: 0 0 10px 0; }
+        p { color: #64748b; margin-bottom: 25px; font-size: 14px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-signup { width: 100%; padding: 15px; background: #f1f5f9; color: #1e293b; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .forgot { margin-top: 20px; font-size: 13px; color: #64748b; display: block; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -21,16 +20,14 @@
         <h1>Omni Data Pro</h1>
         <p>Welcome to the pro website</p>
         
-        <form id="login-form">
+        <form>
             <input type="email" placeholder="ईमेल आईडी" required>
             <input type="password" placeholder="पासवर्ड" required>
             <button type="submit" class="btn-login">लॉगिन</button>
         </form>
 
-        <div class="nav-links">
-            <a href="#">साइन अप</a>
-            <a href="#">Forgot Password?</a>
-        </div>
+        <button class="btn-signup">साइन अप</button>
+        <a href="#" class="forgot">Forgot Password?</a>
     </div>
 
 </body>
