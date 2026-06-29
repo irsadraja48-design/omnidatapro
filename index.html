@@ -4,30 +4,28 @@
     <meta charset="UTF-8">
     <title>Omni Data Pro</title>
     <style>
-        body { margin: 0; font-family: sans-serif; background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .card { background: white; padding: 40px; border-radius: 25px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { font-size: 24px; color: #1e293b; margin: 0 0 10px 0; }
-        p { color: #64748b; margin-bottom: 25px; font-size: 14px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; }
-        .btn-login { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-signup { width: 100%; padding: 15px; background: #f1f5f9; color: #1e293b; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .forgot { margin-top: 20px; font-size: 13px; color: #64748b; display: block; text-decoration: none; }
+        body { background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
+        .card { background: white; padding: 40px; border-radius: 20px; width: 320px; text-align: center; }
+        .input-box { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .login-btn { background: #2563eb; color: white; }
+        .signup-btn { background: #e2e8f0; color: #1e293b; }
+        .forgot-link { display: block; margin-top: 20px; color: #64748b; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h1>Omni Data Pro</h1>
-        <p>Welcome to the pro website</p>
-        
-        <form>
-            <input type="email" placeholder="ईमेल आईडी" required>
-            <input type="password" placeholder="पासवर्ड" required>
-            <button type="submit" class="btn-login">लॉगिन</button>
-        </form>
+        <h1 style="margin: 0;">Omni Data Pro</h1>
+        <p style="color: #666; margin-bottom: 20px;">Welcome to the pro website</p>
 
-        <button class="btn-signup">साइन अप</button>
-        <a href="#" class="forgot">Forgot Password?</a>
+        <input type="text" class="input-box" placeholder="ईमेल आईडी">
+        <input type="password" class="input-box" placeholder="पासवर्ड">
+        
+        <button class="btn-main login-btn">लॉगिन</button>
+        <button class="btn-main signup-btn">साइन अप</button>
+        
+        <a href="#" class="forgot-link">Forgot Password?</a>
     </div>
 
 </body>
