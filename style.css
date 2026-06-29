@@ -1,1 +1,12 @@
 
+body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; }
+.auth-box { width: 300px; background: white; color: #1e293b; padding: 30px; border-radius: 16px; margin: 100px auto; }
+.input-box { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
+.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+.link { color: blue; cursor: pointer; text-align: center; font-size: 14px; margin-top: 10px; }
+.top-bar { background: #1e293b; padding: 15px; display: flex; justify-content: space-between; }
+.sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #334155; padding: 20px; transition: 0.3s; }
+.sidebar.active { left: 0; }
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
+.grid-box { background: white; color: #1e293b; padding: 20px; border-radius: 10px; text-align: center; font-weight: bold; }
+.btn-logout { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; }
