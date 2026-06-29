@@ -5,28 +5,47 @@
     <title>Omni Data Pro</title>
     <style>
         body { background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
-        .card { background: white; padding: 40px; border-radius: 20px; width: 320px; text-align: center; }
+        .card { background: white; padding: 40px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .input-box { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
-        .btn-main { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .login-btn { background: #2563eb; color: white; }
-        .signup-btn { background: #e2e8f0; color: #1e293b; }
-        .forgot-link { display: block; margin-top: 20px; color: #64748b; font-size: 14px; }
+        .btn { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .hidden { display: none; }
+        .link { color: #2563eb; cursor: pointer; font-size: 14px; margin-top: 15px; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1 style="margin: 0;">Omni Data Pro</h1>
-        <p style="color: #666; margin-bottom: 20px;">Welcome to the pro website</p>
-
-        <input type="text" class="input-box" placeholder="ईमेल आईडी">
+    <div id="login-screen" class="card">
+        <h1>लॉगिन</h1>
+        <input type="text" class="input-box" placeholder="ईमेल">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        
-        <button class="btn-main login-btn">लॉगिन</button>
-        <button class="btn-main signup-btn">साइन अप</button>
-        
-        <a href="#" class="forgot-link">Forgot Password?</a>
+        <button class="btn" style="background:#2563eb; color:white;">लॉगिन करें</button>
+        <span class="link" onclick="showScreen('signup-screen')">नया अकाउंट बनाएँ (साइन अप)</span>
+        <span class="link" onclick="showScreen('forgot-screen')" style="color:#64748b;">पासवर्ड भूल गए?</span>
     </div>
 
+    <div id="signup-screen" class="card hidden">
+        <h1>साइन अप</h1>
+        <input type="text" class="input-box" placeholder="नाम">
+        <input type="email" class="input-box" placeholder="ईमेल">
+        <input type="password" class="input-box" placeholder="नया पासवर्ड">
+        <button class="btn" style="background:#10b981; color:white;">अकाउंट बनाएँ</button>
+        <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएँ</span>
+    </div>
+
+    <div id="forgot-screen" class="card hidden">
+        <h1>पासवर्ड रिकवरी</h1>
+        <input type="email" class="input-box" placeholder="अपना ईमेल लिखें">
+        <button class="btn" style="background:#f59e0b; color:white;">लिंक भेजें</button>
+        <span class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएँ</span>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('signup-screen').classList.add('hidden');
+            document.getElementById('forgot-screen').classList.add('hidden');
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
