@@ -115,20 +115,25 @@
             const query = document.getElementById('searchBar').value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
                 card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+                    function openForm(title) {
+        const form = document.getElementById('data-form');
+        document.getElementById('formTitle').innerText = title + " एंट्री";
+        form.style.display = 'flex';
+    }
+
+    function saveFile() {
+        const name = document.getElementById('fileName').value || 'data';
+        const content = document.getElementById('editor').innerHTML;
+        const blob = new Blob([content], {type: "text/html"});
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = name + ".html";
+        link.click();
+        document.getElementById('data-form').style.display = 'none';
+    }
             });
         }
-    </script>// यह फंक्शन पुरानी वाली जगह पर लगाएँ
-function saveFile() {
-    const name = document.getElementById('fileName').value || 'data';
-    // यहाँ से एडिटर का कंटेंट HTML के रूप में लिया जा रहा है
-    const content = document.getElementById('editor').innerHTML; 
-    
-    const blob = new Blob([content], {type: "text/html"});
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = name + ".html"; // .html फाइल में सेव होगा ताकि फॉर्मेटिंग (Bold/Italic) बची रहे
-    link.click();
-    document.getElementById('data-form').classList.add('hidden');
+    </script>// 
 }
 </body>
 </html>
