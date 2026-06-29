@@ -8,11 +8,11 @@
         .hologram { color: #60a5fa; text-shadow: 0 0 10px #2563eb, 0 0 20px #2563eb; font-weight: bold; }
         .auth-box { width: 320px; background: #1e293b; padding: 25px; border-radius: 20px; margin: 50px auto; text-align: center; border: 1px solid #334155; }
         .input-box { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; background: #2563eb; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; }
+        .btn { width: 100%; padding: 12px; background: #2563eb; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .hidden { display: none; }
         
         .top-nav { background: #0f172a; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-        .sidebar { height: 100%; width: 200px; position: fixed; top: 0; left: -200px; background: #1e293b; padding-top: 60px; transition: 0.3s; z-index: 10; }
+        .sidebar { height: 100%; width: 220px; position: fixed; top: 0; left: -220px; background: #1e293b; padding-top: 80px; transition: 0.3s; z-index: 10; text-align: center; }
         .sidebar.active { left: 0; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
         .card { padding: 15px; background: #1e293b; border-radius: 10px; text-align: center; border: 1px solid #334155; }
@@ -20,18 +20,16 @@
 </head>
 <body>
 
-    <!-- लॉगिन स्क्रीन -->
     <div id="login-view" class="auth-box">
         <h3 class="hologram">✨ Omni Data Pro</h3>
         <p style="font-size:12px; color:#94a3b8;">वेबसाइट में आपका स्वागत है!</p>
         <input type="text" id="uid-login" class="input-box" placeholder="यूजर आईडी">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <p style="font-size:12px; color:#f87171; cursor:pointer;" onclick="alert('फॉरगेट पासवर्ड लिंक भेज दिया गया है!')">फॉरगेट पासवर्ड?</p>
+        <p style="font-size:12px; color:#f87171; cursor:pointer;" onclick="alert('लिंक भेजा गया!')">फॉरगेट पासवर्ड?</p>
         <button class="btn" onclick="enterDashboard()">प्रवेश करें</button>
         <p style="color:#60a5fa; font-size:14px; cursor:pointer;" onclick="toggleAuth()">नया अकाउंट (साइन अप)</p>
     </div>
 
-    <!-- साइन अप स्क्रीन -->
     <div id="signup-view" class="auth-box hidden">
         <h3 class="hologram">✨ Omni Data Pro</h3>
         <p style="font-size:12px; color:#94a3b8;">वेबसाइट में आपका स्वागत है!</p>
@@ -42,14 +40,13 @@
         <p style="color:#60a5fa; font-size:14px; cursor:pointer;" onclick="toggleAuth()">वापस लॉगिन पर जाएं</p>
     </div>
 
-    <!-- डैशबोर्ड स्क्रीन -->
     <div id="dashboard-view" class="hidden">
         <div class="top-nav">
             <span class="hologram" onclick="toggleSidebar()" style="cursor:pointer;">☰ ✨ Omni Data Pro</span>
-            <span id="user-display">यूजर: </span>
+            <span id="user-display" class="hologram"></span>
         </div>
         <div id="sidebar" class="sidebar">
-            <button class="btn" style="background:#ef4444; width:80%; margin-left:10%;" onclick="location.reload()">लॉग आउट</button>
+            <button class="btn" style="background:#ef4444; width:80%;" onclick="location.reload()">लॉग आउट</button>
         </div>
         <div class="grid">
             <div class="card">बेसिक डेटा</div><div class="card">ऑनलाइन डेटा</div>
@@ -58,7 +55,7 @@
             <div class="card">डेटा क्लीनिंग</div><div class="card">सर्वे फिलिंग</div>
             <div class="card">मेडिकल डेटा</div><div class="card">लीगल डेटा</div>
         </div>
-        <div style="text-align:center;">
+        <div style="padding-left: 20px;">
             <button class="btn" style="width:100px; background:#64748b;" onclick="location.reload()">बैक</button>
         </div>
     </div>
@@ -73,7 +70,7 @@
             document.getElementById('login-view').classList.add('hidden');
             document.getElementById('signup-view').classList.add('hidden');
             document.getElementById('dashboard-view').classList.remove('hidden');
-            document.getElementById('user-display').innerText = "यूजर: " + uid;
+            document.getElementById('user-display').innerText = uid;
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     </script>
