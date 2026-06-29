@@ -12,24 +12,26 @@
         .link { color: #2563eb; cursor: pointer; font-size: 14px; margin-top: 15px; text-decoration: underline; }
         .hidden { display: none; }
         
-        /* डैशबोर्ड स्टाइल */
-        #dashboard-view { width: 90%; max-width: 800px; background: white; padding: 20px; border-radius: 20px; }
+        #dashboard-view { width: 90%; max-width: 600px; background: white; padding: 20px; border-radius: 20px; text-align: center; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
-        .card { padding: 20px; background: #f1f5f9; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; border: 2px solid #e2e8f0; }
-        .card:hover { border-color: #2563eb; }
+        .card { padding: 15px; background: #f1f5f9; border-radius: 10px; font-weight: bold; border: 1px solid #e2e8f0; }
     </style>
 </head>
 <body>
 
     <div id="login-view" class="auth-box">
+        <h3 style="margin:0; color:#2563eb;">Omni Data Pro</h3>
+        <p style="font-size:12px; color:#64748b; margin-bottom:15px;">वेबसाइट में आपका स्वागत है!</p>
         <h2>लॉगिन</h2>
-        <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
+        <input type="text" class="input-box" placeholder="यूजर आईडी">
         <input type="password" class="input-box" placeholder="पासवर्ड">
+        <p style="text-align:right; font-size:12px; color:#ef4444; cursor:pointer;" onclick="alert('पासवर्ड रीसेट लिंक भेज दिया गया है!')">फॉरगेट पासवर्ड?</p>
         <button class="btn" onclick="showDashboard()">प्रवेश करें</button>
         <p class="link" onclick="toggleView()">नया अकाउंट (साइन अप)</p>
     </div>
 
     <div id="signup-view" class="auth-box hidden">
+        <h3 style="margin:0; color:#2563eb;">Omni Data Pro</h3>
         <h2>नया अकाउंट</h2>
         <input type="text" class="input-box" placeholder="यूजर आईडी">
         <input type="email" class="input-box" placeholder="ईमेल">
@@ -38,7 +40,7 @@
         <p class="link" onclick="toggleView()">वापस लॉगिन पर जाएं</p>
     </div>
 
-    <div id="dashboard-view" class="hidden">
+    <div id="dashboard-view" class="auth-box hidden">
         <h2>Omni Data Pro डैशबोर्ड</h2>
         <div class="grid">
             <div class="card">बेसिक डेटा</div><div class="card">ऑनलाइन डेटा</div>
@@ -47,6 +49,7 @@
             <div class="card">डेटा क्लीनिंग</div><div class="card">सर्वे फिलिंग</div>
             <div class="card">मेडिकल डेटा</div><div class="card">लीगल डेटा</div>
         </div>
+        <button class="btn" style="margin-top:20px; background:#ef4444;" onclick="location.reload()">लॉग आउट</button>
     </div>
 
     <script>
