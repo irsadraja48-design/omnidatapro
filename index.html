@@ -2,46 +2,49 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro - Official System</title>
+    <title>Omni Data Pro - Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* बैकग्राउंड और स्मूथ लुक */
-        body { background: #0f172a; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="h-screen flex items-center justify-center p-4">
+<body class="bg-slate-900 min-h-screen text-slate-800">
 
-    <!-- लॉगिन स्क्रीन (फ्रंट) -->
-    <div id="login-container" class="glass-card p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center">
-        <!-- टाइटल -->
-        <h1 class="text-3xl font-extrabold text-slate-800 mb-1">Omni Data Pro</h1>
-        <p class="text-slate-500 mb-8">Welcome to the pro website</p>
-
-        <!-- मालिक की फोटो और विवरण -->
-        <div class="mb-8 p-4 bg-slate-100 rounded-2xl border border-slate-200">
-            <div class="w-20 h-20 bg-slate-300 rounded-full mx-auto mb-3 flex items-center justify-center text-slate-600 font-bold italic">Photo</div>
-            <h2 class="font-bold text-slate-800 text-lg">इरशाद अहमद</h2>
-            <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold">Founder & Lead Developer</p>
-        </div>
-
-        <!-- इनपुट फॉर्म -->
-        <form id="login-form" class="space-y-4">
-            <input type="text" placeholder="यूजर आईडी" class="w-full p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">लॉगिन</button>
-        </form>
-
-        <!-- ऑप्शंस -->
-        <div class="mt-6 flex justify-between text-xs text-slate-500">
-            <a href="#" class="hover:text-blue-600">साइन अप</a>
-            <a href="#" class="hover:text-blue-600">Forgot Password?</a>
+    <div id="auth-interface" class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center">
+            <h1 class="text-3xl font-bold mb-6">Omni Data Pro</h1>
+            <form id="login-form" class="space-y-4">
+                <input type="email" id="email" placeholder="ईमेल आईडी" class="w-full p-3 border rounded-xl" required>
+                <input type="password" id="password" placeholder="पासवर्ड" class="w-full p-3 border rounded-xl" required>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700">लॉगिन</button>
+            </form>
         </div>
     </div>
 
-    <!-- सुरक्षा के लिए बेसिक स्क्रिप्ट -->
+    <div id="main-dashboard" class="hidden p-6 md:p-10">
+        <h1 class="text-3xl font-bold text-white mb-8">आपका डैशबोर्ड</h1>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">बेसिक एंट्री</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ऑनलाइन डेटा</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ई-कॉमर्स</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ट्रांसक्रिप्शन</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">इमेज-टू-टेक्स्ट</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">वेब रिसर्च</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">डेटा क्लीनिंग</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">सर्वे फिलिंग</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">मेडिकल डेटा</div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">लीगल एंट्री</div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        // यहाँ अपनी असली Supabase की Key डालें
+        const supabase = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_KEY');
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // सुपाबेस ऑथेंटिकेशन लॉजिक
+            document.getElementById('auth-interface').classList.add('hidden');
+            document.getElementById('main-dashboard').classList.remove('hidden');
+        });
     </script>
 </body>
 </html>
