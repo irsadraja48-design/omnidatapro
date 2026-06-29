@@ -1,15 +1,28 @@
-<div id="login-view" class="view active">
-    <div class="auth-box">
-        <h3 style="color:#2563eb; margin-bottom:5px;">Omni Data Pro</h3>
-        <p style="color:#64748b; font-size:13px; margin-bottom:20px;">वेबसाइट में आपका स्वागत है!</p>
-        
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Omni Data Pro</title>
+    <style>
+        body { margin: 0; padding: 0; background: #0f172a; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; color: #1e293b; }
+        .auth-box { width: 350px; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
+        .input-box { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .link { color: blue; cursor: pointer; font-size: 14px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-container" class="auth-box">
+        <h3 style="color:#2563eb; margin:0;">Omni Data Pro</h3>
+        <p style="font-size:13px; color:#64748b;">वेबसाइट में आपका स्वागत है!</p>
         <h2>लॉगिन</h2>
         <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
         <input type="password" id="pass" class="input-box" placeholder="पासवर्ड">
-        
-        <p style="text-align:right; font-size:12px; cursor:pointer; color:#ef4444; margin:5px 0;" onclick="alert('पासवर्ड रीसेट लिंक भेजा गया!')">पासवर्ड भूल गए?</p>
-        
-        <button class="btn" onclick="auth.login()">प्रवेश करें</button>
-        <p onclick="ui.show('signup-view')" class="link">नया अकाउंट (साइन अप)</p>
+        <p style="text-align:right; font-size:12px; color:#ef4444; cursor:pointer;" onclick="alert('पासवर्ड रीसेट!')">पासवर्ड भूल गए?</p>
+        <button class="btn" onclick="alert('लॉगिन क्लिक हुआ')">प्रवेश करें</button>
+        <p class="link">नया अकाउंट (साइन अप)</p>
     </div>
-</div>
+
+</body>
+</html>
