@@ -1,12 +1,36 @@
+/* [प्रोफेशनल स्टाइलिंग] */
+body { 
+    margin: 0; padding: 0; 
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+    font-family: 'Segoe UI', sans-serif; 
+    color: white; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+}
 
-body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; }
-.auth-box { width: 300px; background: white; color: #1e293b; padding: 30px; border-radius: 16px; margin: 100px auto; }
-.input-box { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
-.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
-.link { color: blue; cursor: pointer; text-align: center; font-size: 14px; margin-top: 10px; }
-.top-bar { background: #1e293b; padding: 15px; display: flex; justify-content: space-between; }
-.sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #334155; padding: 20px; transition: 0.3s; }
-.sidebar.active { left: 0; }
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
-.grid-box { background: white; color: #1e293b; padding: 20px; border-radius: 10px; text-align: center; font-weight: bold; }
-.btn-logout { background: #ef4444; color: white; border: none; padding: 10px; width: 100%; }
+.auth-box { 
+    width: 350px; background: #ffffff; 
+    color: #1e293b; padding: 40px; 
+    border-radius: 20px; 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+h2 { margin-bottom: 25px; color: #0f172a; }
+
+.input-box { 
+    width: 100%; padding: 14px; margin: 10px 0; 
+    border: 2px solid #e2e8f0; border-radius: 10px; 
+    background: #f8fafc; font-size: 16px; box-sizing: border-box;
+}
+
+.btn { 
+    width: 100%; padding: 14px; 
+    background: #2563eb; color: white; 
+    border: none; border-radius: 10px; 
+    cursor: pointer; font-weight: bold; font-size: 16px;
+    margin-top: 10px; transition: 0.3s;
+}
+
+.btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+.link { color: #64748b; cursor: pointer; margin-top: 15px; font-size: 14px; }
