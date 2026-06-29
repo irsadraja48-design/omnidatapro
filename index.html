@@ -2,49 +2,36 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro - Official</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Data Pro | Official</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: white; padding: 2.5rem; border-radius: 20px; width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h1 { margin-bottom: 5px; color: #1e293b; }
+        p { color: #64748b; margin-bottom: 20px; font-size: 0.9rem; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .nav-links { display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.85rem; }
+        .nav-links a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    </style>
 </head>
-<body class="bg-slate-900 min-h-screen text-slate-800">
+<body>
 
-    <div id="auth-interface" class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center">
-            <h1 class="text-3xl font-bold mb-6">Omni Data Pro</h1>
-            <form id="login-form" class="space-y-4">
-                <input type="email" id="email" placeholder="ईमेल आईडी" class="w-full p-3 border rounded-xl" required>
-                <input type="password" id="password" placeholder="पासवर्ड" class="w-full p-3 border rounded-xl" required>
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700">लॉगिन</button>
-            </form>
+    <div class="card">
+        <h1>Omni Data Pro</h1>
+        <p>Welcome to the pro website</p>
+        
+        <form id="login-form">
+            <input type="email" placeholder="ईमेल आईडी" required>
+            <input type="password" placeholder="पासवर्ड" required>
+            <button type="submit" class="btn-login">लॉगिन</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="#">साइन अप</a>
+            <a href="#">Forgot Password?</a>
         </div>
     </div>
 
-    <div id="main-dashboard" class="hidden p-6 md:p-10">
-        <h1 class="text-3xl font-bold text-white mb-8">आपका डैशबोर्ड</h1>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">बेसिक एंट्री</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ऑनलाइन डेटा</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ई-कॉमर्स</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">ट्रांसक्रिप्शन</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">इमेज-टू-टेक्स्ट</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">वेब रिसर्च</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">डेटा क्लीनिंग</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">सर्वे फिलिंग</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">मेडिकल डेटा</div>
-            <div class="bg-white p-6 rounded-2xl shadow-lg hover:scale-105 transition">लीगल एंट्री</div>
-        </div>
-    </div>
-
-    <script>
-        // यहाँ अपनी असली Supabase की Key डालें
-        const supabase = supabase.createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_KEY');
-
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            // सुपाबेस ऑथेंटिकेशन लॉजिक
-            document.getElementById('auth-interface').classList.add('hidden');
-            document.getElementById('main-dashboard').classList.remove('hidden');
-        });
-    </script>
 </body>
 </html>
