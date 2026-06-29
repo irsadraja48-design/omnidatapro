@@ -66,13 +66,24 @@
         </div>
     </div>
 
-    <div id="data-form" class="hidden" style="position:fixed; top:20%; left:10%; width:80%; background:#1e293b; padding:20px; border:2px solid #60a5fa; border-radius:10px; color:white; z-index:200;">
-        <h3 id="formTitle" style="text-align:center;"></h3>
-        <input type="text" id="fileName" placeholder="फाइल का नाम..." class="input-box">
-        <textarea id="fileContent" style="width:100%; height:80px; background:#0f172a; color:white; padding:10px; border-radius:5px;"></textarea>
-        <div style="margin-top:15px; text-align:center;">
-            <button onclick="saveFile()" class="btn" style="width:auto; padding:10px 30px;">सेव करें</button>
-        </div>
+<div id="data-form" class="hidden" style="position:fixed; top:5%; left:5%; width:90%; height:90%; background:#1e293b; padding:20px; border:2px solid #60a5fa; border-radius:10px; color:white; z-index:999; display:flex; flex-direction:column;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+        <h3 id="formTitle">एंट्री</h3>
+        <button onclick="document.getElementById('data-form').classList.add('hidden')" style="background:#ef4444; color:white; border:none; padding:5px 15px; cursor:pointer; border-radius:5px;">बंद करें (X)</button>
+    </div>
+    
+    <input type="text" id="fileName" placeholder="फाइल का नाम..." class="input-box" style="margin-bottom:10px; color:black; padding:8px;">
+    
+    <div style="background:#0f172a; padding:5px; border-radius:5px 5px 0 0; display:flex; gap:10px;">
+        <button onclick="document.execCommand('bold')" style="font-weight:bold; cursor:pointer;">B</button>
+        <button onclick="document.execCommand('italic')" style="font-style:italic; cursor:pointer;">I</button>
+        <button onclick="document.execCommand('underline')" style="text-decoration:underline; cursor:pointer;">U</button>
+    </div>
+    
+    <div id="editor" contenteditable="true" style="flex-grow:1; background:white; color:black; padding:10px; overflow-y:auto; border:1px solid #ccc; margin-bottom:10px;"></div>
+    
+    <button onclick="saveFile()" class="btn" style="padding:10px; cursor:pointer; background:#2563eb; border:none; color:white; border-radius:5px;">सेव करें</button>
+</div>
     </div>
 
     <script>
@@ -106,6 +117,18 @@
                 card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
             });
         }
-    </script>
+    </script>// यह फंक्शन पुरानी वाली जगह पर लगाएँ
+function saveFile() {
+    const name = document.getElementById('fileName').value || 'data';
+    // यहाँ से एडिटर का कंटेंट HTML के रूप में लिया जा रहा है
+    const content = document.getElementById('editor').innerHTML; 
+    
+    const blob = new Blob([content], {type: "text/html"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = name + ".html"; // .html फाइल में सेव होगा ताकि फॉर्मेटिंग (Bold/Italic) बची रहे
+    link.click();
+    document.getElementById('data-form').classList.add('hidden');
+}
 </body>
 </html>
