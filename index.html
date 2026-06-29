@@ -2,78 +2,49 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro | Modular System</title>
-    <style>
-        /* BASE SYSTEM: ग्लोबल स्टाइल्स */
-        body { background: #0f172a; margin: 0; font-family: sans-serif; color: white; }
-        .module { display: none; }
-        .active { display: block; }
-        
-        /* AUTH MODULE STYLES */
-        .auth-card { width: 300px; background: white; color: #1e293b; padding: 25px; border-radius: 15px; margin: 80px auto; text-align: center; }
-        .input-style { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        
-        /* DASHBOARD MODULE STYLES */
-        .top-nav { display: flex; justify-content: space-between; padding: 15px; background: #1e293b; }
-        .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #334155; padding: 20px; transition: 0.3s; }
-        .sidebar.open { left: 0; }
-        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 500px; margin: auto; }
-        .grid-item { background: white; color: #1e293b; padding: 20px; border-radius: 10px; text-align: center; font-weight: bold; }
-    </style>
+    <title>Omni Data Pro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="login-module" class="module active">
-        <div class="auth-card">
-            <h2>लॉगिन</h2>
-            <input type="text" id="uid" class="input-style" placeholder="यूजर आईडी">
-            <input type="password" class="input-style" placeholder="पासवर्ड">
-            <button onclick="engine.login()" style="width:100%; padding:10px; background:#2563eb; color:white; border:none; border-radius:8px;">लॉगिन</button>
-            <p onclick="engine.nav('signup-module')" style="color:blue; cursor:pointer;">साइन अप</p>
+    <div id="auth-container">
+        <div id="login-view" class="view active">
+            <div class="auth-box">
+                <h2>लॉगिन</h2>
+                <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
+                <input type="password" id="pass" class="input-box" placeholder="पासवर्ड">
+                <button class="btn" onclick="auth.login()">प्रवेश करें</button>
+                <p onclick="ui.show('signup-view')" class="link">नया अकाउंट (साइन अप)</p>
+            </div>
+        </div>
+        <div id="signup-view" class="view" style="display:none;">
+            <div class="auth-box">
+                <h2>रजिस्टर करें</h2>
+                <input type="text" class="input-box" placeholder="यूजर आईडी">
+                <input type="email" class="input-box" placeholder="ईमेल">
+                <input type="password" class="input-box" placeholder="पासवर्ड">
+                <button class="btn" style="background:#10b981" onclick="alert('ईमेल नोटिफिकेशन भेजा गया!')">अकाउंट बनाएं</button>
+                <p onclick="ui.show('login-view')" class="link">वापस लॉगिन</p>
+            </div>
         </div>
     </div>
 
-    <div id="signup-module" class="module">
-        <div class="auth-card">
-            <h2>रजिस्टर करें</h2>
-            <input type="text" class="input-style" placeholder="यूजर आईडी">
-            <input type="email" class="input-style" placeholder="ईमेल">
-            <input type="password" class="input-style" placeholder="पासवर्ड">
-            <button onclick="alert('ईमेल भेज दिया गया!')" style="width:100%; padding:10px; background:#10b981; color:white; border:none; border-radius:8px;">अकाउंट बनाएं</button>
-            <p onclick="engine.nav('login-module')" style="color:blue; cursor:pointer;">वापस लॉगिन</p>
+    <div id="dashboard-container" style="display:none;">
+        <div class="top-bar">
+            <div onclick="dash.toggleSidebar()" style="cursor:pointer;">☰ Omni Data Pro</div>
+            <div id="display-uid"></div>
+        </div>
+        <div id="sidebar" class="sidebar">
+            <button class="btn-logout" onclick="location.reload()">लॉग आउट</button>
+        </div>
+        <div class="grid-container">
+            <div class="grid-box">बेसिक डेटा</div><div class="grid-box">ऑनलाइन डेटा</div>
+            <div class="grid-box">ई-कॉमर्स</div><div class="grid-box">ट्रांसक्रिप्शन</div>
+            <div class="grid-box">इमेज-टू-टेक्स्ट</div><div class="grid-box">वेब रिसर्च</div>
+            <div class="grid-box">डेटा क्लीनिंग</div><div class="grid-box">सर्वे फिलिंग</div>
+            <div class="grid-box">मेडिकल डेटा</div><div class="grid-box">लीगल डेटा</div>
         </div>
     </div>
-
-    <div id="sidebar-component" class="sidebar">
-        <button onclick="location.reload()" style="background:#ef4444; color:white; border:none; padding:10px; width:100%;">लॉग आउट</button>
-    </div>
-
-    <div id="dashboard-module" class="module">
-        <div class="top-nav">
-            <div onclick="document.getElementById('sidebar-component').classList.toggle('open')">☰ Omni Data Pro</div>
-            <div id="display-id"></div>
-        </div>
-        <div class="grid-layout">
-            <div class="grid-item">बेसिक डेटा</div><div class="grid-item">ऑनलाइन डेटा</div>
-            <div class="grid-item">ई-कॉमर्स</div><div class="grid-item">ट्रांसक्रिप्शन</div>
-        </div>
-    </div>
-
-    <script>
-        // CENTRAL ENGINE: यहाँ से आप कोई भी मॉड्यूल कंट्रोल कर सकती हैं
-        const engine = {
-            nav: (id) => {
-                document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-                document.getElementById(id).classList.add('active');
-            },
-            login: () => {
-                const uid = document.getElementById('uid').value;
-                if(uid) {
-                    document.getElementById('display-id').innerText = "ID: " + uid;
-                    engine.nav('dashboard-module');
-                } else { alert("आईडी डालें"); }
-            }
-        };
-    </script>
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
