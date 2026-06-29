@@ -1,50 +1,15 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="auth-container">
-        <div id="login-view" class="view active">
-            <div class="auth-box">
-                <h2>लॉगिन</h2>
-                <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
-                <input type="password" id="pass" class="input-box" placeholder="पासवर्ड">
-                <button class="btn" onclick="auth.login()">प्रवेश करें</button>
-                <p onclick="ui.show('signup-view')" class="link">नया अकाउंट (साइन अप)</p>
-            </div>
-        </div>
-        <div id="signup-view" class="view" style="display:none;">
-            <div class="auth-box">
-                <h2>रजिस्टर करें</h2>
-                <input type="text" class="input-box" placeholder="यूजर आईडी">
-                <input type="email" class="input-box" placeholder="ईमेल">
-                <input type="password" class="input-box" placeholder="पासवर्ड">
-                <button class="btn" style="background:#10b981" onclick="alert('ईमेल नोटिफिकेशन भेजा गया!')">अकाउंट बनाएं</button>
-                <p onclick="ui.show('login-view')" class="link">वापस लॉगिन</p>
-            </div>
-        </div>
+<div id="login-view" class="view active">
+    <div class="auth-box">
+        <h3 style="color:#2563eb; margin-bottom:5px;">Omni Data Pro</h3>
+        <p style="color:#64748b; font-size:13px; margin-bottom:20px;">वेबसाइट में आपका स्वागत है!</p>
+        
+        <h2>लॉगिन</h2>
+        <input type="text" id="uid" class="input-box" placeholder="यूजर आईडी">
+        <input type="password" id="pass" class="input-box" placeholder="पासवर्ड">
+        
+        <p style="text-align:right; font-size:12px; cursor:pointer; color:#ef4444; margin:5px 0;" onclick="alert('पासवर्ड रीसेट लिंक भेजा गया!')">पासवर्ड भूल गए?</p>
+        
+        <button class="btn" onclick="auth.login()">प्रवेश करें</button>
+        <p onclick="ui.show('signup-view')" class="link">नया अकाउंट (साइन अप)</p>
     </div>
-
-    <div id="dashboard-container" style="display:none;">
-        <div class="top-bar">
-            <div onclick="dash.toggleSidebar()" style="cursor:pointer;">☰ Omni Data Pro</div>
-            <div id="display-uid"></div>
-        </div>
-        <div id="sidebar" class="sidebar">
-            <button class="btn-logout" onclick="location.reload()">लॉग आउट</button>
-        </div>
-        <div class="grid-container">
-            <div class="grid-box">बेसिक डेटा</div><div class="grid-box">ऑनलाइन डेटा</div>
-            <div class="grid-box">ई-कॉमर्स</div><div class="grid-box">ट्रांसक्रिप्शन</div>
-            <div class="grid-box">इमेज-टू-टेक्स्ट</div><div class="grid-box">वेब रिसर्च</div>
-            <div class="grid-box">डेटा क्लीनिंग</div><div class="grid-box">सर्वे फिलिंग</div>
-            <div class="grid-box">मेडिकल डेटा</div><div class="grid-box">लीगल डेटा</div>
-        </div>
-    </div>
-    <script src="auth.js"></script>
-    <script src="dashboard.js"></script>
-</body>
-</html>
+</div>
