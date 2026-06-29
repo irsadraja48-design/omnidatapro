@@ -2,26 +2,29 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Data Pro</title>
+    <title>Omni Data Pro | Official</title>
     <style>
-        body { background: #0f172a; margin: 0; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .card { background: white; padding: 30px; border-radius: 20px; width: 300px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        body { background: #0f172a; margin: 0; font-family: sans-serif; min-height: 100vh; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 300px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); margin: 100px auto; }
         .input-box { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
         .btn { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; }
         .hidden { display: none; }
         .nav-links { margin-top: 20px; font-size: 13px; }
         .nav-links span { color: #2563eb; cursor: pointer; display: block; margin-top: 10px; text-decoration: underline; }
+        
+        /* डैशबोर्ड */
+        #dashboard-div { padding: 20px; color: white; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 600px; margin: 20px auto; }
+        .box { background: white; color: #1e293b; padding: 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="login-div" class="card">
-        <h2>लॉगिन करें</h2>
+        <h2>लॉगिन</h2>
         <input type="email" class="input-box" placeholder="ईमेल">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" style="background:#2563eb" onclick="alert('लॉगिन क्लिक हुआ')">लॉगिन करें</button>
-        
+        <button class="btn" style="background:#2563eb" onclick="show('dashboard-div')">लॉगिन करें</button>
         <div class="nav-links">
             <span onclick="show('signup-div')">नया अकाउंट (साइन अप)</span>
             <span onclick="show('forgot-div')" style="color:#64748b">पासवर्ड भूल गए?</span>
@@ -33,15 +36,32 @@
         <input type="text" class="input-box" placeholder="नाम">
         <input type="email" class="input-box" placeholder="ईमेल">
         <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" style="background:#10b981" onclick="alert('रजिस्टर क्लिक हुआ')">अकाउंट बनाएं</button>
+        <button class="btn" style="background:#10b981" onclick="show('dashboard-div')">अकाउंट बनाएं</button>
         <span class="nav-links" onclick="show('login-div')" style="color:#2563eb; cursor:pointer;">वापस लॉगिन पर</span>
     </div>
 
     <div id="forgot-div" class="card hidden">
         <h2>पासवर्ड रीसेट</h2>
         <input type="email" class="input-box" placeholder="अपना ईमेल लिखें">
-        <button class="btn" style="background:#f59e0b" onclick="alert('ईमेल भेजा गया')">लिंक भेजें</button>
+        <button class="btn" style="background:#f59e0b" onclick="show('login-div')">लिंक भेजें</button>
         <span class="nav-links" onclick="show('login-div')" style="color:#2563eb; cursor:pointer;">वापस लॉगिन पर</span>
+    </div>
+
+    <div id="dashboard-div" class="hidden">
+        <h1 style="text-align: center; margin-top: 20px;">Omni Data Pro डैशबोर्ड</h1>
+        <div class="grid">
+            <div class="box">बेसिक डेटा</div>
+            <div class="box">ऑनलाइन डेटा</div>
+            <div class="box">ई-कॉमर्स</div>
+            <div class="box">ट्रांसक्रिप्शन</div>
+            <div class="box">इमेज-टू-टेक्स्ट</div>
+            <div class="box">वेब रिसर्च</div>
+            <div class="box">डेटा क्लीनिंग</div>
+            <div class="box">सर्वे फिलिंग</div>
+            <div class="box">मेडिकल डेटा</div>
+            <div class="box">लीगल डेटा</div>
+        </div>
+        <button class="btn" style="background:#ef4444; width:200px; display:block; margin:20px auto;" onclick="location.reload()">लॉग आउट</button>
     </div>
 
     <script>
@@ -49,6 +69,7 @@
             document.getElementById('login-div').classList.add('hidden');
             document.getElementById('signup-div').classList.add('hidden');
             document.getElementById('forgot-div').classList.add('hidden');
+            document.getElementById('dashboard-div').classList.add('hidden');
             document.getElementById(id).classList.remove('hidden');
         }
     </script>
