@@ -1,136 +1,80 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
     <style>
-        body { margin: 0; background: #0f172a; font-family: sans-serif; color: white; min-height: 100vh; }
-        
-        /* हेडर और फुटर जो हर पेज पर फिक्स रहेंगे */
-        .fixed-header { position: fixed; top: 0; width: 100%; background: #1e293b; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; z-index: 100; box-sizing: border-box; }
-        .fixed-footer { position: fixed; bottom: 0; width: 100%; background: #1e293b; padding: 15px; display: flex; justify-content: space-around; border-top: 1px solid #334155; z-index: 100; box-sizing: border-box; }
-        
-        .auth-box { width: 320px; background: #1e293b; padding: 25px; border-radius: 20px; margin: 100px auto; text-align: center; border: 1px solid #334155; }
-        .input-box { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; background: #2563eb; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; }
-        .hidden { display: none; }
-        
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; max-width: 600px; margin: 80px auto; }
-        .card { padding: 20px; background: #1e293b; border-radius: 8px; border: 1px solid #334155; cursor: pointer; text-align: center; }
-        .card:hover { border-color: #60a5fa; }
+        body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; padding: 20px; }
+        .view { display: none; }
+        .active { display: block; }
+        .hidden { display: none !important; }
+        .card { padding: 15px; border: 1px solid #334155; margin: 10px; cursor: pointer; background: #1e293b; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <div id="login-view" class="auth-box">
-        <h3 style="color:#60a5fa;">✨ Omni Data Pro</h3>
-        <p>वेबसाइट में आपका स्वागत है!</p>
-        <input type="text" id="uid-login" class="input-box" placeholder="यूजर आईडी">
-        <input type="password" class="input-box" placeholder="पासवर्ड">
-        <p style="font-size:12px; color:#f87171; cursor:pointer;" onclick="alert('लिंक भेजा गया!')">फॉरगेट पासवर्ड?</p>
-        <button class="btn" onclick="showDashboard()">प्रवेश करें</button>
-        <p style="font-size:14px; cursor:pointer; color:#60a5fa;" onclick="toggleAuth()">नया अकाउंट (साइन अप)</p>
+    <div id="login-view" class="view active">
+        <h2>Omni Data Pro</h2>
+        <input type="text" placeholder="यूजरनेम" id="login-user"><br><br>
+        <input type="password" placeholder="पासवर्ड"><br><br>
+        <button onclick="showDashboard()">प्रवेश करें</button>
+        <p onclick="alert('फॉरगेट पासवर्ड फीचर जल्द आएगा!')" style="color:#60a5fa; cursor:pointer;">फॉरगेट पासवर्ड?</p>
+        <p onclick="toggleAuth()" style="cursor:pointer;">नया अकाउंट (साइन अप)</p>
     </div>
 
-    <div id="signup-view" class="auth-box hidden">
-        <h3 style="color:#60a5fa;">✨ Omni Data Pro</h3>
-        <input type="text" id="uid-signup" class="input-box" placeholder="यूजर आईडी">
-        <input type="email" class="input-box" placeholder="ईमेल">
-        <input type="password" class="input-box" placeholder="पासवर्ड">
-        <button class="btn" onclick="showDashboard()">रजिस्टर करें</button>
-        <p style="font-size:14px; cursor:pointer; color:#60a5fa;" onclick="toggleAuth()">वापस लॉगिन पर जाएं</p>
+    <div id="signup-view" class="view">
+        <h2>साइन अप</h2>
+        <input type="text" placeholder="नया यूजरनेम"><br><br>
+        <input type="password" placeholder="नया पासवर्ड"><br><br>
+        <button onclick="toggleAuth()">रजिस्टर करें</button>
     </div>
 
-    <div id="dashboard-view" class="hidden">
-        <div class="fixed-header">
-            <span>✨ Omni Data Pro</span>
-            <input type="text" id="searchBar" placeholder="सर्च करें..." onkeyup="filterData()" style="padding:5px; border-radius:5px; width:40%;">
-            <span id="user-display" style="font-weight:bold;"></span>
+    <div id="dashboard-view" class="view">
+        <h3 id="user-display">स्वागत है!</h3>
+        <div class="card" onclick="openForm('बेसिक डेटा')">बेसिक डेटा</div>
+        <div class="card" onclick="openForm('ऑनलाइन डेटा')">ऑनलाइन डेटा</div>
+    </div>
+
+    <div id="data-form" class="hidden" style="position:fixed; top:5%; left:5%; width:90%; height:90%; background:#1e293b; padding:20px; border:2px solid #60a5fa; color:white; display:flex; flex-direction:column; z-index:999;">
+        <div style="display:flex; justify-content:space-between;">
+            <h3 id="formTitle">एंट्री</h3>
+            <button onclick="closeForm()" style="background:#ef4444; color:white; border:none; padding:5px;">बंद करें</button>
         </div>
-
-        <div class="grid">
-            <div class="card" onclick="openForm('बेसिक डेटा')">बेसिक डेटा</div>
-            <div class="card" onclick="openForm('ऑनलाइन डेटा')">ऑनलाइन डेटा</div>
-            <div class="card" onclick="openForm('ई-कॉमर्स')">ई-कॉमर्स</div>
-            <div class="card" onclick="openForm('ट्रांसक्रिप्शन')">ट्रांसक्रिप्शन</div>
-            <div class="card" onclick="openForm('इमेज-टू-टेक्स्ट')">इमेज-टू-टेक्स्ट</div>
-            <div class="card" onclick="openForm('वेब रिसर्च')">वेब रिसर्च</div>
-            <div class="card" onclick="openForm('डेटा क्लीनिंग')">डेटा क्लीनिंग</div>
-            <div class="card" onclick="openForm('सर्वे फिलिंग')">सर्वे फिलिंग</div>
-            <div class="card" onclick="openForm('मेडिकल डेटा')">मेडिकल डेटा</div>
-            <div class="card" onclick="openForm('लीगल डेटा')">लीगल डेटा</div>
-        </div>
-        <div class="fixed-footer">
-            <button onclick="history.back()" style="background:none; border:none; color:white; cursor:pointer;">⬅ बैक</button>
-            <button onclick="alert('AI टीचर सक्रिय है...')" style="background:none; border:none; color:white; cursor:pointer;">🤖 AI फीचर</button>
-        </div>
-    </div>
-
-<div id="data-form" class="hidden" style="position:fixed; top:5%; left:5%; width:90%; height:90%; background:#1e293b; padding:20px; border:2px solid #60a5fa; border-radius:10px; color:white; z-index:999; display:none; flex-direction:column;">
-    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-        <h3 id="formTitle">एंट्री</h3>
-        <button onclick="closeForm()" style="background:#ef4444; color:white; border:none; padding:5px 15px; cursor:pointer;">बंद करें (X)</button>
-    </div>
-    
-    <input type="text" id="fileName" placeholder="फाइल का नाम..." class="input-box" style="margin-bottom:10px; color:black; padding:8px;">
-    
-    <div style="background:#0f172a; padding:5px; border-radius:5px 5px 0 0; display:flex; gap:10px;">
-        <button onclick="document.execCommand('bold')" style="font-weight:bold; cursor:pointer;">B</button>
-        <button onclick="document.execCommand('italic')" style="font-style:italic; cursor:pointer;">I</button>
-        <button onclick="document.execCommand('underline')" style="text-decoration:underline; cursor:pointer;">U</button>
-    </div>
-    
-    <div id="editor" contenteditable="true" style="flex-grow:1; background:white; color:black; padding:10px; overflow-y:auto; border:1px solid #ccc; margin-bottom:10px;"></div>
-    
-    <button onclick="saveFile()" class="btn" style="padding:10px; cursor:pointer; background:#2563eb; border:none; color:white; border-radius:5px;">सेव करें</button>
-</div>
+        <input type="text" id="fileName" placeholder="फाइल नाम" style="padding:8px; margin:10px 0;">
+        <div id="editor" contenteditable="true" style="flex-grow:1; background:white; color:black; padding:10px; overflow-y:auto; border:1px solid #ccc;"></div>
+        <button onclick="saveFile()" style="margin-top:10px; padding:10px; background:#2563eb; color:white; border:none;">सेव करें</button>
     </div>
 
     <script>
         function toggleAuth() {
-            document.getElementById('login-view').classList.toggle('hidden');
-            document.getElementById('signup-view').classList.toggle('hidden');
+            document.getElementById('login-view').classList.toggle('active');
+            document.getElementById('signup-view').classList.toggle('active');
         }
+
         function showDashboard() {
-            document.getElementById('login-view').classList.add('hidden');
-            document.getElementById('signup-view').classList.add('hidden');
-            document.getElementById('dashboard-view').classList.remove('hidden');
-            document.getElementById('user-display').innerText = document.getElementById('uid-login').value || "User";
+            document.getElementById('login-view').classList.remove('active');
+            document.getElementById('dashboard-view').classList.add('active');
+            document.getElementById('user-display').innerText = "स्वागत है, " + document.getElementById('login-user').value;
         }
+
         function openForm(title) {
+            const form = document.getElementById('data-form');
             document.getElementById('formTitle').innerText = title + " एंट्री";
-            document.getElementById('data-form').classList.remove('hidden');
+            form.style.display = 'flex';
         }
+
+        function closeForm() {
+            document.getElementById('data-form').style.display = 'none';
+        }
+
         function saveFile() {
             const name = document.getElementById('fileName').value || 'data';
-            const content = document.getElementById('fileContent').value;
-            const blob = new Blob([content], {type: "text/plain"});
+            const content = document.getElementById('editor').innerHTML;
+            const blob = new Blob([content], {type: "text/html"});
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = name + ".txt";
+            link.download = name + ".html";
             link.click();
-            document.getElementById('data-form').classList.add('hidden');
+            closeForm();
         }
-        function filterData() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
-                    function openForm(title) {
-        const form = document.getElementById('data-form');
-        document.getElementById('formTitle').innerText = title + " एंट्री";
-        form.style.display = 'flex';
-    }
-
-    function saveFile() {
-        const name = document.getElementById('fileName').value || 'data';
-        const content = document.getElementById('editor').innerHTML;
-        const blob = new Blob([content], {type: "text/html"});
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = name + ".html";
-        link.click();
-        document.getElementById('data-form').style.display = 'none';
-    }
-    </script>// 
+    </script>
 </body>
 </html>
