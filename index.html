@@ -10,45 +10,72 @@
         .hidden { display: none; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body class="min-h-screen">
 
     <!-- Auth Container -->
-    <div id="auth-box" class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
-        <h1 class="text-3xl font-bold text-center mb-2 text-blue-400">Omni Data Pro</h1>
-        <p id="form-title" class="text-center mb-8 text-gray-400">Welcome to the Pro Website</p>
+    <div id="auth-box" class="flex items-center justify-center min-h-screen">
+        <div class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
+            <h1 class="text-3xl font-bold text-center mb-2 text-blue-400">Omni Data Pro</h1>
+            <p class="text-center mb-8 text-gray-400">Welcome to the Pro Website</p>
 
-        <!-- लॉगिन फॉर्म -->
-        <div id="login-form" class="space-y-4">
-            <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <button onclick="showDashboard()" class="w-full bg-blue-600 p-3 rounded-lg font-bold">लॉगिन</button>
-            <div class="flex justify-between text-sm text-gray-400">
-                <button onclick="switchForm('signup')">साइन अप</button>
-                <button onclick="switchForm('forgot')">Forgot Password?</button>
+            <!-- लॉगिन फॉर्म -->
+            <div id="login-form" class="space-y-4">
+                <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition">लॉगिन</button>
+                <div class="flex justify-between text-sm text-gray-400">
+                    <button onclick="switchForm('signup')">साइन अप</button>
+                    <button onclick="switchForm('forgot')">Forgot Password?</button>
+                </div>
             </div>
-        </div>
 
-        <!-- साइन अप फॉर्म -->
-        <div id="signup-form" class="space-y-4 hidden">
-            <input type="text" placeholder="पूरा नाम" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <input type="password" placeholder="नया पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <button class="w-full bg-green-600 p-3 rounded-lg font-bold">रजिस्टर करें</button>
-            <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
-        </div>
+            <!-- साइन अप फॉर्म -->
+            <div id="signup-form" class="space-y-4 hidden">
+                <input type="text" placeholder="पूरा नाम" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="password" placeholder="नया पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <button onclick="showDashboard()" class="w-full bg-green-600 hover:bg-green-500 p-3 rounded-lg font-bold transition">रजिस्टर करें</button>
+                <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
+            </div>
 
-        <!-- फॉरगेट पासवर्ड फॉर्म -->
-        <div id="forgot-form" class="space-y-4 hidden">
-            <input type="email" placeholder="अपना ईमेल दर्ज करें" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-            <button class="w-full bg-yellow-600 p-3 rounded-lg font-bold">पासवर्ड रीसेट लिंक भेजें</button>
-            <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
+            <!-- फॉरगेट पासवर्ड फॉर्म -->
+            <div id="forgot-form" class="space-y-4 hidden">
+                <input type="email" placeholder="अपना ईमेल दर्ज करें" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <button onclick="alert('रीसेट लिंक भेज दिया गया है!')" class="w-full bg-yellow-600 hover:bg-yellow-500 p-3 rounded-lg font-bold transition">पासवर्ड रीसेट लिंक भेजें</button>
+                <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
+            </div>
         </div>
     </div>
 
-    <!-- डैशबोर्ड (शुरुआत में छुपा हुआ) -->
-    <div id="dashboard" class="hidden text-center p-10">
-        <h1 class="text-4xl font-bold mb-4">नमस्ते, Omni Data Pro में आपका स्वागत है!</h1>
-        <p class="text-gray-400">यह आपका प्रोफेशनल डैशबोर्ड है।</p>
+    <!-- डैशबोर्ड (लॉगिन के बाद दिखने वाला) -->
+    <div id="dashboard" class="hidden flex h-screen">
+        <aside class="w-64 bg-slate-900 p-8 border-r border-slate-800">
+            <h2 class="text-xl font-bold mb-10 text-blue-400">Omni Data Pro</h2>
+            <ul class="space-y-6 text-gray-300">
+                <li class="cursor-pointer hover:text-white">मेरी प्रोफाइल</li>
+                <li class="cursor-pointer hover:text-white">सेटिंग्स</li>
+                <li class="cursor-pointer hover:text-white">मेरे प्रोजेक्ट्स</li>
+                <li class="cursor-pointer hover:text-white">यूजर गाइड</li>
+                <li class="cursor-pointer hover:text-red-400" onclick="location.reload()">लॉग आउट</li>
+            </ul>
+        </aside>
+
+        <main class="flex-1 p-10 overflow-y-auto">
+            <div class="flex justify-between items-center mb-10">
+                <input type="text" placeholder="सर्च बार..." class="w-1/2 p-3 rounded-lg bg-slate-800 border border-slate-700">
+                <button class="bg-purple-600 hover:bg-purple-500 px-6 py-2 rounded-lg font-bold">AI Feature</button>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-6">
+                <!-- सर्विसेज ग्रिड -->
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">बेसिक डेटा एंट्री</div>
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">डेटा ट्रांसक्रिप्शन</div>
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">वेब रिसर्च</div>
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">डेटा क्लीनिंग</div>
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">मेडिकल डेटा</div>
+                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">लीगल डेटा</div>
+            </div>
+        </main>
     </div>
 
     <script>
