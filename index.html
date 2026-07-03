@@ -1,80 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-    <style>
-        body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; padding: 20px; }
-        .view { display: none; }
-        .active { display: block; }
-        .hidden { display: none !important; }
-        .card { padding: 15px; border: 1px solid #334155; margin: 10px; cursor: pointer; background: #1e293b; border-radius: 8px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Omni Data Pro</title>
 </head>
 <body>
-
-    <div id="login-view" class="view active">
-        <h2>Omni Data Pro</h2>
-        <input type="text" placeholder="यूजरनेम" id="login-user"><br><br>
-        <input type="password" placeholder="पासवर्ड"><br><br>
-        <button onclick="showDashboard()">प्रवेश करें</button>
-        <p onclick="alert('फॉरगेट पासवर्ड फीचर जल्द आएगा!')" style="color:#60a5fa; cursor:pointer;">फॉरगेट पासवर्ड?</p>
-        <p onclick="toggleAuth()" style="cursor:pointer;">नया अकाउंट (साइन अप)</p>
+    <div id="sidebar">
+        <!-- नेविगेशन यहाँ आएगा -->
     </div>
-
-    <div id="signup-view" class="view">
-        <h2>साइन अप</h2>
-        <input type="text" placeholder="नया यूजरनेम"><br><br>
-        <input type="password" placeholder="नया पासवर्ड"><br><br>
-        <button onclick="toggleAuth()">रजिस्टर करें</button>
+    <div id="main-content">
+        <!-- सर्विसेज और AI फीचर्स यहाँ आएंगे -->
     </div>
-
-    <div id="dashboard-view" class="view">
-        <h3 id="user-display">स्वागत है!</h3>
-        <div class="card" onclick="openForm('बेसिक डेटा')">बेसिक डेटा</div>
-        <div class="card" onclick="openForm('ऑनलाइन डेटा')">ऑनलाइन डेटा</div>
-    </div>
-
-    <div id="data-form" class="hidden" style="position:fixed; top:5%; left:5%; width:90%; height:90%; background:#1e293b; padding:20px; border:2px solid #60a5fa; color:white; display:flex; flex-direction:column; z-index:999;">
-        <div style="display:flex; justify-content:space-between;">
-            <h3 id="formTitle">एंट्री</h3>
-            <button onclick="closeForm()" style="background:#ef4444; color:white; border:none; padding:5px;">बंद करें</button>
-        </div>
-        <input type="text" id="fileName" placeholder="फाइल नाम" style="padding:8px; margin:10px 0;">
-        <div id="editor" contenteditable="true" style="flex-grow:1; background:white; color:black; padding:10px; overflow-y:auto; border:1px solid #ccc;"></div>
-        <button onclick="saveFile()" style="margin-top:10px; padding:10px; background:#2563eb; color:white; border:none;">सेव करें</button>
-    </div>
-
-    <script>
-        function toggleAuth() {
-            document.getElementById('login-view').classList.toggle('active');
-            document.getElementById('signup-view').classList.toggle('active');
-        }
-
-        function showDashboard() {
-            document.getElementById('login-view').classList.remove('active');
-            document.getElementById('dashboard-view').classList.add('active');
-            document.getElementById('user-display').innerText = "स्वागत है, " + document.getElementById('login-user').value;
-        }
-
-        function openForm(title) {
-            const form = document.getElementById('data-form');
-            document.getElementById('formTitle').innerText = title + " एंट्री";
-            form.style.display = 'flex';
-        }
-
-        function closeForm() {
-            document.getElementById('data-form').style.display = 'none';
-        }
-
-        function saveFile() {
-            const name = document.getElementById('fileName').value || 'data';
-            const content = document.getElementById('editor').innerHTML;
-            const blob = new Blob([content], {type: "text/html"});
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = name + ".html";
-            link.click();
-            closeForm();
-        }
-    </script>
 </body>
 </html>
