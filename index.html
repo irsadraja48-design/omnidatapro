@@ -2,72 +2,77 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Data Pro v2</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0f172a; color: white; display: flex; justify-content: center; padding-top: 50px; font-family: Arial; }
-        .box { background: #1e293b; padding: 25px; border-radius: 10px; width: 300px; text-align: center; }
-        .screen { display: none; }
-        .active { display: block; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; background: #334155; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; background: #3b82f6; color: white; }
-        .link { background: none; color: #94a3b8; text-decoration: underline; font-size: 0.8rem; margin-top: 10px; }
+        body { background: #0b0f19; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #161e2e; padding: 2rem; border-radius: 15px; width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .page { display: none; }
+        .page.active { display: block; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .main-btn { background: #2563eb; color: white; }
+        .text-btn { background: none; color: #64748b; font-size: 0.85rem; text-decoration: underline; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <!-- लॉगिन स्क्रीन -->
-    <div id="login-screen" class="screen active">
-        <h2>लॉगिन</h2>
-        <input type="email" id="l-email" placeholder="ईमेल">
-        <input type="password" id="l-password" placeholder="पासवर्ड">
-        <button onclick="login()">लॉगिन करें</button>
-        <button class="link" onclick="showScreen('signup-screen')">नया अकाउंट (साइन अप)</button>
-        <button class="link" onclick="showScreen('forgot-screen')">पासवर्ड भूल गए?</button>
+<div class="card">
+    <!-- लॉगिन पेज -->
+    <div id="login-pg" class="page active">
+        <h2>लॉगिन (Login)</h2>
+        <input type="email" id="email-in" placeholder="ईमेल">
+        <input type="password" id="pass-in" placeholder="पासवर्ड">
+        <button class="btn main-btn" onclick="authAction('login')">लॉगिन करें</button>
+        <button class="btn text-btn" onclick="switchPage('signup-pg')">नया अकाउंट बनाएं</button>
+        <button class="btn text-btn" onclick="switchPage('forgot-pg')">पासवर्ड भूल गए?</button>
     </div>
 
-    <!-- साइन अप स्क्रीन -->
-    <div id="signup-screen" class="screen">
-        <h2>साइन अप</h2>
-        <input type="email" id="s-email" placeholder="ईमेल">
-        <input type="password" id="s-password" placeholder="पासवर्ड">
-        <button onclick="signup()" style="background: #10b981;">अकाउंट बनाएं</button>
-        <button class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएं</button>
+    <!-- साइनअप पेज -->
+    <div id="signup-pg" class="page">
+        <h2>साइन अप (Sign Up)</h2>
+        <input type="email" id="email-up" placeholder="ईमेल">
+        <input type="password" id="pass-up" placeholder="पासवर्ड">
+        <button class="btn main-btn" onclick="authAction('signup')">रजिस्टर करें</button>
+        <button class="btn text-btn" onclick="switchPage('login-pg')">वापस लॉगिन पर जाएं</button>
     </div>
 
-    <!-- फॉरगेट पासवर्ड स्क्रीन -->
-    <div id="forgot-screen" class="screen">
+    <!-- फॉरगेट पेज -->
+    <div id="forgot-pg" class="page">
         <h2>पासवर्ड रीसेट</h2>
-        <input type="email" id="f-email" placeholder="अपना ईमेल लिखें">
-        <button onclick="resetPassword()" style="background: #ef4444;">लिंक भेजें</button>
-        <button class="link" onclick="showScreen('login-screen')">वापस लॉगिन पर जाएं</button>
+        <input type="email" id="email-fg" placeholder="अपना ईमेल लिखें">
+        <button class="btn main-btn" onclick="authAction('forgot')">रीसेट लिंक भेजें</button>
+        <button class="btn text-btn" onclick="switchPage('login-pg')">वापस लॉगिन पर जाएं</button>
     </div>
 </div>
 
 <script>
     const supabase = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
 
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    function switchPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
 
-    async function login() {
-        const { error } = await supabase.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-password').value });
-        if (error) alert(error.message); else alert("लॉगिन सफल!");
-    }
-
-    async function signup() {
-        const { error } = await supabase.auth.signUp({ email: document.getElementById('s-email').value, password: document.getElementById('s-password').value });
-        if (error) alert(error.message); else alert("सफल! ईमेल चेक करें।");
-    }
-
-    async function resetPassword() {
-        const { error } = await supabase.auth.resetPasswordForEmail(document.getElementById('f-email').value);
-        if (error) alert(error.message); else alert("रीसेट लिंक भेज दिया गया है।");
+    async function authAction(type) {
+        let email, pass, error;
+        if(type === 'login') {
+            email = document.getElementById('email-in').value;
+            pass = document.getElementById('pass-in').value;
+            ({error} = await supabase.auth.signInWithPassword({email, password: pass}));
+        } else if(type === 'signup') {
+            email = document.getElementById('email-up').value;
+            pass = document.getElementById('pass-up').value;
+            ({error} = await supabase.auth.signUp({email, password: pass}));
+        } else if(type === 'forgot') {
+            email = document.getElementById('email-fg').value;
+            ({error} = await supabase.auth.resetPasswordForEmail(email));
+        }
+        
+        if (error) alert("Error: " + error.message); 
+        else alert("सफलतापूर्वक पूर्ण हुआ!");
     }
 </script>
-
 </body>
 </html>
