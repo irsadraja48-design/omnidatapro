@@ -1,77 +1,62 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Data Pro v2</title>
+    <title>Omni Login</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0b0f19; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #161e2e; padding: 2rem; border-radius: 15px; width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .box { background: #222; padding: 30px; border-radius: 20px; width: 300px; }
         .page { display: none; }
-        .page.active { display: block; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .main-btn { background: #2563eb; color: white; }
-        .text-btn { background: none; color: #64748b; font-size: 0.85rem; text-decoration: underline; margin-top: 5px; }
+        .active { display: block; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #444; background: #333; color: white; border-radius: 5px; }
+        button { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; cursor: pointer; background: #007bff; color: white; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <!-- लॉगिन पेज -->
-    <div id="login-pg" class="page active">
-        <h2>लॉगिन (Login)</h2>
-        <input type="email" id="email-in" placeholder="ईमेल">
-        <input type="password" id="pass-in" placeholder="पासवर्ड">
-        <button class="btn main-btn" onclick="authAction('login')">लॉगिन करें</button>
-        <button class="btn text-btn" onclick="switchPage('signup-pg')">नया अकाउंट बनाएं</button>
-        <button class="btn text-btn" onclick="switchPage('forgot-pg')">पासवर्ड भूल गए?</button>
+<div class="box">
+    <!-- लॉगिन -->
+    <div id="login" class="page active">
+        <h2>लॉगिन</h2>
+        <input type="email" id="l-email" placeholder="Email">
+        <input type="password" id="l-pass" placeholder="Password">
+        <button onclick="auth('login')">लॉगिन</button>
+        <button onclick="show('signup')">साइन अप स्क्रीन</button>
+        <button onclick="show('forgot')">फॉरगेट पासवर्ड</button>
     </div>
 
-    <!-- साइनअप पेज -->
-    <div id="signup-pg" class="page">
-        <h2>साइन अप (Sign Up)</h2>
-        <input type="email" id="email-up" placeholder="ईमेल">
-        <input type="password" id="pass-up" placeholder="पासवर्ड">
-        <button class="btn main-btn" onclick="authAction('signup')">रजिस्टर करें</button>
-        <button class="btn text-btn" onclick="switchPage('login-pg')">वापस लॉगिन पर जाएं</button>
+    <!-- साइन अप -->
+    <div id="signup" class="page">
+        <h2>साइन अप</h2>
+        <input type="email" id="s-email" placeholder="Email">
+        <input type="password" id="s-pass" placeholder="Password">
+        <button onclick="auth('signup')">अकाउंट बनाएं</button>
+        <button onclick="show('login')">वापस</button>
     </div>
 
-    <!-- फॉरगेट पेज -->
-    <div id="forgot-pg" class="page">
-        <h2>पासवर्ड रीसेट</h2>
-        <input type="email" id="email-fg" placeholder="अपना ईमेल लिखें">
-        <button class="btn main-btn" onclick="authAction('forgot')">रीसेट लिंक भेजें</button>
-        <button class="btn text-btn" onclick="switchPage('login-pg')">वापस लॉगिन पर जाएं</button>
+    <!-- फॉरगेट -->
+    <div id="forgot" class="page">
+        <h2>पासवर्ड फॉरगेट</h2>
+        <input type="email" id="f-email" placeholder="Email">
+        <button onclick="auth('forgot')">रीसेट लिंक भेजें</button>
+        <button onclick="show('login')">वापस</button>
     </div>
 </div>
 
 <script>
-    const supabase = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
-
-    function switchPage(id) {
+    const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
+    function show(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
-
-    async function authAction(type) {
-        let email, pass, error;
-        if(type === 'login') {
-            email = document.getElementById('email-in').value;
-            pass = document.getElementById('pass-in').value;
-            ({error} = await supabase.auth.signInWithPassword({email, password: pass}));
-        } else if(type === 'signup') {
-            email = document.getElementById('email-up').value;
-            pass = document.getElementById('pass-up').value;
-            ({error} = await supabase.auth.signUp({email, password: pass}));
-        } else if(type === 'forgot') {
-            email = document.getElementById('email-fg').value;
-            ({error} = await supabase.auth.resetPasswordForEmail(email));
-        }
-        
-        if (error) alert("Error: " + error.message); 
-        else alert("सफलतापूर्वक पूर्ण हुआ!");
+    async function auth(type) {
+        let e = document.getElementById(type === 'login' ? 'l-email' : type === 'signup' ? 's-email' : 'f-email').value;
+        let p = type === 'login' ? document.getElementById('l-pass').value : document.getElementById('s-pass').value;
+        let res;
+        if(type === 'login') res = await sb.auth.signInWithPassword({email:e, password:p});
+        else if(type === 'signup') res = await sb.auth.signUp({email:e, password:p});
+        else res = await sb.auth.resetPasswordForEmail(e);
+        if(res.error) alert(res.error.message); else alert("Done!");
     }
 </script>
 </body>
