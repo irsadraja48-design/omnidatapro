@@ -2,98 +2,53 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
+    <title>Omni Data Pro Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; }
-        .page { display: none; padding: 50px; text-align: center; }
-        .active { display: block; }
-        .box { background: #1e293b; padding: 30px; border-radius: 15px; width: 300px; margin: auto; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; background: #334155; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; cursor: pointer; background: #3b82f6; color: white; font-weight: bold; }
-        .sidebar { width: 260px; background: #1e293b; height: 100vh; position: fixed; padding: 20px; box-sizing: border-box; }
-        .main-content { margin-left: 260px; padding: 30px; }
+        body { font-family: sans-serif; background: #0f172a; color: white; display: flex; margin: 0; }
+        .sidebar { width: 260px; background: #1e293b; height: 100vh; padding: 20px; box-sizing: border-box; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #38bdf8; margin-bottom: 30px; }
+        .menu-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #334155; }
+        .main { flex: 1; padding: 30px; }
+        .search-bar { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 5px; border: none; background: #334155; color: white; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 10px; border: 1px solid #334155; cursor: pointer; }
+        .card { background: #1e293b; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #334155; cursor: pointer; }
+        .footer-tools { margin-top: 50px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन पेज -->
-    <div id="login-pg" class="page active">
-        <div class="box">
-            <h2>Omni Data Pro</h2>
-            <p>वेलकम टू प्रो वेबसाइट</p>
-            <input type="email" id="l-email" placeholder="Email">
-            <input type="password" id="l-pass" placeholder="Password">
-            <button onclick="login()">लॉगिन</button>
-            <button onclick="show('signup-pg')">साइन अप</button>
-            <button onclick="show('forgot-pg')">फॉरगेट पासवर्ड?</button>
+<div class="sidebar">
+    <div class="logo">Omni Data Pro</div>
+    <div class="menu-item">👤 मेरी प्रोफाइल</div>
+    <div class="menu-item">⚙️ सेटिंग्स</div>
+    <div class="menu-item">📁 मेरे प्रोजेक्ट्स</div>
+    <div class="menu-item">❓ यूजर गाइड</div>
+    <div class="menu-item" onclick="location.reload()">⎋ लॉग आउट</div>
+</div>
+
+<div class="main">
+    <input type="text" class="search-bar" placeholder="सर्च करें...">
+    <div class="grid">
+        <div class="card">बेसिक डेटा एंट्री</div>
+        <div class="card">ऑनलाइन डेटा एंट्री</div>
+        <div class="card">ई-कॉमर्स डेटा एंट्री</div>
+        <div class="card">डेटा ट्रांसक्रिप्शन</div>
+        <div class="card">इमेज टू टेक्स्ट</div>
+        <div class="card">वेब रिसर्च और डेटा माइनिंग</div>
+        <div class="card">डेटा क्लीनिंग</div>
+        <div class="card">सर्वे और फॉर्म फिलिंग</div>
+        <div class="card">मेडिकल डेटा एंट्री</div>
+        <div class="card">लीगल डेटा एंट्री</div>
+    </div>
+    
+    <div class="footer-tools">
+        <button onclick="history.back()">⬅️ बैक बटन</button>
+        <div style="text-align: center;">
+            <p>AI Picture</p>
         </div>
     </div>
+</div>
 
-    <!-- 2. साइन अप -->
-    <div id="signup-pg" class="page">
-        <div class="box">
-            <h2>साइन अप</h2>
-            <input type="email" id="s-email" placeholder="Email">
-            <input type="password" id="s-pass" placeholder="Password">
-            <button onclick="signup()">अकाउंट बनाएं</button>
-            <button onclick="show('login-pg')">वापस</button>
-        </div>
-    </div>
-
-    <!-- 3. फॉरगेट पासवर्ड -->
-    <div id="forgot-pg" class="page">
-        <div class="box">
-            <h2>पासवर्ड रीसेट</h2>
-            <input type="email" id="f-email" placeholder="Email">
-            <button onclick="reset()">लिंक भेजें</button>
-            <button onclick="show('login-pg')">वापस</button>
-        </div>
-    </div>
-
-    <!-- 4. डैशबोर्ड (आपका पीडीएफ लेआउट) -->
-    <div id="dashboard-pg" class="page">
-        <div class="sidebar">
-            <h2 style="color:#38bdf8;">Omni Data Pro</h2>
-            <div class="menu-item">👤 मेरी प्रोफाइल</div>
-            <div class="menu-item">⚙️ सेटिंग्स</div>
-            <div class="menu-item">📁 मेरे प्रोजेक्ट्स</div>
-            <div class="menu-item">❓ यूजर गाइड</div>
-            <div class="menu-item" onclick="location.reload()">⎋ लॉग आउट</div>
-        </div>
-        <div class="main-content">
-            <input type="text" style="width:100%; padding:10px;" placeholder="सर्च बार...">
-            <div class="grid" style="margin-top:20px;">
-                <div class="card">बेसिक डेटा एंट्री</div>
-                <div class="card">ऑनलाइन डेटा एंट्री</div>
-                <div class="card">ई-कॉमर्स डेटा एंट्री</div>
-                <div class="card">डेटा ट्रांसक्रिप्शन</div>
-                <div class="card">इमेज टू टेक्स्ट</div>
-                <div class="card">वेब रिसर्च</div>
-            </div>
-        </div>
-    </div>
-
-<script>
-    const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
-    function show(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-    async function login() {
-        const { error } = await sb.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-pass').value });
-        if (error) alert(error.message); else show('dashboard-pg');
-    }
-    async function signup() {
-        const { error } = await sb.auth.signUp({ email: document.getElementById('s-email').value, password: document.getElementById('s-pass').value });
-        if (error) alert(error.message); else alert("साइन अप सफल!");
-    }
-    async function reset() {
-        const { error } = await sb.auth.resetPasswordForEmail(document.getElementById('f-email').value);
-        if (error) alert(error.message); else alert("लिंक भेज दिया गया है!");
-    }
-</script>
 </body>
 </html>
