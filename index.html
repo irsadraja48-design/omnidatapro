@@ -2,8 +2,10 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro | Professional Portal</title>
+    <title>Omni Data Pro | Secure Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; }
@@ -16,81 +18,70 @@
     <div id="auth-box" class="flex items-center justify-center min-h-screen">
         <div class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
             <h1 class="text-3xl font-bold text-center mb-2 text-blue-400">Omni Data Pro</h1>
-            <p id="form-title" class="text-center mb-8 text-gray-400">Welcome to the Pro Website</p>
-
+            
             <!-- लॉगिन फॉर्म -->
             <div id="login-form" class="space-y-4">
-                <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-blue-500">
-                <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-blue-500">
-                <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition">लॉगिन</button>
+                <input type="email" id="login-email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
+                <input type="password" id="login-password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
+                <button onclick="loginUser()" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition">लॉगिन</button>
                 <div class="flex justify-between text-sm text-gray-400">
                     <button onclick="switchForm('signup')">साइन अप</button>
-                    <button onclick="switchForm('forgot')">Forgot Password?</button>
                 </div>
             </div>
 
             <!-- साइन अप फॉर्म -->
             <div id="signup-form" class="space-y-4 hidden">
-                <input type="text" placeholder="पूरा नाम" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-green-500">
-                <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-green-500">
-                <input type="password" placeholder="नया पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-green-500">
-                <button onclick="showDashboard()" class="w-full bg-green-600 hover:bg-green-500 p-3 rounded-lg font-bold transition">रजिस्टर करें</button>
-                <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
-            </div>
-
-            <!-- फॉरगेट पासवर्ड फॉर्म -->
-            <div id="forgot-form" class="space-y-4 hidden">
-                <input type="email" placeholder="अपना ईमेल दर्ज करें" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none focus:border-yellow-500">
-                <button onclick="handleReset()" class="w-full bg-yellow-600 hover:bg-yellow-500 p-3 rounded-lg font-bold transition">पासवर्ड रीसेट लिंक भेजें</button>
-                <p id="reset-msg" class="text-center text-sm text-green-400 mt-2 hidden">लिंक ईमेल पर भेज दिया गया है!</p>
+                <input type="email" id="signup-email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
+                <input type="password" id="signup-password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
+                <button onclick="signUpUser()" class="w-full bg-green-600 hover:bg-green-500 p-3 rounded-lg font-bold transition">रजिस्टर करें</button>
                 <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
             </div>
         </div>
     </div>
 
-    <!-- डैशबोर्ड (लॉगिन के बाद) -->
+    <!-- डैशबोर्ड -->
     <div id="dashboard" class="hidden flex h-screen">
         <aside class="w-64 bg-slate-900 p-8 border-r border-slate-800">
             <h2 class="text-xl font-bold mb-10 text-blue-400">Omni Data Pro</h2>
-            <ul class="space-y-6 text-gray-300">
-                <li class="cursor-pointer hover:text-white">मेरी प्रोफाइल</li>
-                <li class="cursor-pointer hover:text-white">सेटिंग्स</li>
-                <li class="cursor-pointer hover:text-white">मेरे प्रोजेक्ट्स</li>
-                <li class="cursor-pointer hover:text-white">यूजर गाइड</li>
-                <li class="cursor-pointer hover:text-red-400" onclick="location.reload()">लॉग आउट</li>
-            </ul>
+            <button onclick="logoutUser()" class="text-red-400">लॉग आउट</button>
         </aside>
-        <main class="flex-1 p-10 overflow-y-auto">
-            <div class="flex justify-between items-center mb-10">
-                <input type="text" placeholder="सर्च बार..." class="w-1/2 p-3 rounded-lg bg-slate-800 border border-slate-700">
-                <button class="bg-purple-600 hover:bg-purple-500 px-6 py-2 rounded-lg font-bold">AI Feature</button>
-            </div>
-            <div class="grid grid-cols-3 gap-6">
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">बेसिक डेटा एंट्री</div>
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">डेटा ट्रांसक्रिप्शन</div>
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">वेब रिसर्च</div>
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">डेटा क्लीनिंग</div>
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">मेडिकल डेटा</div>
-                <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 hover:border-blue-500 transition">लीगल डेटा</div>
-            </div>
-        </main>
+        <main class="flex-1 p-10 text-center text-2xl font-bold">डैशबोर्ड पर आपका स्वागत है!</main>
     </div>
 
     <script>
+        // Supabase Initialization
+        const supabaseUrl = 'https://uenidxhrocphbtxpuyxr.supabase.co';
+        const supabaseKey = 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
         function switchForm(type) {
             document.getElementById('login-form').classList.add('hidden');
             document.getElementById('signup-form').classList.add('hidden');
-            document.getElementById('forgot-form').classList.add('hidden');
             document.getElementById(type + '-form').classList.remove('hidden');
         }
 
-        function showDashboard() {
-            document.getElementById('auth-box').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+        async function signUpUser() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            if (error) alert("साइन अप एरर: " + error.message);
+            else alert("सफलता! कृपया अपना ईमेल चेक करें।");
         }
 
-        function handleReset() {
-            document.getElementById('reset-msg').classList.remove('hidden');
+        async function loginUser() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) alert("लॉगिन विफल: " + error.message);
+            else {
+                document.getElementById('auth-box').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+            }
+        }
+
+        async function logoutUser() {
+            await supabase.auth.signOut();
+            location.reload();
         }
     </script>
 </body>
