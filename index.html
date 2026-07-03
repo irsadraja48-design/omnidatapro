@@ -2,8 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Data Pro</title>
+    <title>Omni Data Pro Platform</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { margin: 0; font-family: sans-serif; background: #0b0f19; color: #fff; }
@@ -15,49 +14,41 @@
         .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
         button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .login-btn { background: #2563eb; color: white; }
-        .signup-btn { background: #059669; color: white; }
-        .forgot-link { background: none; color: #94a3b8; text-decoration: underline; font-size: 0.8rem; margin-top: 10px; }
-
+        
         /* डैशबोर्ड */
         #dash-pg { flex-direction: row; }
         .sidebar { width: 260px; background: #161e2e; height: 100vh; display: none; padding: 20px; flex-shrink: 0; }
         .sidebar.open { display: block; }
         .main-area { flex: 1; padding: 30px; overflow-y: auto; }
-        .nav-item { padding: 15px; border-bottom: 1px solid #334155; cursor: pointer; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .card { background: #1e293b; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid #334155; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन पेज -->
+    <!-- 1. लॉगिन पेज (वेबसाइट नाम और वेलकम मैसेज के साथ) -->
     <div id="login-pg" class="page active">
         <div class="box">
-            <h2>Omni Data Pro</h2>
+            <h1 style="color: #38bdf8;">Omni Data Pro</h1>
             <p>Welcome to the pro website</p>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Password">
-            <button class="login-btn" onclick="auth('login')">Login</button>
-            <button class="signup-btn" onclick="auth('signup')">Sign Up</button>
-            <button class="forgot-link" onclick="auth('forgot')">Forgot Password?</button>
+            <button style="background:#2563eb;" onclick="auth('login')">Login</button>
+            <button style="background:#059669;" onclick="auth('signup')">Sign Up</button>
+            <button style="background:none; text-decoration:underline; color:#94a3b8;" onclick="auth('forgot')">Forgot Password?</button>
         </div>
     </div>
 
-    <!-- 2. डैशबोर्ड पेज -->
+    <!-- 2. डैशबोर्ड (कंप्लीट लेआउट) -->
     <div id="dash-pg" class="page">
         <div id="sidebar" class="sidebar">
             <h2 style="color:#38bdf8;">Omni Data Pro</h2>
-            <div class="nav-item">👤 मेरी प्रोफाइल</div>
-            <div class="nav-item">⚙️ सेटिंग्स</div>
-            <div class="nav-item">📁 मेरे प्रोजेक्ट्स</div>
-            <div class="nav-item">❓ यूजर गाइड</div>
-            <div class="nav-item" onclick="location.reload()">⎋ लॉग आउट</div>
+            <div style="padding:15px; cursor:pointer;">👤 मेरी प्रोफाइल</div>
+            <div style="padding:15px; cursor:pointer;">⚙️ सेटिंग्स</div>
+            <div style="padding:15px; cursor:pointer;" onclick="location.reload()">⎋ लॉग आउट</div>
         </div>
-
         <div class="main-area">
-            <button style="width:auto;" onclick="toggleSidebar()">☰ Menu</button>
-            <input type="text" style="width:100%; padding:12px; margin:20px 0; background:#161e2e; border:none; color:white;" placeholder="सर्च करें...">
+            <button onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
             <div class="grid">
                 <div class="card">बेसिक डेटा एंट्री</div>
                 <div class="card">ऑनलाइन डेटा एंट्री</div>
@@ -66,28 +57,35 @@
                 <div class="card">इमेज टू टेक्स्ट</div>
                 <div class="card">वेब रिसर्च और डेटा माइनिंग</div>
                 <div class="card">डेटा क्लीनिंग</div>
-                <div class="card">सर्वे और फॉर्म फिलिंग</div>
+                <div class="card">सर्वे फॉर्म फिलिंग</div>
                 <div class="card">मेडिकल डेटा एंट्री</div>
                 <div class="card">लीगल डेटा एंट्री</div>
-            </div>
-            <div style="margin-top:40px; display:flex; gap:20px; align-items:center;">
-                <button onclick="history.back()" style="width:auto;">⬅️ बैक बटन</button>
-                <div>🖼️ AI Picture</div>
             </div>
         </div>
     </div>
 
 <script>
     const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
     async function auth(type) {
         const e = document.getElementById('email').value;
         const p = document.getElementById('pass').value;
-        if(type === 'forgot') { await sb.auth.resetPasswordForEmail(e); alert("पासवर्ड रीसेट लिंक ईमेल पर भेजा गया है!"); return; }
-        let res = type === 'login' ? await sb.auth.signInWithPassword({email:e, password:p}) : await sb.auth.signUp({email:e, password:p});
-        if(res.error) alert(res.error.message); 
-        else if(type === 'login') { document.getElementById('login-pg').classList.remove('active'); document.getElementById('dash-pg').classList.add('active'); }
-        else alert("साइन अप सफल! कृपया ईमेल चेक करें।");
+        
+        if (type === 'login') {
+            const { error } = await sb.auth.signInWithPassword({email:e, password:p});
+            if (!error) showPage('dash-pg'); else alert("Login Failed!");
+        } else if (type === 'signup') {
+            const { error } = await sb.auth.signUp({email:e, password:p});
+            if (!error) showPage('dash-pg'); else alert("Signup Failed!");
+        } else if (type === 'forgot') {
+            await sb.auth.resetPasswordForEmail(e);
+            showPage('login-pg');
+        }
     }
 </script>
 </body>
