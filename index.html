@@ -2,33 +2,67 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro | Professional Dashboard</title>
+    <title>Omni Data Pro | Professional Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
-    <div class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
-        <!-- वेबसाइट का नाम -->
+    <!-- Auth Container -->
+    <div id="auth-box" class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
         <h1 class="text-3xl font-bold text-center mb-2 text-blue-400">Omni Data Pro</h1>
-        <p class="text-center mb-8 text-gray-400">Welcome to the Pro Website</p>
+        <p id="form-title" class="text-center mb-8 text-gray-400">Welcome to the Pro Website</p>
 
         <!-- लॉगिन फॉर्म -->
-        <div class="space-y-4">
-            <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none">
-            <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 focus:border-blue-500 outline-none">
-            
-            <button class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition">लॉगिन</button>
-            
+        <div id="login-form" class="space-y-4">
+            <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <input type="password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <button onclick="showDashboard()" class="w-full bg-blue-600 p-3 rounded-lg font-bold">लॉगिन</button>
             <div class="flex justify-between text-sm text-gray-400">
-                <button class="hover:text-white">साइन अप</button>
-                <button class="hover:text-white">Forgot Password?</button>
+                <button onclick="switchForm('signup')">साइन अप</button>
+                <button onclick="switchForm('forgot')">Forgot Password?</button>
             </div>
+        </div>
+
+        <!-- साइन अप फॉर्म -->
+        <div id="signup-form" class="space-y-4 hidden">
+            <input type="text" placeholder="पूरा नाम" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <input type="email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <input type="password" placeholder="नया पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <button class="w-full bg-green-600 p-3 rounded-lg font-bold">रजिस्टर करें</button>
+            <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
+        </div>
+
+        <!-- फॉरगेट पासवर्ड फॉर्म -->
+        <div id="forgot-form" class="space-y-4 hidden">
+            <input type="email" placeholder="अपना ईमेल दर्ज करें" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+            <button class="w-full bg-yellow-600 p-3 rounded-lg font-bold">पासवर्ड रीसेट लिंक भेजें</button>
+            <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
         </div>
     </div>
 
+    <!-- डैशबोर्ड (शुरुआत में छुपा हुआ) -->
+    <div id="dashboard" class="hidden text-center p-10">
+        <h1 class="text-4xl font-bold mb-4">नमस्ते, Omni Data Pro में आपका स्वागत है!</h1>
+        <p class="text-gray-400">यह आपका प्रोफेशनल डैशबोर्ड है।</p>
+    </div>
+
+    <script>
+        function switchForm(type) {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.add('hidden');
+            document.getElementById('forgot-form').classList.add('hidden');
+            document.getElementById(type + '-form').classList.remove('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-box').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
