@@ -2,28 +2,33 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Omni Data Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { margin: 0; font-family: sans-serif; background: #0b0f19; color: #fff; }
-        .page { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+        .page { display: none; height: 100vh; }
         .active { display: flex; }
+        
+        /* लॉगिन पेज */
+        #login-pg { justify-content: center; align-items: center; }
         .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; background: #2563eb; color: white; }
-        
-        /* डैशबोर्ड स्टाइल */
-        .dashboard-layout { display: flex; width: 100%; height: 100vh; }
-        .sidebar { width: 260px; background: #161e2e; padding: 20px; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; background: #2563eb; color: white; margin-top: 10px; }
+
+        /* डैशबोर्ड */
+        #dash-pg { flex-direction: row; }
+        .sidebar { width: 260px; background: #161e2e; height: 100vh; display: none; padding: 20px; flex-shrink: 0; }
+        .sidebar.open { display: block; }
         .main-area { flex: 1; padding: 30px; overflow-y: auto; }
+        .nav-item { padding: 15px; border-bottom: 1px solid #334155; cursor: pointer; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .card { background: #1e293b; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid #334155; }
-        .nav-item { padding: 15px; border-bottom: 1px solid #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन/साइनअप/फॉरगेट पेज -->
+    <!-- 1. लॉगिन पेज -->
     <div id="login-pg" class="page active">
         <div class="box">
             <h2>Omni Data Pro</h2>
@@ -32,13 +37,13 @@
             <input type="password" id="pass" placeholder="Password">
             <button onclick="auth('login')">Login</button>
             <button onclick="auth('signup')" style="background:#059669;">Sign Up</button>
-            <button onclick="auth('reset')" style="background:none; text-decoration:underline; font-size:0.8rem;">Forgot Password?</button>
         </div>
     </div>
 
-    <!-- 2. डैशबोर्ड -->
-    <div id="dash-pg" class="page dashboard-layout">
-        <div class="sidebar">
+    <!-- 2. डैशबोर्ड पेज -->
+    <div id="dash-pg" class="page">
+        <!-- साइडबार -->
+        <div id="sidebar" class="sidebar">
             <h2 style="color:#38bdf8;">Omni Data Pro</h2>
             <div class="nav-item">👤 मेरी प्रोफाइल</div>
             <div class="nav-item">⚙️ सेटिंग्स</div>
@@ -46,8 +51,11 @@
             <div class="nav-item">❓ यूजर गाइड</div>
             <div class="nav-item" onclick="location.reload()">⎋ लॉग आउट</div>
         </div>
+
+        <!-- मुख्य भाग -->
         <div class="main-area">
-            <input type="text" class="search-bar" placeholder="सर्च करें...">
+            <button style="width:auto;" onclick="toggleSidebar()">☰ Menu</button>
+            <input type="text" style="width:100%; padding:12px; margin:20px 0; background:#161e2e; border:none; color:white;" placeholder="सर्च करें...">
             <div class="grid">
                 <div class="card">बेसिक डेटा एंट्री</div>
                 <div class="card">ऑनलाइन डेटा एंट्री</div>
@@ -60,23 +68,20 @@
                 <div class="card">मेडिकल डेटा एंट्री</div>
                 <div class="card">लीगल डेटा एंट्री</div>
             </div>
-            <div style="margin-top:40px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="margin-top:40px; display:flex; gap:20px; align-items:center;">
                 <button onclick="history.back()" style="width:auto;">⬅️ बैक बटन</button>
-                <div style="text-align:center;">🖼️ AI Picture</div>
+                <div>🖼️ AI Picture</div>
             </div>
         </div>
     </div>
 
 <script>
     const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     async function auth(type) {
         const e = document.getElementById('email').value;
         const p = document.getElementById('pass').value;
-        let res;
-        if(type === 'login') res = await sb.auth.signInWithPassword({email:e, password:p});
-        else if(type === 'signup') res = await sb.auth.signUp({email:e, password:p});
-        else { await sb.auth.resetPasswordForEmail(e); alert("Link sent!"); return; }
-        
+        let res = type === 'login' ? await sb.auth.signInWithPassword({email:e, password:p}) : await sb.auth.signUp({email:e, password:p});
         if(res.error) alert(res.error.message); 
         else { document.getElementById('login-pg').classList.remove('active'); document.getElementById('dash-pg').classList.add('active'); }
     }
