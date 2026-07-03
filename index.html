@@ -17,6 +17,7 @@
         button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .login-btn { background: #2563eb; color: white; }
         .signup-btn { background: #059669; color: white; }
+        .forgot-link { background: none; color: #94a3b8; text-decoration: underline; font-size: 0.8rem; margin-top: 10px; }
 
         /* डैशबोर्ड */
         #dash-pg { flex-direction: row; }
@@ -30,7 +31,7 @@
 </head>
 <body>
 
-    <!-- 1. लॉगिन पेज (Screenshot_2026-07-03-22-40-22-001_com.android.chrome.jpg के अनुसार) -->
+    <!-- 1. लॉगिन पेज -->
     <div id="login-pg" class="page active">
         <div class="box">
             <h2>Omni Data Pro</h2>
@@ -39,6 +40,7 @@
             <input type="password" id="pass" placeholder="Password">
             <button class="login-btn" onclick="auth('login')">Login</button>
             <button class="signup-btn" onclick="auth('signup')">Sign Up</button>
+            <button class="forgot-link" onclick="auth('forgot')">Forgot Password?</button>
         </div>
     </div>
 
@@ -81,9 +83,11 @@
     async function auth(type) {
         const e = document.getElementById('email').value;
         const p = document.getElementById('pass').value;
+        if(type === 'forgot') { await sb.auth.resetPasswordForEmail(e); alert("पासवर्ड रीसेट लिंक ईमेल पर भेजा गया है!"); return; }
         let res = type === 'login' ? await sb.auth.signInWithPassword({email:e, password:p}) : await sb.auth.signUp({email:e, password:p});
         if(res.error) alert(res.error.message); 
-        else { document.getElementById('login-pg').classList.remove('active'); document.getElementById('dash-pg').classList.add('active'); }
+        else if(type === 'login') { document.getElementById('login-pg').classList.remove('active'); document.getElementById('dash-pg').classList.add('active'); }
+        else alert("साइन अप सफल! कृपया ईमेल चेक करें।");
     }
 </script>
 </body>
