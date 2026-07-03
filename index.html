@@ -2,87 +2,60 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Omni Data Pro | Secure Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase SDK -->
+    <title>Omni Data Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; }
-        .hidden { display: none; }
+        body { background-color: #0f172a; color: white; display: flex; justify-content: center; padding-top: 50px; font-family: Arial; }
+        .box { background: #1e293b; padding: 25px; border-radius: 10px; width: 300px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #334; background: #0f172a; color: white; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 10px; background: #3b82f6; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        .btn-secondary { background: none; border: none; color: #94a3b8; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; width: 100%; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <!-- Auth Container -->
-    <div id="auth-box" class="flex items-center justify-center min-h-screen">
-        <div class="glass p-10 rounded-2xl w-full max-w-md shadow-2xl">
-            <h1 class="text-3xl font-bold text-center mb-2 text-blue-400">Omni Data Pro</h1>
-            
-            <!-- लॉगिन फॉर्म -->
-            <div id="login-form" class="space-y-4">
-                <input type="email" id="login-email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
-                <input type="password" id="login-password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
-                <button onclick="loginUser()" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition">लॉगिन</button>
-                <div class="flex justify-between text-sm text-gray-400">
-                    <button onclick="switchForm('signup')">साइन अप</button>
-                </div>
-            </div>
+<div class="box">
+    <h2>Omni Data Pro</h2>
+    
+    <input type="email" id="email" placeholder="ईमेल डालें">
+    <input type="password" id="password" placeholder="पासवर्ड डालें">
+    
+    <button class="btn-login" onclick="login()">लॉगिन</button>
+    
+    <button class="btn-secondary" onclick="signup()">नया अकाउंट बनाएं (साइन अप)</button>
+    <button class="btn-secondary" onclick="resetPassword()">पासवर्ड भूल गए?</button>
+</div>
 
-            <!-- साइन अप फॉर्म -->
-            <div id="signup-form" class="space-y-4 hidden">
-                <input type="email" id="signup-email" placeholder="ईमेल" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
-                <input type="password" id="signup-password" placeholder="पासवर्ड" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 outline-none">
-                <button onclick="signUpUser()" class="w-full bg-green-600 hover:bg-green-500 p-3 rounded-lg font-bold transition">रजिस्टर करें</button>
-                <button onclick="switchForm('login')" class="w-full text-sm text-gray-400">वापस लॉगिन पर जाएं</button>
-            </div>
-        </div>
-    </div>
+<script>
+    // Supabase Setup
+    const supabaseUrl = 'https://uenidxhrocphbtxpuyxr.supabase.co';
+    const supabaseKey = 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    <!-- डैशबोर्ड -->
-    <div id="dashboard" class="hidden flex h-screen">
-        <aside class="w-64 bg-slate-900 p-8 border-r border-slate-800">
-            <h2 class="text-xl font-bold mb-10 text-blue-400">Omni Data Pro</h2>
-            <button onclick="logoutUser()" class="text-red-400">लॉग आउट</button>
-        </aside>
-        <main class="flex-1 p-10 text-center text-2xl font-bold">डैशबोर्ड पर आपका स्वागत है!</main>
-    </div>
+    // लॉगिन फंक्शन
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) alert(error.message); else alert("लॉगिन सफल रहा!");
+    }
 
-    <script>
-        // Supabase Initialization
-        const supabaseUrl = 'https://uenidxhrocphbtxpuyxr.supabase.co';
-        const supabaseKey = 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    // साइन अप फंक्शन
+    async function signup() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) alert(error.message); else alert("साइन अप सफल! कृपया अपनी ईमेल चेक करें।");
+    }
 
-        function switchForm(type) {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('signup-form').classList.add('hidden');
-            document.getElementById(type + '-form').classList.remove('hidden');
-        }
+    // फॉरगेट पासवर्ड फंक्शन
+    async function resetPassword() {
+        const email = document.getElementById('email').value;
+        if (!email) { alert("कृपया ऊपर अपना ईमेल डालें"); return; }
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) alert(error.message); else alert("पासवर्ड रीसेट लिंक आपके ईमेल पर भेज दिया गया है।");
+    }
+</script>
 
-        async function signUpUser() {
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) alert("साइन अप एरर: " + error.message);
-            else alert("सफलता! कृपया अपना ईमेल चेक करें।");
-        }
-
-        async function loginUser() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) alert("लॉगिन विफल: " + error.message);
-            else {
-                document.getElementById('auth-box').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-            }
-        }
-
-        async function logoutUser() {
-            await supabase.auth.signOut();
-            location.reload();
-        }
-    </script>
 </body>
 </html>
