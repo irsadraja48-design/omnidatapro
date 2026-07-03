@@ -1,77 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
+    <meta charset="UTF-8">
     <title>Omni Data Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #1e293b; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
-        .page { display: none; }
+        body { font-family: sans-serif; background: #0f172a; color: white; margin: 0; }
+        .page { display: none; padding: 50px; text-align: center; }
         .active { display: block; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 5px; background: #334155; color: white; box-sizing: border-box; }
+        .box { background: #1e293b; padding: 30px; border-radius: 15px; width: 300px; margin: auto; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; background: #334155; color: white; box-sizing: border-box; }
         button { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 5px; cursor: pointer; background: #3b82f6; color: white; font-weight: bold; }
-        .link { background: none; color: #94a3b8; text-decoration: underline; font-size: 0.8rem; }
+        .sidebar { width: 260px; background: #1e293b; height: 100vh; position: fixed; padding: 20px; box-sizing: border-box; }
+        .main-content { margin-left: 260px; padding: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 10px; border: 1px solid #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <!-- लॉगिन -->
-    <div id="login" class="page active">
-        <h2>लॉगिन</h2>
-        <input type="email" id="l-email" placeholder="Email">
-        <input type="password" id="l-pass" placeholder="Password">
-        <button onclick="login()">लॉगिन</button>
-        <button class="link" onclick="show('signup')">नया अकाउंट बनाएं</button>
-        <button class="link" onclick="show('forgot')">पासवर्ड भूल गए?</button>
+    <!-- 1. लॉगिन पेज -->
+    <div id="login-pg" class="page active">
+        <div class="box">
+            <h2>Omni Data Pro</h2>
+            <p>वेलकम टू प्रो वेबसाइट</p>
+            <input type="email" id="l-email" placeholder="Email">
+            <input type="password" id="l-pass" placeholder="Password">
+            <button onclick="login()">लॉगिन</button>
+            <button onclick="show('signup-pg')">साइन अप</button>
+            <button onclick="show('forgot-pg')">फॉरगेट पासवर्ड?</button>
+        </div>
     </div>
 
-    <!-- साइन अप -->
-    <div id="signup" class="page">
-        <h2>साइन अप</h2>
-        <input type="email" id="s-email" placeholder="Email">
-        <input type="password" id="s-pass" placeholder="Password">
-        <button onclick="signup()">रजिस्टर करें</button>
-        <button class="link" onclick="show('login')">वापस लॉगिन पर जाएं</button>
+    <!-- 2. साइन अप -->
+    <div id="signup-pg" class="page">
+        <div class="box">
+            <h2>साइन अप</h2>
+            <input type="email" id="s-email" placeholder="Email">
+            <input type="password" id="s-pass" placeholder="Password">
+            <button onclick="signup()">अकाउंट बनाएं</button>
+            <button onclick="show('login-pg')">वापस</button>
+        </div>
     </div>
 
-    <!-- फॉरगेट -->
-    <div id="forgot" class="page">
-        <h2>पासवर्ड रीसेट</h2>
-        <input type="email" id="f-email" placeholder="Email">
-        <button onclick="reset()">लिंक भेजें</button>
-        <button class="link" onclick="show('login')">वापस लॉगिन पर जाएं</button>
+    <!-- 3. फॉरगेट पासवर्ड -->
+    <div id="forgot-pg" class="page">
+        <div class="box">
+            <h2>पासवर्ड रीसेट</h2>
+            <input type="email" id="f-email" placeholder="Email">
+            <button onclick="reset()">लिंक भेजें</button>
+            <button onclick="show('login-pg')">वापस</button>
+        </div>
     </div>
 
-    <!-- डैशबोर्ड (अंदर की स्क्रीन) -->
-    <div id="dashboard" class="page">
-        <h2>स्वागत है!</h2>
-        <p>आप सफलतापूर्वक Omni Data Pro में लॉगिन हो गए हैं।</p>
-        <button onclick="location.reload()">लॉग आउट</button>
+    <!-- 4. डैशबोर्ड (आपका पीडीएफ लेआउट) -->
+    <div id="dashboard-pg" class="page">
+        <div class="sidebar">
+            <h2 style="color:#38bdf8;">Omni Data Pro</h2>
+            <div class="menu-item">👤 मेरी प्रोफाइल</div>
+            <div class="menu-item">⚙️ सेटिंग्स</div>
+            <div class="menu-item">📁 मेरे प्रोजेक्ट्स</div>
+            <div class="menu-item">❓ यूजर गाइड</div>
+            <div class="menu-item" onclick="location.reload()">⎋ लॉग आउट</div>
+        </div>
+        <div class="main-content">
+            <input type="text" style="width:100%; padding:10px;" placeholder="सर्च बार...">
+            <div class="grid" style="margin-top:20px;">
+                <div class="card">बेसिक डेटा एंट्री</div>
+                <div class="card">ऑनलाइन डेटा एंट्री</div>
+                <div class="card">ई-कॉमर्स डेटा एंट्री</div>
+                <div class="card">डेटा ट्रांसक्रिप्शन</div>
+                <div class="card">इमेज टू टेक्स्ट</div>
+                <div class="card">वेब रिसर्च</div>
+            </div>
+        </div>
     </div>
-</div>
 
 <script>
     const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
-    
     function show(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
-
     async function login() {
         const { error } = await sb.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-pass').value });
-        if (error) alert(error.message); else show('dashboard');
+        if (error) alert(error.message); else show('dashboard-pg');
     }
-
     async function signup() {
         const { error } = await sb.auth.signUp({ email: document.getElementById('s-email').value, password: document.getElementById('s-pass').value });
-        if (error) alert(error.message); else alert("साइन अप सफल! कृपया अपनी ईमेल चेक करें।");
+        if (error) alert(error.message); else alert("साइन अप सफल!");
     }
-
     async function reset() {
         const { error } = await sb.auth.resetPasswordForEmail(document.getElementById('f-email').value);
-        if (error) alert(error.message); else alert("रीसेट लिंक भेज दिया गया है।");
+        if (error) alert(error.message); else alert("लिंक भेज दिया गया है!");
     }
 </script>
 </body>
