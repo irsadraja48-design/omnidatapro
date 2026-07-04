@@ -8,72 +8,86 @@
         body { margin: 0; background: #0b0f19; color: #fff; font-family: sans-serif; }
         .page { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .active { display: flex; }
-        .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; border: 1px solid #334155; }
+        .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 320px; text-align: center; border: 1px solid #334155; }
+        h1 { margin-top: 0; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #2563eb; color: white; }
+        .link-btn { background: none; color: #94a3b8; text-decoration: underline; font-size: 14px; }
         #dash-pg.active { flex-direction: row; justify-content: flex-start; }
-        .sidebar { width: 260px; background: #161e2e; height: 100vh; padding: 20px; border-right: 1px solid #334155; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन पेज -->
+    <!-- लॉगिन स्क्रीन -->
     <div id="login-pg" class="page active">
         <div class="box">
-            <h1>Login</h1>
+            <h1>Omni Data Pro</h1>
+            <p>Welcome back! Please login.</p>
             <input type="email" id="l-email" placeholder="Email">
             <input type="password" id="l-pass" placeholder="Password">
-            <button style="background:#2563eb;" onclick="login()">Login</button>
-            <button style="background:none;" onclick="show('signup-pg')">Sign Up</button>
+            <button onclick="login()">Login</button>
+            <button class="link-btn" onclick="show('signup-pg')">नया अकाउंट बनाएँ (Sign Up)</button>
+            <button class="link-btn" onclick="show('forgot-pg')">Forgot Password?</button>
         </div>
     </div>
 
-    <!-- 2. साइन-अप पेज -->
+    <!-- साइन-अप स्क्रीन -->
     <div id="signup-pg" class="page">
         <div class="box">
             <h1>Sign Up</h1>
             <input type="email" id="s-email" placeholder="Email">
             <input type="password" id="s-pass" placeholder="Password">
-            <button style="background:#059669;" onclick="signup()">Register</button>
-            <button style="background:none;" onclick="show('login-pg')">Back</button>
+            <button style="background: #059669;" onclick="signup()">Register Now</button>
+            <button class="link-btn" onclick="show('login-pg')">वापस लॉगिन पर जाएँ</button>
         </div>
     </div>
 
-    <!-- 3. डैशबोर्ड -->
-    <div id="dash-pg" class="page">
-        <div class="sidebar">
-            <h2>Omni Data Pro</h2>
-            <div style="cursor:pointer;" onclick="logout()">⎋ Logout</div>
+    <!-- फॉरगेट पासवर्ड स्क्रीन -->
+    <div id="forgot-pg" class="page">
+        <div class="box">
+            <h1>Forgot Password</h1>
+            <input type="email" id="f-email" placeholder="अपना ईमेल डालें">
+            <button style="background: #db2777;" onclick="resetPass()">Send Reset Link</button>
+            <button class="link-btn" onclick="show('login-pg')">वापस लॉगिन पर जाएँ</button>
         </div>
-        <div style="padding:20px;"><h1>Welcome!</h1></div>
+    </div>
+
+    <!-- डैशबोर्ड -->
+    <div id="dash-pg" class="page">
+        <div style="padding: 20px;">
+            <h1>Dashboard</h1>
+            <p>Welcome, User!</p>
+            <button onclick="logout()">Logout</button>
+        </div>
     </div>
 
     <script>
         const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
 
+        function show(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
         async function signup() {
-            const e = document.getElementById('s-email').value;
-            const p = document.getElementById('s-pass').value;
-            const { error } = await sb.auth.signUp({ email: e, password: p });
+            const { error } = await sb.auth.signUp({ email: document.getElementById('s-email').value, password: document.getElementById('s-pass').value });
             if (error) alert(error.message);
-            else alert("ईमेल चेक करें, वेरिफिकेशन लिंक भेजा गया है!");
+            else alert("सफल! आपके ईमेल पर कन्फर्मेशन लिंक भेजा गया है। कृपया उसे वेरीफाई करें।");
         }
 
         async function login() {
-            const e = document.getElementById('l-email').value;
-            const p = document.getElementById('l-pass').value;
-            const { data, error } = await sb.auth.signInWithPassword({ email: e, password: p });
+            const { data, error } = await sb.auth.signInWithPassword({ email: document.getElementById('l-email').value, password: document.getElementById('l-pass').value });
             if (error) alert(error.message);
             else if (data.user.email_confirmed_at) show('dash-pg');
             else alert("कृपया पहले अपना ईमेल वेरीफाई करें!");
         }
 
-        async function logout() { await sb.auth.signOut(); location.reload(); }
-
-        function show(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        async function resetPass() {
+            await sb.auth.resetPasswordForEmail(document.getElementById('f-email').value);
+            alert("रीसेट लिंक ईमेल पर भेज दिया गया है।");
         }
+
+        async function logout() { await sb.auth.signOut(); location.reload(); }
     </script>
 </body>
 </html>
