@@ -3,37 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Omni Data Pro</title>
-    <!-- आपकी अपनी की (Key) के साथ अपडेट किया गया SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { margin: 0; background: #0b0f19; color: #fff; font-family: sans-serif; }
+        .page { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+        .active { display: flex; }
+        .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; border: 1px solid #334155; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #dash-pg.active { flex-direction: row; justify-content: flex-start; }
+        .sidebar { width: 260px; background: #161e2e; height: 100vh; padding: 20px; border-right: 1px solid #334155; }
+    </style>
 </head>
 <body>
 
-    <!-- बाकी HTML स्ट्रक्चर वही रहेगा जो हमने पहले तय किया था -->
-    <!-- (लॉगिन, साइन-अप, डैशबोर्ड) -->
+    <!-- 1. लॉगिन पेज -->
+    <div id="login-pg" class="page active">
+        <div class="box">
+            <h1>Login</h1>
+            <input type="email" id="l-email" placeholder="Email">
+            <input type="password" id="l-pass" placeholder="Password">
+            <button style="background:#2563eb;" onclick="login()">Login</button>
+            <button style="background:none;" onclick="show('signup-pg')">Sign Up</button>
+        </div>
+    </div>
+
+    <!-- 2. साइन-अप पेज -->
+    <div id="signup-pg" class="page">
+        <div class="box">
+            <h1>Sign Up</h1>
+            <input type="email" id="s-email" placeholder="Email">
+            <input type="password" id="s-pass" placeholder="Password">
+            <button style="background:#059669;" onclick="signup()">Register</button>
+            <button style="background:none;" onclick="show('login-pg')">Back</button>
+        </div>
+    </div>
+
+    <!-- 3. डैशबोर्ड -->
+    <div id="dash-pg" class="page">
+        <div class="sidebar">
+            <h2>Omni Data Pro</h2>
+            <div style="cursor:pointer;" onclick="logout()">⎋ Logout</div>
+        </div>
+        <div style="padding:20px;"><h1>Welcome!</h1></div>
+    </div>
 
     <script>
-        // यहाँ आपकी की (Key) का उपयोग किया गया है
-        const SUPABASE_URL = 'https://uenidxhrocphbtxpuyxr.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1';
-        
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
 
-        // अब 'sb' का इस्तेमाल हर फंक्शन में होगा, जिससे यह सीधा आपके प्रोजेक्ट से जुड़ेगा।
         async function signup() {
-            const e = document.getElementById('sign-email').value;
-            const p = document.getElementById('sign-pass').value;
-            
-            const { error } = await sb.auth.signUp({ 
-                email: e, 
-                password: p,
-                options: { emailRedirectTo: 'https://omnidatapro.vercel.app' } 
-            });
-            
-            if (error) alert("साइन अप में दिक्कत: " + error.message);
-            else alert("सफल! आपके ईमेल पर कन्फर्मेशन लिंक भेजा गया है।");
+            const e = document.getElementById('s-email').value;
+            const p = document.getElementById('s-pass').value;
+            const { error } = await sb.auth.signUp({ email: e, password: p });
+            if (error) alert(error.message);
+            else alert("ईमेल चेक करें, वेरिफिकेशन लिंक भेजा गया है!");
         }
-        
-        // ... बाकी लॉजिक भी इसी तरह 'sb' का उपयोग करेगा।
+
+        async function login() {
+            const e = document.getElementById('l-email').value;
+            const p = document.getElementById('l-pass').value;
+            const { data, error } = await sb.auth.signInWithPassword({ email: e, password: p });
+            if (error) alert(error.message);
+            else if (data.user.email_confirmed_at) show('dash-pg');
+            else alert("कृपया पहले अपना ईमेल वेरीफाई करें!");
+        }
+
+        async function logout() { await sb.auth.signOut(); location.reload(); }
+
+        function show(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
     </script>
 </body>
 </html>
