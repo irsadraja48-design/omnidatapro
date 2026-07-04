@@ -26,7 +26,6 @@
             <input type="password" id="l-pass" placeholder="Password">
             <button onclick="login()">Login</button>
             <button class="link-btn" onclick="show('signup-pg')">नया अकाउंट बनाएँ (Sign Up)</button>
-            <button class="link-btn" onclick="show('forgot-pg')">Forgot Password?</button>
         </div>
     </div>
 
@@ -37,30 +36,21 @@
             <input type="email" id="s-email" placeholder="Email">
             <input type="password" id="s-pass" placeholder="Password">
             <button style="background: #059669;" onclick="signup()">Register</button>
-            <button class="link-btn" onclick="show('login-pg')">Back</button>
+            <button class="link-btn" onclick="show('login-pg')">Back to Login</button>
         </div>
     </div>
 
-    <!-- 3. फॉरगेट पासवर्ड स्क्रीन -->
-    <div id="forgot-pg" class="page">
-        <div class="box">
-            <h1>Forgot Password</h1>
-            <input type="email" id="f-email" placeholder="अपना ईमेल डालें">
-            <button style="background: #db2777;" onclick="resetPass()">Send Reset Link</button>
-            <button class="link-btn" onclick="show('login-pg')">Back</button>
-        </div>
-    </div>
-
-    <!-- 4. डैशबोर्ड -->
+    <!-- 3. डैशबोर्ड -->
     <div id="dash-pg" class="page">
         <div style="padding: 20px;">
             <h1>Dashboard</h1>
-            <p>Welcome, User!</p>
+            <p>Welcome, User! You are verified.</p>
             <button onclick="logout()">Logout</button>
         </div>
     </div>
 
     <script>
+        // Supabase Initialization
         const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
 
         function show(id) {
@@ -68,15 +58,18 @@
             document.getElementById(id).classList.add('active');
         }
 
+        // सही तरीके से साइन अप और ईमेल वेरिफिकेशन
         async function signup() {
             const { error } = await sb.auth.signUp({ 
                 email: document.getElementById('s-email').value, 
-                password: document.getElementById('s-pass').value 
+                password: document.getElementById('s-pass').value,
+                options: { emailRedirectTo: 'https://omnidatapro.vercel.app' }
             });
-            if (error) alert(error.message);
-            else alert("सफल! आपके ईमेल पर कन्फर्मेशन लिंक भेजा गया है।");
+            if (error) alert("Error: " + error.message);
+            else alert("सफल! अपने ईमेल का इनबॉक्स या स्पैम फोल्डर चेक करें और लिंक पर क्लिक करें।");
         }
 
+        // लॉगिन और वेरिफिकेशन चेक
         async function login() {
             const { data, error } = await sb.auth.signInWithPassword({ 
                 email: document.getElementById('l-email').value, 
@@ -84,13 +77,7 @@
             });
             if (error) alert(error.message);
             else if (data.user.email_confirmed_at) show('dash-pg');
-            else alert("कृपया पहले अपने ईमेल पर जाकर लिंक कन्फर्म करें!");
-        }
-
-        async function resetPass() {
-            const { error } = await sb.auth.resetPasswordForEmail(document.getElementById('f-email').value);
-            if (error) alert(error.message);
-            else alert("पासवर्ड रिसेट लिंक भेज दिया गया है।");
+            else alert("ईमेल वेरीफाई नहीं हुआ है! कृपया अपना इनबॉक्स चेक करें।");
         }
 
         async function logout() { await sb.auth.signOut(); location.reload(); }
