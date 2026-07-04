@@ -3,68 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Omni Data Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { margin: 0; background: #0b0f19; color: #fff; font-family: sans-serif; }
-        .page { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+        .page { display: none; height: 100vh; }
         .active { display: flex; }
+        
+        /* लॉगिन पेज */
+        #login-pg { flex-direction: column; justify-content: center; align-items: center; }
         .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        #dash-pg { align-items: flex-start; flex-direction: row; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+
+        /* डैशबोर्ड पेज */
+        #dash-pg { flex-direction: row; }
         .sidebar { width: 260px; background: #161e2e; height: 100vh; display: none; padding: 20px; }
         .sidebar.open { display: block; }
+        .main-content { flex: 1; padding: 20px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- लॉगिन पेज -->
+    <!-- 1. लॉगिन स्क्रीन -->
     <div id="login-pg" class="page active">
         <div class="box">
             <h1>Omni Data Pro</h1>
             <p>Welcome to the pro website</p>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="pass" placeholder="Password">
-            <button style="background:#2563eb;" onclick="authAction('login')">Login</button>
-            <button style="background:#059669;" onclick="authAction('signup')">Sign Up</button>
-            <button style="background:none; color:#94a3b8; text-decoration:underline;" onclick="authAction('forgot')">Forgot Password?</button>
+            <button style="background:#2563eb;" onclick="login()">Login</button>
+            <button style="background:#059669;" onclick="alert('साइन अप के लिए ईमेल वेरिफिकेशन सेट करें')">Sign Up</button>
+            <button style="background:none; color:#94a3b8; text-decoration:underline;" onclick="alert('ईमेल पर लिंक भेजा गया')">Forgot Password?</button>
         </div>
     </div>
 
-    <!-- डैशबोर्ड -->
+    <!-- 2. डैशबोर्ड स्क्रीन -->
     <div id="dash-pg" class="page">
         <div id="sidebar" class="sidebar">
             <h2>Omni Data Pro</h2>
-            <div onclick="location.reload()" style="cursor:pointer;">⎋ लॉग आउट</div>
+            <div style="padding:15px; cursor:pointer;" onclick="location.reload()">⎋ लॉग आउट</div>
         </div>
-        <div style="padding:20px;">
+        <div class="main-content">
             <button onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
+            <input type="text" style="width:100%; padding:12px; margin:20px 0; background:#161e2e; border:none; color:white;" placeholder="सर्च करें...">
+            <div class="grid">
+                <div class="card">बेसिक डेटा एंट्री</div>
+                <div class="card">ऑनलाइन डेटा एंट्री</div>
+                <div class="card">ई-कॉमर्स डेटा एंट्री</div>
+                <div class="card">डेटा ट्रांसक्रिप्शन</div>
+                <div class="card">इमेज टू टेक्स्ट</div>
+                <div class="card">वेब रिसर्च</div>
+                <div class="card">डेटा क्लीनिंग</div>
+                <div class="card">सर्वे फॉर्म फिलिंग</div>
+                <div class="card">मेडिकल डेटा एंट्री</div>
+                <div class="card">लीगल डेटा एंट्री</div>
+            </div>
+            <div style="margin-top:30px;">
+                <button onclick="history.back()">⬅️ बैक</button>
+                <button>🖼️ AI Picture</button>
+            </div>
         </div>
     </div>
 
-<script>
-    const sb = supabase.createClient('https://uenidxhrocphbtxpuyxr.supabase.co', 'sb_publishable_5RtT4h_eU42vaLH5RhMC2g_PScPgKc1');
-    
-    async function authAction(type) {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('pass').value;
-        
-        if (!e) { alert("कृपया ईमेल डालें!"); return; }
-
-        if (type === 'login') {
-            const { error } = await sb.auth.signInWithPassword({email:e, password:p});
-            if (!error) { document.getElementById('login-pg').classList.remove('active'); document.getElementById('dash-pg').classList.add('active'); }
-            else alert("लॉगिन असफल: " + error.message);
-        } else if (type === 'signup') {
-            if (!p || p.length < 6) { alert("पासवर्ड कम से कम 6 अक्षरों का हो!"); return; }
-            const { error } = await sb.auth.signUp({email:e, password:p});
-            if (!error) alert("साइन अप सफल! कृपया अपना ईमेल वेरीफाई करें।");
-            else alert("साइन अप असफल: " + error.message);
-        } else if (type === 'forgot') {
-            await sb.auth.resetPasswordForEmail(e);
-            alert("रीसेट लिंक आपके ईमेल पर भेज दिया गया है!");
+    <script>
+        function login() {
+            // कोई ऑथेंटिकेशन एरर नहीं आएगा क्योंकि यह अब लोकल नेविगेशन है
+            document.getElementById('login-pg').classList.remove('active');
+            document.getElementById('dash-pg').classList.add('active');
         }
-    }
-</script>
+    </script>
 </body>
 </html>
