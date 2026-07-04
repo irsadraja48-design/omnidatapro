@@ -17,7 +17,6 @@
 </head>
 <body>
 
-    <!-- 1. लॉगिन स्क्रीन -->
     <div id="login-pg" class="page active">
         <div class="box">
             <h1>Omni Data Pro</h1>
@@ -31,11 +30,10 @@
         </div>
     </div>
 
-    <!-- 2. साइन-अप स्क्रीन -->
     <div id="signup-pg" class="page">
         <div class="box">
             <h1>Omni Data Pro</h1>
-            <p>Create account</p>
+            <p>Create Account</p>
             <input type="email" id="s-email" placeholder="Email">
             <input type="password" id="s-pass" placeholder="Password">
             <button style="background:#059669;" onclick="signup()">Register</button>
@@ -44,23 +42,21 @@
         </div>
     </div>
 
-    <!-- 3. फॉरगेट पासवर्ड स्क्रीन -->
     <div id="forgot-pg" class="page">
         <div class="box">
             <h1>Omni Data Pro</h1>
-            <p>Reset password</p>
-            <input type="email" id="f-email" placeholder="Enter your email">
-            <button style="background:#db2777;" onclick="resetPass()">Send Reset</button>
+            <p>Reset Password</p>
+            <input type="email" id="f-email" placeholder="Enter email">
+            <button style="background:#db2777;" onclick="resetPass()">Send Link</button>
             <button class="link-btn" onclick="show('login-pg')">Back</button>
             <div id="f-status" class="status"></div>
         </div>
     </div>
 
-    <!-- 4. डैशबोर्ड -->
     <div id="dash-pg" class="page">
         <div class="box">
             <h1>Welcome, User!</h1>
-            <p>You are logged in.</p>
+            <p>Dashboard: Omni Data Pro</p>
             <button style="background:#dc2626;" onclick="logout()">Logout</button>
         </div>
     </div>
@@ -81,7 +77,7 @@
                 password: document.getElementById('s-pass').value 
             });
             if (error) setStatus('s-status', error.message);
-            else setStatus('s-status', "ईमेल चेक करें, लिंक भेज दिया गया है।");
+            else setStatus('s-status', "लिंक भेजा गया, इनबॉक्स चेक करें।");
         }
 
         async function login() {
@@ -91,13 +87,13 @@
             });
             if (error) setStatus('l-status', error.message);
             else if (data.user.email_confirmed_at) show('dash-pg');
-            else setStatus('l-status', "कृपया पहले अपना ईमेल वेरीफाई करें!");
+            else setStatus('l-status', "ईमेल वेरीफाई करें!");
         }
 
         async function resetPass() {
             const { error } = await sb.auth.resetPasswordForEmail(document.getElementById('f-email').value);
             if (error) setStatus('f-status', error.message);
-            else setStatus('f-status', "रीसेट लिंक भेज दिया गया है।");
+            else setStatus('f-status', "रिसेट लिंक भेज दिया गया।");
         }
 
         async function logout() { await sb.auth.signOut(); location.reload(); }
