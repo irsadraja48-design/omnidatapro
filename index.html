@@ -5,72 +5,59 @@
     <title>Omni Data Pro</title>
     <style>
         body { margin: 0; background: #0b0f19; color: #fff; font-family: sans-serif; }
-        .page { display: none; height: 100vh; }
+        .page { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
         .active { display: flex; }
-        
-        /* लॉगिन पेज */
-        #login-pg { flex-direction: column; justify-content: center; align-items: center; }
         .box { background: #161e2e; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 8px; background: #0f172a; color: white; box-sizing: border-box; }
         button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-
-        /* डैशबोर्ड पेज */
-        #dash-pg { flex-direction: row; }
-        .sidebar { width: 260px; background: #161e2e; height: 100vh; display: none; padding: 20px; }
-        .sidebar.open { display: block; }
-        .main-content { flex: 1; padding: 20px; overflow-y: auto; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #334155; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन स्क्रीन -->
+    <!-- 1. लॉगिन पेज -->
     <div id="login-pg" class="page active">
         <div class="box">
-            <h1>Omni Data Pro</h1>
-            <p>Welcome to the pro website</p>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="pass" placeholder="Password">
-            <button style="background:#2563eb;" onclick="login()">Login</button>
-            <button style="background:#059669;" onclick="alert('साइन अप के लिए ईमेल वेरिफिकेशन सेट करें')">Sign Up</button>
-            <button style="background:none; color:#94a3b8; text-decoration:underline;" onclick="alert('ईमेल पर लिंक भेजा गया')">Forgot Password?</button>
+            <h1>लॉगिन</h1>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <button onclick="show('dash-pg')">Login</button>
+            <button style="background:none;" onclick="show('signup-pg')">नया अकाउंट बनाएँ (Sign Up)</button>
+            <button style="background:none; color:#94a3b8;" onclick="show('forgot-pg')">Forgot Password?</button>
         </div>
     </div>
 
-    <!-- 2. डैशबोर्ड स्क्रीन -->
+    <!-- 2. साइन-अप पेज -->
+    <div id="signup-pg" class="page">
+        <div class="box">
+            <h1>Sign Up</h1>
+            <input type="text" placeholder="Name">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <button onclick="show('dash-pg')">Register</button>
+            <button style="background:none;" onclick="show('login-pg')">वापस लॉगिन पर जाएँ</button>
+        </div>
+    </div>
+
+    <!-- 3. फॉरगेट पासवर्ड पेज -->
+    <div id="forgot-pg" class="page">
+        <div class="box">
+            <h1>Forgot Password</h1>
+            <input type="email" placeholder="अपना ईमेल डालें">
+            <button onclick="alert('लिंक भेज दिया गया!'); show('login-pg')">Reset Password</button>
+            <button style="background:none;" onclick="show('login-pg')">वापस लॉगिन पर जाएँ</button>
+        </div>
+    </div>
+
+    <!-- 4. डैशबोर्ड -->
     <div id="dash-pg" class="page">
-        <div id="sidebar" class="sidebar">
-            <h2>Omni Data Pro</h2>
-            <div style="padding:15px; cursor:pointer;" onclick="location.reload()">⎋ लॉग आउट</div>
-        </div>
-        <div class="main-content">
-            <button onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
-            <input type="text" style="width:100%; padding:12px; margin:20px 0; background:#161e2e; border:none; color:white;" placeholder="सर्च करें...">
-            <div class="grid">
-                <div class="card">बेसिक डेटा एंट्री</div>
-                <div class="card">ऑनलाइन डेटा एंट्री</div>
-                <div class="card">ई-कॉमर्स डेटा एंट्री</div>
-                <div class="card">डेटा ट्रांसक्रिप्शन</div>
-                <div class="card">इमेज टू टेक्स्ट</div>
-                <div class="card">वेब रिसर्च</div>
-                <div class="card">डेटा क्लीनिंग</div>
-                <div class="card">सर्वे फॉर्म फिलिंग</div>
-                <div class="card">मेडिकल डेटा एंट्री</div>
-                <div class="card">लीगल डेटा एंट्री</div>
-            </div>
-            <div style="margin-top:30px;">
-                <button onclick="history.back()">⬅️ बैक</button>
-                <button>🖼️ AI Picture</button>
-            </div>
-        </div>
+        <h2>आपका डैशबोर्ड यहाँ है!</h2>
+        <button onclick="location.reload()">लॉग आउट</button>
     </div>
 
     <script>
-        function login() {
-            // कोई ऑथेंटिकेशन एरर नहीं आएगा क्योंकि यह अब लोकल नेविगेशन है
-            document.getElementById('login-pg').classList.remove('active');
-            document.getElementById('dash-pg').classList.add('active');
+        function show(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
     </script>
 </body>
