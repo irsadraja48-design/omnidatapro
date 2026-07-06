@@ -1,4 +1,0 @@
-/* Omni Data Pro System Style */
-#sidebar { width: 250px; background: #0f172a; color: white; height: 100vh; position: fixed; }
-#main-content { margin-left: 250px; padding: 20px; }
-.service-card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
