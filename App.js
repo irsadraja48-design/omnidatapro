@@ -1,6 +1,5 @@
 import React from 'react';
-// सीधे src/pages/Login पर पॉइंट करें
-import Login from './pages/Login'; 
+import Login from './Login'; // क्योंकि Login.jsx रूट पर है
 import './Login.css';
 
 function App() {
@@ -11,4 +10,3 @@ function App() {
   );
 }
 export default App;
-
