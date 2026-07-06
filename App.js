@@ -1,6 +1,7 @@
-
 import React from 'react';
-import Login from './src/src/pages/Login'; // आपके फोल्डर स्ट्रक्चर के अनुसार पाथ
+// सीधे src/pages/Login पर पॉइंट करें
+import Login from './pages/Login'; 
+import './Login.css';
 
 function App() {
   return (
@@ -9,5 +10,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
