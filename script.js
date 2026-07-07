@@ -1,31 +1,29 @@
-// अपनी नई जनरेट की हुई Keys यहाँ डालें
-const SUPABASE_URL = 'https://your-project-id.supabase.co'; 
-const SUPABASE_KEY = 'YOUR_NEW_ANON_KEY';
-
+// आपकी दी गई Keys यहाँ सुरक्षित हैं
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 function showScreen(id) {
-    document.getElementById('login-box').style.display = (id === 'login-box') ? 'block' : 'none';
-    document.getElementById('signup-box').style.display = (id === 'signup-box') ? 'block' : 'none';
+    document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
 }
 
 async function loginUser() {
-    // HoneyTrap Check
     if (document.getElementById('honeytrap').value !== "") return;
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) alert(error.message);
-    else alert("Login Successful!");
+    const { error } = await supabase.auth.signInWithPassword({ 
+        email: document.getElementById('email').value, 
+        password: document.getElementById('password').value 
+    });
+    if (error) alert(error.message); else alert("Login Successful!");
 }
 
 async function signUpUser() {
-    const email = document.getElementById('s-email').value;
-    const password = document.getElementById('s-password').value;
+    const { error } = await supabase.auth.signUp({ 
+        email: document.getElementById('s-email').value, 
+        password: document.getElementById('s-password').value 
+    });
+    if (error) alert(error.message); else alert("Check email for verification!");
+}
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) alert(error.message);
-    else alert("Sign Up Successful! Please check your email.");
+async function resetPassword() {
+    const { error } = await supabase.auth.resetPasswordForEmail(document.getElementById('f-email').value);
+    if (error) alert(error.message); else alert("Reset link sent!");
 }
