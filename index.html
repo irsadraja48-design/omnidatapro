@@ -4,33 +4,27 @@
     <meta charset="UTF-8">
     <title>OmniData Pro</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div id="login-box" class="container">
-        <h2>Login - OmniData Pro</h2>
-        <input type="text" placeholder="Username" id="l-user">
-        <input type="password" placeholder="Password" id="l-pass">
-        <button onclick="alert('Login Success!')">Login</button>
-        <p onclick="showScreen('signup-box')">New user? Sign Up</p>
-        <p onclick="showScreen('forget-box')">Forgot Password?</p>
-    </div>
+    <div id="app" class="container">
+        <div id="login-box">
+            <h2>OmniData Pro - Login</h2>
+            <input type="text" id="honeytrap" style="display:none;" tabindex="-1">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="loginUser()">Login</button>
+            <p onclick="showScreen('signup-box')">New User? Sign Up</p>
+        </div>
 
-    <div id="signup-box" class="container" style="display:none;">
-        <h2>Sign Up</h2>
-        <input type="text" placeholder="New Username">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button onclick="alert('Account Created!')">Sign Up</button>
-        <p onclick="showScreen('login-box')">Back to Login</p>
+        <div id="signup-box" style="display:none;">
+            <h2>Sign Up</h2>
+            <input type="email" id="s-email" placeholder="Email">
+            <input type="password" id="s-password" placeholder="Password">
+            <button onclick="signUpUser()">Sign Up</button>
+            <p onclick="showScreen('login-box')">Back to Login</p>
+        </div>
     </div>
-
-    <div id="forget-box" class="container" style="display:none;">
-        <h2>Forgot Password</h2>
-        <input type="email" placeholder="Enter your email">
-        <button onclick="alert('Reset link sent!')">Send Reset Link</button>
-        <p onclick="showScreen('login-box')">Back to Login</p>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
