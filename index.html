@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniData Pro | Home</title>
+    <title>OmniData Pro | Official</title>
     <style>
         body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
         .screen { display: none; }
         .active { display: block; }
         
-        /* Auth Container */
+        /* Auth Styles */
         .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        .link { color: #007bff; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
+        .link { color: #007bff; cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
 
-        /* Dashboard Header */
-        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Dashboard Styles */
         .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .menu-item { padding: 15px 0; cursor: pointer; border-bottom: 1px solid #3e4f5f; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; }
         .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     </style>
@@ -28,18 +29,16 @@
 
 <!-- AUTH SECTION -->
 <div id="auth-wrapper" class="active">
-    <!-- Login Screen -->
     <div id="login-box" class="screen active container">
         <h1>OmniData Pro</h1>
         <h2>Login</h2>
-        <input type="text" placeholder="User ID">
+        <input type="text" id="uid-input" placeholder="User ID">
         <input type="password" placeholder="Password">
         <button onclick="login()">Login</button>
         <span class="link" onclick="showScreen('signup-box')">Sign Up</span>
         <span class="link" onclick="showScreen('forget-box')">Forgot Password?</span>
     </div>
 
-    <!-- Sign Up Screen -->
     <div id="signup-box" class="screen container">
         <h1>OmniData Pro</h1>
         <h2>Sign Up</h2>
@@ -49,12 +48,11 @@
         <span class="link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 
-    <!-- Forgot Password Screen -->
     <div id="forget-box" class="screen container">
         <h1>OmniData Pro</h1>
         <h2>Reset Password</h2>
         <input type="text" placeholder="Enter User ID">
-        <button onclick="alert('Reset link sent!')">Send Reset Link</button>
+        <button onclick="alert('Reset link sent!')">Send Link</button>
         <span class="link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 </div>
@@ -72,7 +70,11 @@
     <div class="header">
         <span onclick="toggleSidebar()" style="cursor:pointer; font-size: 20px;">☰ Menu</span>
         <strong style="font-size: 22px;">OmniData Pro</strong>
-        <span>User ID: [UID-XXXX]</span>
+        <span id="display-uid">User ID: ---</span>
+    </div>
+
+    <div style="padding: 10px 20px;">
+        <button onclick="location.reload()" style="width: auto; padding: 10px 20px; background: #7f8c8d;">⬅️ Back</button>
     </div>
 
     <div class="grid">
@@ -83,11 +85,10 @@
 </div>
 
 <script>
-    function showScreen(id) { 
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); 
-        document.getElementById(id).classList.add('active'); 
-    }
+    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     function login() { 
+        const uid = document.getElementById('uid-input').value; 
+        document.getElementById('display-uid').innerText = "User ID: " + uid;
         document.getElementById('auth-wrapper').style.display = 'none'; 
         document.getElementById('dashboard-wrapper').style.display = 'block'; 
     }
