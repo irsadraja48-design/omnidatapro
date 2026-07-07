@@ -2,88 +2,84 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>OmniData Pro | Dashboard</title>
+    <title>OmniData Pro | Official</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; }
         .screen { display: none; }
         .active { display: block; }
-
-        /* Auth Styles */
-        .auth-container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 12px; }
-        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; box-sizing: border-box; }
+        .container { max-width: 450px; margin: 80px auto; background: white; padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .link { color: #3498db; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; }
         
-        /* Dashboard Header */
-        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        /* Sidebar (Hidden by default) */
-        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
+        /* Dashboard Styling */
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
         .sidebar.open { left: 0; }
-        .menu-item { padding: 15px 0; border-bottom: 1px solid #3e4f5f; cursor: pointer; }
-        
-        /* Grid */
-        .main-content { padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 25px; }
+        .card { background: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-<!-- Auth Section -->
+<!-- AUTH SECTIONS -->
 <div id="auth-wrapper" class="active">
-    <div class="auth-container">
+    <div id="login-box" class="screen active container">
         <h1>OmniData Pro</h1>
+        <h2>Welcome to the Website</h2>
         <input type="email" placeholder="Email">
         <input type="password" placeholder="Password">
         <button onclick="login()">Login</button>
+        <span class="link" onclick="showScreen('signup-box')">Sign Up</span>
+        <span class="link" onclick="showScreen('forget-box')">Forgot Password?</span>
+    </div>
+
+    <div id="signup-box" class="screen container">
+        <h1>OmniData Pro</h1>
+        <h2>Sign Up</h2>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button onclick="login()">Create Account</button>
+        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
+    </div>
+
+    <div id="forget-box" class="screen container">
+        <h1>OmniData Pro</h1>
+        <h2>Reset Password</h2>
+        <input type="email" placeholder="Email">
+        <button onclick="alert('Link sent!')">Send Reset Link</button>
+        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 </div>
 
-<!-- Dashboard Section -->
+<!-- DASHBOARD -->
 <div id="dashboard-wrapper" style="display:none;">
-    <!-- Side Menu -->
     <div class="sidebar" id="sidebar">
-        <h2>Menu</h2>
-        <div class="menu-item">👤 मेरी प्रोफाइल</div>
-        <div class="menu-item">⚙️ सेटिंग्स</div>
-        <div class="menu-item">📂 मेरे प्रोजेक्ट्स</div>
-        <div class="menu-item">❓ यूजर गाइड</div>
-        <div class="menu-item" onclick="location.reload()">🚪 लॉग आउट</div>
+        <h2 style="color:#3498db;">Menu</h2>
+        <div style="padding:15px 0;">👤 मेरी प्रोफाइल</div>
+        <div style="padding:15px 0;">⚙️ सेटिंग्स</div>
+        <div style="padding:15px 0;">📂 मेरे प्रोजेक्ट्स</div>
+        <div style="padding:15px 0;">❓ यूजर गाइड</div>
+        <div style="padding:15px 0; cursor:pointer;" onclick="location.reload()">🚪 लॉग आउट</div>
     </div>
-
-    <!-- Header -->
+    
     <div class="header">
-        <span onclick="toggleSidebar()" style="cursor:pointer; font-size: 24px;">☰</span>
-        <strong>OmniData Pro</strong>
+        <span onclick="toggleSidebar()" style="cursor:pointer; font-size:28px;">☰</span>
+        <strong style="font-size: 20px;">OmniData Pro</strong>
         <span>User ID: [UID-XXXX]</span>
     </div>
 
-    <div class="main-content">
-        <div class="grid">
-            <div class="card">1. बेसिक डेटा एंट्री</div>
-            <div class="card">2. ऑनलाइन डेटा एंट्री</div>
-            <div class="card">3. ईकॉमर्स डेटा</div>
-            <div class="card">4. डेटा ट्रांसक्रिप्शन</div>
-            <div class="card">5. इमेज टू टेक्स्ट</div>
-            <div class="card">6. वेब रिसर्च</div>
-            <div class="card">7. डेटा क्लीनिंग</div>
-            <div class="card">8. सर्वे फॉर्म</div>
-            <div class="card">9. मेडिकल एंट्री</div>
-            <div class="card">10. लीगल एंट्री</div>
-            <div class="card">11. माइनिंग</div>
-            <div class="card">12. अदर टास्क</div>
-        </div>
+    <div class="grid">
+        <div class="card">1. बेसिक डेटा</div><div class="card">2. ऑनलाइन डेटा</div><div class="card">3. ईकॉमर्स डेटा</div><div class="card">4. ट्रांसक्रिप्शन</div>
+        <div class="card">5. इमेज टू टेक्स्ट</div><div class="card">6. वेब रिसर्च</div><div class="card">7. डेटा क्लीनिंग</div><div class="card">8. सर्वे फॉर्म</div>
+        <div class="card">9. मेडिकल एंट्री</div><div class="card">10. लीगल एंट्री</div><div class="card">11. माइनिंग</div><div class="card">12. अदर टास्क</div>
     </div>
 </div>
 
 <script>
-    function login() {
-        document.getElementById('auth-wrapper').style.display = 'none';
-        document.getElementById('dashboard-wrapper').style.display = 'block';
-    }
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('open');
-    }
+    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    function login() { document.getElementById('auth-wrapper').style.display = 'none'; document.getElementById('dashboard-wrapper').style.display = 'block'; }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 </script>
-
 </body>
 </html>
