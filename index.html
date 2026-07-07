@@ -2,63 +2,68 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>OmniData Pro | Final</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniData Pro | Home</title>
     <style>
         body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
         .screen { display: none; }
         .active { display: block; }
         
-        /* Auth Styles */
+        /* Auth Container */
         .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        .nav-link { color: #007bff; cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
+        .link { color: #007bff; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
 
-        /* Dashboard Styles */
+        /* Dashboard Header */
         .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .menu-item { padding: 15px 0; cursor: pointer; border-bottom: 1px solid #3e4f5f; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-<!-- AUTH -->
+<!-- AUTH SECTION -->
 <div id="auth-wrapper" class="active">
+    <!-- Login Screen -->
     <div id="login-box" class="screen active container">
         <h1>OmniData Pro</h1>
-        <h2>Welcome</h2>
+        <h2>Login</h2>
         <input type="text" placeholder="User ID">
         <input type="password" placeholder="Password">
         <button onclick="login()">Login</button>
-        <span class="nav-link" onclick="showScreen('signup-box')">Sign Up</span>
-        <span class="nav-link" onclick="showScreen('forget-box')">Forgot Password?</span>
+        <span class="link" onclick="showScreen('signup-box')">Sign Up</span>
+        <span class="link" onclick="showScreen('forget-box')">Forgot Password?</span>
     </div>
 
+    <!-- Sign Up Screen -->
     <div id="signup-box" class="screen container">
         <h1>OmniData Pro</h1>
         <h2>Sign Up</h2>
         <input type="text" placeholder="New User ID">
         <input type="password" placeholder="Password">
         <button onclick="login()">Create Account</button>
-        <span class="nav-link" onclick="showScreen('login-box')">Back to Login</span>
+        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 
+    <!-- Forgot Password Screen -->
     <div id="forget-box" class="screen container">
         <h1>OmniData Pro</h1>
         <h2>Reset Password</h2>
         <input type="text" placeholder="Enter User ID">
-        <button onclick="alert('Reset link sent!')">Send Link</button>
-        <span class="nav-link" onclick="showScreen('login-box')">Back to Login</span>
+        <button onclick="alert('Reset link sent!')">Send Reset Link</button>
+        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- DASHBOARD SECTION -->
 <div id="dashboard-wrapper" style="display:none;">
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
+        <div class="menu-item" onclick="toggleSidebar()">⬅️ बैक</div>
         <div class="menu-item">👤 मेरी प्रोफाइल</div>
         <div class="menu-item">⚙️ सेटिंग्स</div>
         <div class="menu-item" onclick="location.reload()">🚪 लॉग आउट</div>
@@ -78,8 +83,14 @@
 </div>
 
 <script>
-    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-    function login() { document.getElementById('auth-wrapper').style.display = 'none'; document.getElementById('dashboard-wrapper').style.display = 'block'; }
+    function showScreen(id) { 
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); 
+        document.getElementById(id).classList.add('active'); 
+    }
+    function login() { 
+        document.getElementById('auth-wrapper').style.display = 'none'; 
+        document.getElementById('dashboard-wrapper').style.display = 'block'; 
+    }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 </script>
 </body>
