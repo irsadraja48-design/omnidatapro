@@ -57,32 +57,78 @@
     </div>
 </div>
 
-<!-- DASHBOARD SECTION -->
-<div id="dashboard-wrapper" style="display:none;">
-    <div class="sidebar" id="sidebar">
-        <h2>Menu</h2>
-        <div class="menu-item" onclick="toggleSidebar()">⬅️ बैक</div>
-        <div class="menu-item">👤 मेरी प्रोफाइल</div>
-        <div class="menu-item">⚙️ सेटिंग्स</div>
-        <div class="menu-item" onclick="location.reload()">🚪 लॉग आउट</div>
-    </div>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>OmniData Pro | Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
+        .sidebar.open { left: 0; }
+        .menu-item { padding: 15px 0; border-bottom: 1px solid #3e4f5f; cursor: pointer; }
+        
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #ddd; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:3000; }
+        iframe { width: 100%; height: 90vh; border: none; }
+    </style>
+</head>
+<body>
+
+<!-- DASHBOARD -->
+<div class="header">
+    <span onclick="document.getElementById('sidebar').classList.toggle('open')" style="cursor:pointer; font-weight:bold;">☰ Menu</span>
     
-    <div class="header">
-        <span onclick="toggleSidebar()" style="cursor:pointer; font-size: 20px;">☰ Menu</span>
-        <strong style="font-size: 22px;">OmniData Pro</strong>
-        <span id="display-uid">User ID: ---</span>
-    </div>
-
-    <div style="padding: 10px 20px;">
-        <button onclick="location.reload()" style="width: auto; padding: 10px 20px; background: #7f8c8d;">⬅️ Back</button>
-    </div>
-
-    <div class="grid">
-        <div class="card">1. बेसिक डेटा</div><div class="card">2. ऑनलाइन डेटा</div><div class="card">3. ईकॉमर्स</div><div class="card">4. ट्रांसक्रिप्शन</div>
-        <div class="card">5. इमेज टू टेक्स्ट</div><div class="card">6. वेब रिसर्च</div><div class="card">7. डेटा क्लीनिंग</div><div class="card">8. सर्वे फॉर्म</div>
-        <div class="card">9. मेडिकल एंट्री</div><div class="card">10. लीगल एंट्री</div><div class="card">11. माइनिंग</div><div class="card">12. अदर टास्क</div>
-    </div>
+    <!-- डैशबोर्ड के अंदर वाला बैक बटन -->
+    <button onclick="history.back()" style="padding:8px 15px; cursor:pointer;">⬅️ बैक</button>
+    
+    <strong>OmniData Pro</strong>
+    <span>User ID: Admin</span>
 </div>
+
+<div class="sidebar" id="sidebar">
+    <h2>Menu</h2>
+    <div class="menu-item" onclick="document.getElementById('sidebar').classList.remove('open')">⬅️ बैक</div>
+    <div class="menu-item">👤 प्रोफाइल</div>
+    <div class="menu-item" onclick="location.reload()">🚪 रिफ्रेश</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- WORK MODAL -->
+<div id="work-modal" class="modal">
+    <div style="padding:15px; background:#f4f4f4; display:flex; justify-content:space-between; align-items:center;">
+        <h2 id="modal-title">Work Space</h2>
+        <button onclick="document.getElementById('work-modal').style.display='none'" style="padding:10px 20px;">⬅️ बैक (डैशबोर्ड)</button>
+    </div>
+    <iframe src="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUqptlbsY4OgvB2_5XM8/edit"></iframe>
+</div>
+
+<script>
+    const tasks = ["1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", "5. इमेज टू टेक्स्ट", "6. वेब रिसर्च", "7. डेटा क्लीनिंग", "8. सर्वे फॉर्म", "9. मेडिकल एंट्री", "10. लीगल एंट्री", "11. माइनिंग", "12. अदर टास्क"];
+    const grid = document.getElementById('grid');
+    
+    tasks.forEach(task => {
+        grid.innerHTML += `<div class="card" onclick="openWork('${task}')">${task}</div>`;
+    });
+
+    function openWork(name) {
+        document.getElementById('modal-title').innerText = name;
+        document.getElementById('work-modal').style.display = 'block';
+    }
+</script>
+</body>
+</html>
+
 
 <script>
     function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
