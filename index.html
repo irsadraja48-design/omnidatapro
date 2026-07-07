@@ -2,30 +2,56 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>OmniData Pro - Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniData Pro | Login</title>
     <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #1e293b; padding: 2rem; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+        h1 { text-align: center; color: #38bdf8; font-size: 1.5rem; }
         .screen { display: none; }
-        #login-box { display: block; }
+        .screen.active { display: block; }
+        input { width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 6px; border: none; box-sizing: border-box; }
+        button { width: 100%; padding: 0.75rem; margin-top: 1rem; border: none; border-radius: 6px; background: #38bdf8; color: #0f172a; font-weight: bold; cursor: pointer; }
+        p { text-align: center; font-size: 0.9rem; margin-top: 1rem; cursor: pointer; color: #94a3b8; }
+        p:hover { color: #38bdf8; }
     </style>
 </head>
 <body>
 
-    <div id="login-box" class="screen">
-        <h2>Login Screen</h2>
-        <button onclick="showScreen('signup-box')">Go to Sign Up</button>
+<div class="container">
+    <h1>OmniData Pro</h1>
+
+    <div id="login-box" class="screen active">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="alert('Login Logic Here')">Login</button>
+        <p onclick="switchScreen('signup-box')">New User? Sign Up</p>
+        <p onclick="switchScreen('forget-box')">Forgot Password?</p>
     </div>
 
     <div id="signup-box" class="screen">
-        <h2>Sign Up Screen</h2>
-        <button onclick="showScreen('login-box')">Back to Login</button>
+        <h2>Sign Up</h2>
+        <input type="email" id="s-email" placeholder="Email">
+        <input type="password" id="s-password" placeholder="Password">
+        <button onclick="alert('Signup Logic Here')">Sign Up</button>
+        <p onclick="switchScreen('login-box')">Back to Login</p>
     </div>
 
-    <script>
-        function showScreen(id) {
-            console.log("Button clicked, switching to: " + id);
-            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-        }
-    </script>
+    <div id="forget-box" class="screen">
+        <h2>Reset Password</h2>
+        <input type="email" id="f-email" placeholder="Enter Email">
+        <button onclick="alert('Reset Logic Here')">Send Link</button>
+        <p onclick="switchScreen('login-box')">Back to Login</p>
+    </div>
+</div>
+
+<script>
+    function switchScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+</script>
+
 </body>
 </html>
