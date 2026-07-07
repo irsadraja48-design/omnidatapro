@@ -2,39 +2,64 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniData Pro</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 12px; width: 320px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        /* यह CSS सुनिश्चित करेगी कि स्क्रीन स्विच हो */
+        .screen { display: none; }
+        #login-box { display: block; } 
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        p { color: #007bff; cursor: pointer; font-size: 14px; margin-top: 10px; text-decoration: underline; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to OmniData Pro</h1>
-        
-        <div id="login-box" class="screen">
-            <h2>Login</h2>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button id="login-btn" onclick="loginUser()">Login</button>
-            <p onclick="showScreen('signup-box')">New User? Sign Up</p>
-            <p onclick="showScreen('forget-box')">Forgot Password?</p>
-        </div>
 
-        <div id="signup-box" class="screen">
-            <h2>Sign Up</h2>
-            <input type="email" id="s-email" placeholder="Email">
-            <input type="password" id="s-password" placeholder="Password">
-            <button id="signup-btn" onclick="signUpUser()">Sign Up</button>
-            <p onclick="showScreen('login-box')">Back to Login</p>
-        </div>
-
-        <div id="forget-box" class="screen">
-            <h2>Reset Password</h2>
-            <input type="email" id="f-email" placeholder="Enter Email">
-            <button id="reset-btn" onclick="resetPassword()">Send Reset Link</button>
-            <p onclick="showScreen('login-box')">Back to Login</p>
-        </div>
+<div class="container">
+    <h1>OmniData Pro</h1>
+    
+    <div id="login-box" class="screen">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="loginUser()">Login</button>
+        <p onclick="showScreen('signup-box')">New User? Sign Up</p>
+        <p onclick="showScreen('forget-box')">Forgot Password?</p>
     </div>
-    <script src="script.js"></script>
+
+    <div id="signup-box" class="screen">
+        <h2>Sign Up</h2>
+        <input type="email" id="s-email" placeholder="Email">
+        <input type="password" id="s-password" placeholder="Password">
+        <button onclick="signUpUser()">Sign Up</button>
+        <p onclick="showScreen('login-box')">Back to Login</p>
+    </div>
+
+    <div id="forget-box" class="screen">
+        <h2>Reset Password</h2>
+        <input type="email" id="f-email" placeholder="Enter Email">
+        <button onclick="resetPassword()">Send Reset Link</button>
+        <p onclick="showScreen('login-box')">Back to Login</p>
+    </div>
+</div>
+
+<script>
+    // Supabase का कनेक्शन (Vercel Variables इस्तेमाल करें)
+    const supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY');
+
+    function showScreen(id) {
+        // सारी स्क्रीन छिपाएं
+        document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+        // सिर्फ चुनी हुई स्क्रीन दिखाएं
+        document.getElementById(id).style.display = 'block';
+    }
+
+    async function loginUser() { alert("Login process started"); }
+    async function signUpUser() { alert("Sign Up process started"); }
+    async function resetPassword() { alert("Reset process started"); }
+</script>
+
 </body>
 </html>
