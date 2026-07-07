@@ -1,8 +1,10 @@
-body { font-family: sans-serif; background: #f4f4f4; display: flex; justify-content: center; padding-top: 50px; }
-.container { background: white; padding: 30px; border-radius: 12px; width: 320px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.container { background: white; padding: 40px; border-radius: 16px; width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
 .screen { display: none; }
 #login-box { display: block; }
-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; }
-h1 { font-size: 18px; color: #333; margin-bottom: 20px; }
-p { color: #007bff; cursor: pointer; font-size: 14px; margin-top: 10px; text-decoration: underline; }
+input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+button { width: 100%; padding: 14px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+button:disabled { background: #ccc; }
+h1 { font-size: 22px; color: #333; margin-bottom: 25px; }
+h2 { color: #555; }
+p { color: #007bff; cursor: pointer; font-size: 14px; margin-top: 15px; text-decoration: underline; }
