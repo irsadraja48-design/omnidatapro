@@ -2,26 +2,25 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>OmniData Pro | Official</title>
+    <title>OmniData Pro | Final</title>
     <style>
         body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
         .screen { display: none; }
         .active { display: block; }
+        
+        /* Auth Styles */
         .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        
-        /* Dashboard Header Fix */
-        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%; box-sizing: border-box; }
-        
-        /* Sidebar Fix */
+        .nav-link { color: #007bff; cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
+
+        /* Dashboard Styles */
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
         .sidebar.open { left: 0; }
         .menu-item { padding: 15px 0; cursor: pointer; border-bottom: 1px solid #3e4f5f; }
-        
-        /* Grid Fix */
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; }
-        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -34,6 +33,25 @@
         <input type="text" placeholder="User ID">
         <input type="password" placeholder="Password">
         <button onclick="login()">Login</button>
+        <span class="nav-link" onclick="showScreen('signup-box')">Sign Up</span>
+        <span class="nav-link" onclick="showScreen('forget-box')">Forgot Password?</span>
+    </div>
+
+    <div id="signup-box" class="screen container">
+        <h1>OmniData Pro</h1>
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="New User ID">
+        <input type="password" placeholder="Password">
+        <button onclick="login()">Create Account</button>
+        <span class="nav-link" onclick="showScreen('login-box')">Back to Login</span>
+    </div>
+
+    <div id="forget-box" class="screen container">
+        <h1>OmniData Pro</h1>
+        <h2>Reset Password</h2>
+        <input type="text" placeholder="Enter User ID">
+        <button onclick="alert('Reset link sent!')">Send Link</button>
+        <span class="nav-link" onclick="showScreen('login-box')">Back to Login</span>
     </div>
 </div>
 
@@ -47,8 +65,8 @@
     </div>
     
     <div class="header">
-        <span onclick="toggleSidebar()" style="cursor:pointer; font-size: 24px;">☰ Menu</span>
-        <strong>OmniData Pro</strong>
+        <span onclick="toggleSidebar()" style="cursor:pointer; font-size: 20px;">☰ Menu</span>
+        <strong style="font-size: 22px;">OmniData Pro</strong>
         <span>User ID: [UID-XXXX]</span>
     </div>
 
@@ -60,10 +78,8 @@
 </div>
 
 <script>
-    function login() {
-        document.getElementById('auth-wrapper').style.display = 'none';
-        document.getElementById('dashboard-wrapper').style.display = 'block';
-    }
+    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    function login() { document.getElementById('auth-wrapper').style.display = 'none'; document.getElementById('dashboard-wrapper').style.display = 'block'; }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 </script>
 </body>
