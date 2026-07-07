@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -7,14 +6,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
-        <form id="loginForm">
-            <h2>OmniData Pro</h2>
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
+    <div id="login-box" class="container">
+        <h2>Login - OmniData Pro</h2>
+        <input type="text" placeholder="Username" id="l-user">
+        <input type="password" placeholder="Password" id="l-pass">
+        <button onclick="alert('Login Success!')">Login</button>
+        <p onclick="showScreen('signup-box')">New user? Sign Up</p>
+        <p onclick="showScreen('forget-box')">Forgot Password?</p>
     </div>
+
+    <div id="signup-box" class="container" style="display:none;">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="New Username">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button onclick="alert('Account Created!')">Sign Up</button>
+        <p onclick="showScreen('login-box')">Back to Login</p>
+    </div>
+
+    <div id="forget-box" class="container" style="display:none;">
+        <h2>Forgot Password</h2>
+        <input type="email" placeholder="Enter your email">
+        <button onclick="alert('Reset link sent!')">Send Reset Link</button>
+        <p onclick="showScreen('login-box')">Back to Login</p>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
