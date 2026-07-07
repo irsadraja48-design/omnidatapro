@@ -2,40 +2,36 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniData Pro</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Supabase SDK लोड करना -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to OmniData Pro</h1>
         
-        <!-- Login Screen -->
         <div id="login-box" class="screen">
             <h2>Login</h2>
-            <input type="text" id="honeytrap" style="display:none;" tabindex="-1">
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="password" placeholder="Password">
-            <button onclick="loginUser()">Login</button>
+            <button id="login-btn" onclick="loginUser()">Login</button>
             <p onclick="showScreen('signup-box')">New User? Sign Up</p>
             <p onclick="showScreen('forget-box')">Forgot Password?</p>
         </div>
 
-        <!-- Sign Up Screen -->
-        <div id="signup-box" class="screen" style="display:none;">
+        <div id="signup-box" class="screen">
             <h2>Sign Up</h2>
             <input type="email" id="s-email" placeholder="Email">
             <input type="password" id="s-password" placeholder="Password">
-            <button onclick="signUpUser()">Sign Up</button>
+            <button id="signup-btn" onclick="signUpUser()">Sign Up</button>
             <p onclick="showScreen('login-box')">Back to Login</p>
         </div>
 
-        <!-- Forget Password Screen -->
-        <div id="forget-box" class="screen" style="display:none;">
+        <div id="forget-box" class="screen">
             <h2>Reset Password</h2>
             <input type="email" id="f-email" placeholder="Enter Email">
-            <button onclick="resetPassword()">Send Reset Link</button>
+            <button id="reset-btn" onclick="resetPassword()">Send Reset Link</button>
             <p onclick="showScreen('login-box')">Back to Login</p>
         </div>
     </div>
