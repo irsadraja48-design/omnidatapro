@@ -3,91 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniData Pro | Professional App</title>
+    <title>OmniData Pro | Full Access</title>
     <style>
-        /* CSS: पूरा लेआउट सिस्टम */
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 80px; }
-        
-        /* Auth Screens */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background: #f4f7f6; padding-bottom: 70px; }
         .screen { display: none; }
         .active { display: block; }
-        .auth-container { max-width: 400px; margin: 60px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; }
-        .btn-main { width: 100%; padding: 14px; background: #2c3e50; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
 
-        /* App Dashboard */
-        .header { background: #2c3e50; color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-        .menu-dots { font-size: 28px; cursor: pointer; color: white; font-weight: bold; }
-        .profile-area { background: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 2px solid #eee; }
-        .avatar-hologram { width: 50px; height: 50px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .card { background: white; padding: 25px 10px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; font-weight: 600; color: #2c3e50; }
+        /* Auth Screens */
+        .auth-wrapper { display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { width: 90%; max-width: 400px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+        button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .link { color: #3498db; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; font-size: 14px; }
 
-        /* Sidebar & Navigation */
-        .sidebar { width: 260px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -260px; transition: 0.4s; padding: 20px; z-index: 5000; }
+        /* Dashboard */
+        #dashboard { display: none; }
+        .header { background: #2c3e50; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; }
+        .menu-btn { font-size: 24px; cursor: pointer; }
+        .profile { background: white; padding: 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; }
+        .avatar { width: 45px; height: 45px; background: #3498db; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 15px; }
+        .task-card { background: white; padding: 20px 10px; border-radius: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        /* Sidebar & Footer */
+        .sidebar { height: 100%; width: 250px; position: fixed; top: 0; left: -250px; background: #2c3e50; color: white; transition: 0.3s; padding: 20px; z-index: 1000; }
         .sidebar.open { left: 0; }
-        .sidebar-item { padding: 15px; border-bottom: 1px solid #3e4f5f; cursor: pointer; }
-        
-        /* Bottom Fixed Back Button */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; padding: 15px; background: #f4f7f6; text-align: center; border-top: 1px solid #ddd; z-index: 100; }
-        .back-btn { background: #e74c3c; color: white; padding: 12px 50px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .footer { position: fixed; bottom: 0; width: 100%; padding: 15px; background: #f4f7f6; border-top: 1px solid #ddd; text-align: center; }
     </style>
 </head>
 <body>
 
-<!-- AUTH SECTION -->
-<div id="auth-wrapper" class="active">
-    <div id="login-box" class="screen active auth-container">
-        <h1>OmniData Pro</h1>
-        <input type="text" id="uid" placeholder="User ID">
-        <input type="password" id="pass" placeholder="Password">
-        <button class="btn-main" onclick="login()">Login</button>
+<!-- Login Screen -->
+<div id="login-screen" class="screen active auth-wrapper">
+    <div class="card">
+        <h2>OmniData Pro</h2>
+        <input type="text" id="l-uid" placeholder="User ID">
+        <input type="password" id="l-pass" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <span class="link" onclick="show('signup-screen')">नया अकाउंट बनाएँ (Sign Up)</span>
+        <span class="link" onclick="show('forget-screen')">पासवर्ड भूल गए?</span>
     </div>
 </div>
 
-<!-- DASHBOARD SECTION -->
-<div id="dashboard-wrapper" style="display:none;">
+<!-- Sign Up Screen -->
+<div id="signup-screen" class="screen auth-wrapper">
+    <div class="card">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="New User ID">
+        <input type="password" placeholder="New Password">
+        <button onclick="show('login-screen')">अकाउंट बनाएँ</button>
+        <span class="link" onclick="show('login-screen')">वापस Login पर जाएं</span>
+    </div>
+</div>
+
+<!-- Forget Screen -->
+<div id="forget-screen" class="screen auth-wrapper">
+    <div class="card">
+        <h2>पासवर्ड रीसेट</h2>
+        <input type="text" placeholder="User ID">
+        <button onclick="alert('रीसेट लिंक भेज दिया गया है!')">लिंक भेजें</button>
+        <span class="link" onclick="show('login-screen')">वापस Login पर जाएं</span>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
     <div class="sidebar" id="sidebar">
-        <h2 style="margin-top:0;">Menu</h2>
-        <div class="sidebar-item" onclick="toggleSidebar()">⬅️ Close Menu</div>
-        <div class="sidebar-item" onclick="location.reload()">🚪 Logout</div>
+        <div style="padding: 15px; cursor: pointer;" onclick="toggleSidebar()">⬅️ Close</div>
+        <div style="padding: 15px; cursor: pointer;" onclick="location.reload()">🚪 Logout</div>
     </div>
-    
     <div class="header">
-        <div class="menu-dots" onclick="toggleSidebar()">⋮</div>
-        <div style="font-weight:bold; font-size:20px;">OMNIDATA PRO</div>
-        <div style="width:28px;"></div>
+        <div class="menu-btn" onclick="toggleSidebar()">⋮</div>
+        <div style="font-weight:bold;">OMNIDATA PRO</div>
+        <div style="width:24px;"></div>
     </div>
-    
-    <div class="profile-area">
-        <div class="avatar-hologram" id="hologram">👤</div>
-        <div id="display-user" style="font-weight:bold; font-size:18px;">---</div>
+    <div class="profile">
+        <div class="avatar" id="avatar">U</div>
+        <div id="d-uid" style="font-weight:bold;">User ID</div>
     </div>
-    
-    <div class="grid" id="task-grid"></div>
-    
-    <div class="bottom-nav">
-        <button class="back-btn" onclick="location.reload()">⬅️ Back to Home</button>
+    <div class="grid" id="grid"></div>
+    <div class="footer">
+        <button style="padding:10px 40px; background:#e74c3c; border:none; color:white; border-radius:20px;" onclick="location.reload()">⬅️ Back</button>
     </div>
 </div>
 
 <script>
-    // System Functions
+    function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-    
     function login() {
-        const uid = document.getElementById('uid').value;
+        const uid = document.getElementById('l-uid').value;
         if(uid) {
-            document.getElementById('display-user').innerText = uid;
-            document.getElementById('auth-wrapper').style.display = 'none';
-            document.getElementById('dashboard-wrapper').style.display = 'block';
-        } else { alert("Please enter User ID"); }
+            document.getElementById('d-uid').innerText = uid;
+            document.getElementById('avatar').innerText = uid.charAt(0).toUpperCase();
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
     }
-
     const tasks = ["1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", "5. इमेज", "6. वेब रिसर्च", "7. क्लीनिंग", "8. सर्वे", "9. मेडिकल", "10. लीगल", "11. माइनिंग", "12. अदर"];
-    const grid = document.getElementById('task-grid');
-    tasks.forEach(t => { grid.innerHTML += `<div class="card">${t}</div>`; });
+    tasks.forEach(t => { document.getElementById('grid').innerHTML += `<div class="task-card">${t}</div>`; });
 </script>
 </body>
 </html>
