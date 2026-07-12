@@ -3,92 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniData Pro | Complete System</title>
+    <title>OmniData Pro | Advanced App</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 70px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 80px; }
         .screen { display: none; }
         .active { display: block; }
 
         /* Auth Styles */
         .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
         .google-btn { background: #dd4b39; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; }
         .link { color: #007bff; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; }
 
-        /* Dashboard Styles */
-        .header { background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
-        .user-info { padding: 10px 20px; background: white; font-weight: bold; color: #333; text-align: left; }
+        /* Dashboard Header */
+        .header { background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .menu-btn { font-size: 28px; cursor: pointer; font-weight: bold; padding-right: 15px; line-height: 1; }
+        .brand-title { font-weight: bold; font-size: 18px; flex-grow: 1; text-align: center; letter-spacing: 1px; }
+
+        /* Profile Section */
+        .profile-section { background: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .avatar { width: 45px; height: 45px; background: linear-gradient(135deg, #4ca1af, #2c3e50); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; }
+        .user-id-text { font-size: 16px; font-weight: bold; color: #333; }
+
+        /* Grid */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; font-weight: 600; }
+        .card { background: white; padding: 20px 10px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; font-weight: 600; color: #2c3e50; border: 1px solid #eaeaea; }
         
         /* Modal & Sidebar */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:3000; }
-        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 2000; box-shadow: 2px 0 5px rgba(0,0,0,0.2); }
         .sidebar.open { left: 0; }
+        .sidebar-item { padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; background: #34495e; }
         
-        /* Bottom Back Button */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; padding: 15px; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); text-align: center; }
-        .back-btn { background: #e74c3c; color: white; padding: 10px 40px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        /* Fixed Bottom Back Button */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; padding: 15px; background: #f0f2f5; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); text-align: center; z-index: 100; box-sizing: border-box; }
+        .back-btn { background: #e74c3c; color: white; padding: 12px 40px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px; width: 80%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-<!-- 1. AUTH SECTION -->
+<!-- AUTH SECTION -->
 <div id="auth-wrapper" class="active">
     <div id="login-box" class="screen active container">
-        <h1>OmniData Pro</h1>
-        <button class="google-btn" onclick="alert('Google Auth Setup Needed')">Google से लॉगिन करें</button>
-        <p>या</p>
+        <h1 style="color: #2c3e50;">OmniData Pro</h1>
+        <button class="google-btn" onclick="alert('Google Auth Setup Needed')">🌐 Google से लॉगिन करें</button>
+        <p style="color: #7f8c8d; font-weight: bold;">या</p>
         <input type="text" id="login-uid" placeholder="User ID">
         <input type="password" id="login-pass" placeholder="Password">
         <button onclick="handleLogin()">Login</button>
-        <span class="link" onclick="showScreen('signup-box')">नया अकाउंट (Sign Up)</span>
-        <span class="link" onclick="showScreen('forget-box')">पासवर्ड भूल गए?</span>
+        <span class="link" onclick="showScreen('signup-box')">नया अकाउंट बनाएँ (Sign Up)</span>
     </div>
-
     <div id="signup-box" class="screen container">
-        <h1>Sign Up</h1>
+        <h1 style="color: #2c3e50;">Sign Up</h1>
         <input type="text" id="new-uid" placeholder="Choose User ID">
         <input type="password" id="new-pass" placeholder="Choose Password">
         <button onclick="handleSignup()">Account बनाएँ</button>
         <span class="link" onclick="showScreen('login-box')">वापस Login पर जाएं</span>
     </div>
-
-    <div id="forget-box" class="screen container">
-        <h1>पासवर्ड रीसेट</h1>
-        <input type="text" placeholder="Enter User ID">
-        <button onclick="alert('Link Sent!')">लिंक भेजें</button>
-        <span class="link" onclick="showScreen('login-box')">वापस Login पर जाएं</span>
-    </div>
 </div>
 
-<!-- 2. DASHBOARD -->
+<!-- DASHBOARD -->
 <div id="dashboard-wrapper" style="display:none;">
     <div class="sidebar" id="sidebar">
-        <h2>Menu</h2>
-        <div onclick="toggleSidebar()" style="padding:15px; cursor:pointer;">⬅️ बंद करें</div>
-        <div onclick="location.reload()" style="padding:15px; cursor:pointer;">🚪 लॉग आउट</div>
+        <h2 style="text-align: center; margin-bottom: 30px;">Menu</h2>
+        <div class="sidebar-item" onclick="toggleSidebar()">⬅️ मेनू बंद करें</div>
+        <div class="sidebar-item" onclick="location.reload()">🚪 सुरक्षित लॉग आउट</div>
     </div>
+    
     <div class="header">
-        <div style="font-size: 24px; cursor:pointer;" onclick="toggleSidebar()">☰</div>
-        <div style="font-weight:bold; font-size:18px;">OMNIDATA PRO</div>
-        <div></div>
+        <div class="menu-btn" onclick="toggleSidebar()">⋮</div>
+        <div class="brand-title">OMNIDATA PRO</div>
+        <div style="width: 20px;"></div>
     </div>
-    <div class="user-info" id="display-uid">👤 User: ---</div>
+    
+    <div class="profile-section">
+        <div class="avatar">👤</div>
+        <div class="user-id-text" id="display-uid">User ID</div>
+    </div>
+    
     <div class="grid" id="task-grid"></div>
+    
+    <!-- Fixed Bottom Back Button -->
     <div class="bottom-nav">
-        <button class="back-btn" onclick="location.reload()">⬅️ बैक</button>
+        <button class="back-btn" onclick="location.reload()">⬅️ मुख्य पृष्ठ पर वापस</button>
     </div>
 </div>
 
-<!-- 3. WORK SPACE MODAL -->
+<!-- WORK SPACE -->
 <div id="work-modal" class="modal">
-    <div style="padding:15px; background:#f4f4f4; display:flex; justify-content:space-between; align-items:center;">
-        <h2 id="modal-title" style="margin:0;">Work Space</h2>
-        <button onclick="document.getElementById('work-modal').style.display='none'">⬅️ बंद</button>
+    <div style="padding:15px; background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; display:flex; justify-content:space-between; align-items:center;">
+        <h2 id="modal-title" style="margin:0; font-size: 18px;">Work Space</h2>
+        <button onclick="document.getElementById('work-modal').style.display='none'" style="background: #e74c3c; padding: 8px 15px; width: auto; font-size: 14px;">⬅️ बंद करें</button>
     </div>
-    <iframe src="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUqptlbsY4OgvB2_5XM8/edit" style="width:100%; height:90vh; border:none;"></iframe>
+    <iframe src="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUqptlbsY4OgvB2_5XM8/edit" style="width:100%; height:82vh; border:none;"></iframe>
+    <div class="bottom-nav">
+        <button class="back-btn" onclick="document.getElementById('work-modal').style.display='none'">⬅️ बैक (डैशबोर्ड)</button>
+    </div>
 </div>
 
 <script>
@@ -96,19 +107,19 @@
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     
     function handleSignup() {
-        localStorage.setItem(document.getElementById('new-uid').value, document.getElementById('new-pass').value);
-        alert("अकाउंट बन गया!");
-        showScreen('login-box');
+        const uid = document.getElementById('new-uid').value;
+        const pass = document.getElementById('new-pass').value;
+        if(uid && pass) { localStorage.setItem(uid, pass); alert("अकाउंट बन गया!"); showScreen('login-box'); }
     }
 
     function handleLogin() {
         const uid = document.getElementById('login-uid').value;
         const pass = document.getElementById('login-pass').value;
-        if (localStorage.getItem(uid) === pass) {
-            document.getElementById('display-uid').innerText = "👤 User: " + uid;
+        if (localStorage.getItem(uid) === pass && uid !== "") {
+            document.getElementById('display-uid').innerText = uid;
             document.getElementById('auth-wrapper').style.display = 'none';
             document.getElementById('dashboard-wrapper').style.display = 'block';
-        } else { alert("गलत ID/Password!"); }
+        } else { alert("गलत ID या Password!"); }
     }
 
     const tasks = ["1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", "5. इमेज", "6. वेब रिसर्च", "7. क्लीनिंग", "8. सर्वे", "9. मेडिकल", "10. लीगल", "11. माइनिंग", "12. अदर"];
