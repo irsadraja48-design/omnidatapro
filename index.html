@@ -3,274 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniData Pro | Production Ready</title>
+    <title>OmniData Pro | Control Center</title>
     <style>
-        /* प्रीमियम थीम और रीसेट */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: #f5f7fb; color: #333; min-height: 100vh; position: relative; }
+        /* एकदम बेसिक और जरूरी स्टाइलिंग */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f0f2f5; }
 
-        /* स्क्रीन विजिबिलिटी कंट्रोल */
-        .app-screen { display: none; min-height: 100vh; }
-        .app-screen.active { display: flex; flex-direction: column; }
+        /* स्क्रीन कंट्रोल */
+        .screen { display: none; height: 100vh; width: 100%; }
+        .screen.active { display: block; }
 
-        /* ऑथेंटिकेशन कार्ड्स (Login, Signup, Forgot) */
-        .auth-bg { background: linear-gradient(135deg, #1e293b, #0f172a); justify-content: center; align-items: center; padding: 20px; }
-        .auth-card { background: white; width: 100%; max-width: 380px; padding: 30px; border-radius: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); text-align: center; }
-        .auth-card h2 { color: #1e293b; font-size: 24px; margin-bottom: 8px; font-weight: 700; }
-        .auth-card p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
-        
-        /* इनपुट और बटन्स */
-        .input-group { position: relative; margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
-        .input-group input { width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 15px; outline: none; transition: 0.2s; background: #f8fafc; }
-        .input-group input:focus { border-color: #3b82f6; background: white; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-        
-        .btn-primary { width: 100%; padding: 14px; background: #1e293b; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        .btn-primary:hover { background: #0f172a; }
-        
-        /* लिंक्स */
-        .auth-links { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .auth-links a { color: #3b82f6; font-size: 14px; text-decoration: none; font-weight: 600; cursor: pointer; }
-        .auth-links a:hover { text-decoration: underline; }
-
-        /* डैशबोर्ड लेआउट */
-        .app-header { background: #1e293b; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .menu-toggle { font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; transition: 0.2s; }
-        .menu-toggle:hover { background: rgba(255,255,255,0.1); }
-        .app-title { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
-
-        /* प्रोफाइल बॉक्स - जो कटेगा नहीं */
-        .profile-container { background: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; }
-        .user-hologram { width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #06b6d4); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; box-shadow: 0 4px 10px rgba(6, 182, 212, 0.3); border: 2px solid white; flex-shrink: 0; }
-        .user-details { display: flex; flex-direction: column; }
-        .user-details .welcome { font-size: 12px; color: #64748b; font-weight: 500; }
-        .user-details .username { font-size: 16px; color: #1e293b; font-weight: 700; }
-
-        /* ग्रिड सिस्टम */
-        .main-content { padding: 15px; flex: 1; padding-bottom: 90px; }
-        .task-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .task-card { background: white; padding: 22px 10px; border-radius: 14px; text-align: center; font-weight: 600; font-size: 15px; color: #334155; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .task-card:active { transform: scale(0.97); background: #f8fafc; }
-
-        /* साइड नेविगेशन बार */
-        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
-        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #1e293b; color: white; z-index: 1000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; display: flex; flex-direction: column; gap: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.3); }
+        /* साइडबार (कंट्रोल सेंटर) */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; color: #fff; transition: 0.3s; padding-top: 20px; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
         .sidebar.open { left: 0; }
-        .sidebar h3 { font-size: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 10px; }
-        .sidebar-link { padding: 12px 15px; border-radius: 8px; color: #cbd5e1; text-decoration: none; font-size: 16px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
-        .sidebar-link:hover { background: #293548; color: white; }
+        .menu-header { padding: 20px; font-size: 1.2rem; border-bottom: 1px solid #1e293b; margin-bottom: 10px; }
+        .sidebar-link { padding: 15px 20px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #1e293b; }
+        .sidebar-link:hover { background: #1e293b; color: #38bdf8; }
+        .logout-btn { color: #f87171; font-weight: bold; margin-top: auto; }
 
-        /* फिक्स्ड बॉटम नेविगेशन (लाल बटन) */
-        .bottom-action-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: white; border-top: 1px solid #e2e8f0; text-align: center; z-index: 90; box-sizing: border-box; }
-        .btn-danger-bottom { background: #ef4444; color: white; width: 100%; max-width: 500px; padding: 14px; border: none; border-radius: 30px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: 0.2s; }
-        .btn-danger-bottom:hover { background: #dc2626; }
+        /* हेडर और डैशबोर्ड */
+        .header { background: #0f172a; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
+        .card:hover { border-color: #38bdf8; }
+
+        /* लॉगिन स्क्रीन */
+        .login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-box { width: 300px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+        button { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन स्क्रीन -->
-    <div id="screen-login" class="app-screen active auth-bg">
-        <div class="auth-card">
-            <h2>OmniData Pro</h2>
-            <p>आगे बढ़ने के लिए लॉगिन करें</p>
-            <div class="input-group">
-                <label>यूजर आईडी (User ID)</label>
-                <input type="text" id="login-uid" placeholder="अपना User ID डालें">
-            </div>
-            <div class="input-group">
-                <label>पासवर्ड (Password)</label>
-                <input type="password" id="login-pwd" placeholder="अपना पासवर्ड डालें">
-            </div>
-            <button class="btn-primary" onclick="attemptLogin()">लॉगिन करें</button>
-            <div class="auth-links">
-                <a onclick="navigateTo('screen-signup')">नया अकाउंट बनाएं (Sign Up)</a>
-                <a onclick="navigateTo('screen-forgot')">पासवर्ड भूल गए? (Forgot Password)</a>
-            </div>
+    <!-- 1. लॉगिन सेक्शन -->
+    <div id="screen-login" class="screen active login-screen">
+        <div class="login-box">
+            <h2 style="margin-bottom: 20px;">Login</h2>
+            <input type="text" id="user" placeholder="User ID">
+            <input type="password" id="pass" placeholder="Password">
+            <button onclick="login()">Enter Dashboard</button>
         </div>
     </div>
 
-    <!-- 2. साइनअप स्क्रीन -->
-    <div id="screen-signup" class="app-screen auth-bg">
-        <div class="auth-card">
-            <h2>नया अकाउंट बनाएं</h2>
-            <p>OmniData Pro में रजिस्टर करें</p>
-            <div class="input-group">
-                <label>नया यूजर आईडी चुनें</label>
-                <input type="text" id="signup-uid" placeholder="उदा: Raju54">
-            </div>
-            <div class="input-group">
-                <label>पासवर्ड बनाएं</label>
-                <input type="password" id="signup-pwd" placeholder="एक मजबूत पासवर्ड चुनें">
-            </div>
-            <button class="btn-primary" onclick="executeSignup()">अकाउंट बनाएं</button>
-            <div class="auth-links">
-                <a onclick="navigateTo('screen-login')">पहले से अकाउंट है? लॉगिन करें</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. फॉरगेट पासवर्ड स्क्रीन -->
-    <div id="screen-forgot" class="app-screen auth-bg">
-        <div class="auth-card">
-            <h2>पासवर्ड रीसेट</h2>
-            <p>अपना यूजर आईडी डालकर नया पासवर्ड सेट करें</p>
-            <div class="input-group">
-                <label>आपका यूजर आईडी</label>
-                <input type="text" id="forgot-uid" placeholder="अपना User ID लिखें">
-            </div>
-            <div class="input-group">
-                <label>नया पासवर्ड</label>
-                <input type="password" id="forgot-newpwd" placeholder="नया पासवर्ड टाइप करें">
-            </div>
-            <button class="btn-primary" onclick="executePasswordReset()">पासवर्ड रीसेट करें</button>
-            <div class="auth-links">
-                <a onclick="navigateTo('screen-login')">वापस लॉगिन स्क्रीन पर जाएं</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. मुख्य डैशबोर्ड स्क्रीन -->
-    <div id="screen-dashboard" class="app-screen">
-        <!-- साइडबार ओवरले -->
-        <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
-        
-        
-<!-- यह है नया कंट्रोल्ड साइडबार, इसे पुराने के ऊपर पूरा पेस्ट करें -->
-<div class="sidebar" id="sidebar">
-    <h3>OmniData Control</h3>
-    <div class="sidebar-link" onclick="closeSidebar()">📊 डैशबोर्ड होम</div>
-    <div class="sidebar-link" onclick="alert('प्रोफाइल डेटा: यहाँ आपकी जानकारी है')">👤 प्रोफाइल</div>
-    <div class="sidebar-link" onclick="alert('रिपोर्ट: 12 टास्क पेंडिंग')">📝 टास्क रिपोर्ट</div>
-    <div class="sidebar-link" onclick="alert('सिंक: डेटा सर्वर से जुड़ा है')">🔄 सिंक स्टेटस</div>
-    <div class="sidebar-link" onclick="alert('सेटिंग्स: यहाँ से आप ऐप का कंट्रोल बदल सकते हैं')">⚙️ सेटिंग्स</div>
-    <div class="sidebar-link" style="color: #f87171; border-top: 1px solid #334155; margin-top: auto; padding-top: 10px;" onclick="logout()">🚪 लॉग आउट करें</div>
-</div>
-        <!-- हेडर बार -->
-        <div class="app-header">
-            <div class="menu-toggle" onclick="openSidebar()">☰</div>
-            <div class="app-title">OMNIDATA PRO</div>
-            <div style="width: 40px;"></div> <!-- बैलेंस के लिए खाली स्पेस -->
+    <!-- 2. डैशबोर्ड सेक्शन -->
+    <div id="screen-dashboard" class="screen">
+        <!-- साइडबार -->
+        <div class="sidebar" id="sidebar">
+            <div class="menu-header">OmniData Menu</div>
+            <div class="sidebar-link" onclick="toggleSidebar()">⬅️ बंद करें</div>
+            <div class="sidebar-link" onclick="alert('डैशबोर्ड पर आपका स्वागत है')">📊 डैशबोर्ड होम</div>
+            <div class="sidebar-link" onclick="alert('प्रोफाइल सेटिंग: अपना डेटा मैनेज करें')">👤 प्रोफाइल सेटिंग्स</div>
+            <div class="sidebar-link" onclick="alert('टास्क रिपोर्ट: 12 पेंडिंग, 0 कंप्लीट')">📝 टास्क रिपोर्ट</div>
+            <div class="sidebar-link" onclick="alert('सिंक: ऑनलाइन डेटा सुरक्षित है')">🔄 सिंक स्टेटस</div>
+            <div class="sidebar-link" onclick="alert('सेटिंग्स: ऐप कॉन्फ़िगरेशन')">⚙️ मुख्य सेटिंग्स</div>
+            <div class="sidebar-link logout-btn" onclick="location.reload()">🚪 लॉग आउट</div>
         </div>
 
-        <!-- प्रोफाइल सेक्शन (जो कभी नहीं कटेगा) -->
-        <div class="profile-container">
-            <div class="user-hologram" id="user-avatar">U</div>
-            <div class="user-details">
-                <span class="welcome">लॉगिन यूजर:</span>
-                <span class="username" id="user-display-name">Guest</span>
-            </div>
+        <!-- हेडर -->
+        <div class="header">
+            <div onclick="toggleSidebar()">☰ Menu</div>
+            <div>OMNIDATA PRO</div>
+            <div style="width: 40px;"></div>
         </div>
 
-        <!-- मुख्य टास्क ग्रिड -->
-        <div class="main-content">
-            <div class="task-grid" id="task-container"></div>
-        </div>
-
-        <!-- फिक्स नीचे का बटन -->
-        <div class="bottom-action-bar">
-            <button class="btn-danger-bottom" onclick="logout()">⬅️ मुख्य पृष्ठ पर वापस</button>
-        </div>
+        <!-- टास्क ग्रिड -->
+        <div class="grid" id="task-grid"></div>
     </div>
 
     <script>
-        // स्क्रीन बदलने का फंक्शन
-        function navigateTo(screenId) {
-            document.querySelectorAll('.app-screen').forEach(screen => screen.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // फंक्शन: साइडबार टॉगल
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+        // फंक्शन: लॉगिन
+        function login() { 
+            document.getElementById('screen-login').classList.remove('active'); 
+            document.getElementById('screen-dashboard').classList.add('active'); 
         }
 
-        // साइडबार कंट्रोल्स
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
-        }
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        // असली साइनअप प्रोसेस (डेटा ब्राउज़र में सेव होगा)
-        function executeSignup() {
-            const uid = document.getElementById('signup-uid').value.trim();
-            const pwd = document.getElementById('signup-pwd').value.trim();
-            
-            if(!uid || !pwd) {
-                alert("कृपया यूजर आईडी और पासवर्ड दोनों भरें।");
-                return;
-            }
-            
-            localStorage.setItem(uid, pwd); // डेटाबेस की तरह सेव किया
-            alert("अकाउंट सफलतापूर्वक बन गया है! अब लॉगिन करें।");
-            document.getElementById('signup-uid').value = '';
-            document.getElementById('signup-pwd').value = '';
-            navigateTo('screen-login');
-        }
-
-        // असली लॉगिन वैलिडेशन
-        function attemptLogin() {
-            const uid = document.getElementById('login-uid').value.trim();
-            const pwd = document.getElementById('login-pwd').value.trim();
-            
-            if(!uid || !pwd) {
-                alert("कृपया अपनी यूजर आईडी और पासवर्ड डालें।");
-                return;
-            }
-
-            const savedPassword = localStorage.getItem(uid);
-
-            if(savedPassword && savedPassword === pwd) {
-                // लॉगिन सफल, डैशबोर्ड डेटा सेट करें
-                document.getElementById('user-display-name').innerText = uid;
-                document.getElementById('user-avatar').innerText = uid.charAt(0).toUpperCase();
-                navigateTo('screen-dashboard');
-            } else {
-                alert("गलत यूजर आईडी या पासवर्ड! कृपया दोबारा जांचें या नया अकाउंट बनाएं।");
-            }
-        }
-
-        // असली पासवर्ड रीसेट फंक्शन
-        function executePasswordReset() {
-            const uid = document.getElementById('forgot-uid').value.trim();
-            const newPwd = document.getElementById('forgot-newpwd').value.trim();
-
-            if(!uid || !newPwd) {
-                alert("कृपया सभी फील्ड भरें।");
-                return;
-            }
-
-            if(localStorage.getItem(uid) !== null) {
-                localStorage.setItem(uid, newPwd);
-                alert("आपका पासवर्ड सफलतापूर्वक बदल दिया गया है। नए पासवर्ड से लॉगिन करें।");
-                document.getElementById('forgot-uid').value = '';
-                document.getElementById('forgot-newpwd').value = '';
-                navigateTo('screen-login');
-            } else {
-                alert("यह यूजर आईडी सिस्टम में मौजूद नहीं है।");
-            }
-        }
-
-        // लॉगआउट फंक्शन
-        function logout() {
-            document.getElementById('login-uid').value = '';
-            document.getElementById('login-pwd').value = '';
-            closeSidebar();
-            navigateTo('screen-login');
-        }
-
-        // 12 टास्क ग्रिड को लोड करना
-        const taskList = [
-            "1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", 
-            "5. इमेज", "6. वेब रिसर्च", "7. क्लीनिंग", "8. सर्वे", 
-            "9. मेडिकल", "10. लीगल", "11. माइनिंग", "12. अदर"
-        ];
-        
-        const container = document.getElementById('task-container');
-        taskList.forEach(task => {
-            const card = document.createElement('div');
-            card.className = 'task-card';
-            card.innerText = task;
-            card.onclick = () => alert(`${task} पर काम शुरू करने के लिए सिस्टम तैयार है।`);
-            container.appendChild(card);
+        // फंक्शन: टास्क ग्रिड बनाना
+        const tasks = ["बेसिक डेटा", "ऑनलाइन", "ईकॉमर्स", "ट्रांसक्रिप्शन", "इमेज", "वेब रिसर्च", "क्लीनिंग", "सर्वे", "मेडिकल", "लीगल", "माइनिंग", "अदर"];
+        const grid = document.getElementById('task-grid');
+        tasks.forEach(t => {
+            grid.innerHTML += `<div class="card" onclick="alert('${t} फॉर्म खुल रहा है...')">${t}</div>`;
         });
     </script>
 </body>
