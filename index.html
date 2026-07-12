@@ -134,16 +134,17 @@
         <!-- साइडबार ओवरले -->
         <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
         
-        <!-- नया साइडबार कोड (इसे पुरानी लाइन 138-143 की जगह पेस्ट करें) -->
+        
+<!-- यह है नया कंट्रोल्ड साइडबार, इसे पुराने के ऊपर पूरा पेस्ट करें -->
 <div class="sidebar" id="sidebar">
     <h3>OmniData Control</h3>
-    <div class="sidebar-link" onclick="closeSidebar()">📊 डैशबोर्ड (Home)</div>
-    <div class="sidebar-link" onclick="alert('प्रोफाइल सेटिंग: अपना डेटा यहाँ देखें')">👤 प्रोफाइल देखें</div>
-    <div class="sidebar-link" onclick="alert('रिपोर्ट: अभी 12 टास्क पेंडिंग हैं')">📝 टास्क रिपोर्ट</div>
-    <div class="sidebar-link" onclick="alert('सेटिंग्स: थीम और प्रेफरेंस बदलें')">⚙️ सेटिंग्स</div>
-    <div class="sidebar-link" style="color: #f87171; margin-top: auto; border-top: 1px solid #334155; padding-top: 15px;" onclick="logout()">🚪 लॉग आउट</div>
+    <div class="sidebar-link" onclick="closeSidebar()">📊 डैशबोर्ड होम</div>
+    <div class="sidebar-link" onclick="alert('प्रोफाइल डेटा: यहाँ आपकी जानकारी है')">👤 प्रोफाइल</div>
+    <div class="sidebar-link" onclick="alert('रिपोर्ट: 12 टास्क पेंडिंग')">📝 टास्क रिपोर्ट</div>
+    <div class="sidebar-link" onclick="alert('सिंक: डेटा सर्वर से जुड़ा है')">🔄 सिंक स्टेटस</div>
+    <div class="sidebar-link" onclick="alert('सेटिंग्स: यहाँ से आप ऐप का कंट्रोल बदल सकते हैं')">⚙️ सेटिंग्स</div>
+    <div class="sidebar-link" style="color: #f87171; border-top: 1px solid #334155; margin-top: auto; padding-top: 10px;" onclick="logout()">🚪 लॉग आउट करें</div>
 </div>
-
         <!-- हेडर बार -->
         <div class="app-header">
             <div class="menu-toggle" onclick="openSidebar()">☰</div>
