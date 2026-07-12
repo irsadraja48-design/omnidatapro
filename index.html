@@ -3,89 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniData Pro | Control Center</title>
+    <title>OmniData Pro | Commercial Edition</title>
     <style>
-        /* एकदम बेसिक और जरूरी स्टाइलिंग */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f0f2f5; }
+        /* CSS: कमर्शियल स्टैंडर्ड्स */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #f8fafc; height: 100vh; overflow: hidden; }
+        
+        .page { display: none; height: 100vh; width: 100%; }
+        .page.active { display: block; overflow-y: auto; }
 
-        /* स्क्रीन कंट्रोल */
-        .screen { display: none; height: 100vh; width: 100%; }
-        .screen.active { display: block; }
+        /* लॉगिन - प्रोफेशनल लुक */
+        .login-page { display: flex; justify-content: center; align-items: center; background: #0f172a; }
+        .login-card { width: 90%; max-width: 400px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); text-align: center; }
+        input { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; }
+        .btn-main { width: 100%; padding: 14px; background: #0f172a; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-main:hover { background: #1e293b; }
 
-        /* साइडबार (कंट्रोल सेंटर) */
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; color: #fff; transition: 0.3s; padding-top: 20px; z-index: 1000; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+        /* डैशबोर्ड - कमर्शियल लेआउट */
+        .header { background: #0f172a; color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .menu-btn { cursor: pointer; font-weight: bold; padding: 10px; }
+        
+        /* साइडबार - कंट्रोल सेंटर */
+        .sidebar { position: fixed; left: -300px; top: 0; width: 280px; height: 100%; background: #ffffff; color: #1e293b; transition: 0.4s; z-index: 1000; box-shadow: 5px 0 15px rgba(0,0,0,0.1); padding-top: 20px; }
         .sidebar.open { left: 0; }
-        .menu-header { padding: 20px; font-size: 1.2rem; border-bottom: 1px solid #1e293b; margin-bottom: 10px; }
-        .sidebar-link { padding: 15px 20px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #1e293b; }
-        .sidebar-link:hover { background: #1e293b; color: #38bdf8; }
-        .logout-btn { color: #f87171; font-weight: bold; margin-top: auto; }
+        .s-item { padding: 18px 25px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-weight: 500; }
+        .s-item:hover { background: #f1f5f9; color: #0f172a; }
+        
+        /* टास्क कार्ड्स */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; padding-bottom: 100px; }
+        .card { background: white; padding: 30px 10px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .card:active { transform: scale(0.95); border-color: #0f172a; }
 
-        /* हेडर और डैशबोर्ड */
-        .header { background: #0f172a; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
-        .card:hover { border-color: #38bdf8; }
-
-        /* लॉगिन स्क्रीन */
-        .login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-box { width: 300px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
-        button { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        /* फुटर */
+        .footer-nav { position: fixed; bottom: 0; width: 100%; padding: 20px; background: white; border-top: 1px solid #e2e8f0; text-align: center; z-index: 5; }
+        .danger-btn { background: #ef4444; color: white; padding: 12px 50px; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन सेक्शन -->
-    <div id="screen-login" class="screen active login-screen">
-        <div class="login-box">
-            <h2 style="margin-bottom: 20px;">Login</h2>
-            <input type="text" id="user" placeholder="User ID">
+    <!-- लॉगिन पेज -->
+    <div id="page-login" class="page login-page active">
+        <div class="login-card">
+            <h2 style="margin-bottom: 25px; color: #0f172a;">OmniData Pro</h2>
+            <input type="text" id="uid" placeholder="User ID">
             <input type="password" id="pass" placeholder="Password">
-            <button onclick="login()">Enter Dashboard</button>
+            <button class="btn-main" onclick="validateLogin()">Secure Login</button>
         </div>
     </div>
 
-    <!-- 2. डैशबोर्ड सेक्शन -->
-    <div id="screen-dashboard" class="screen">
+    <!-- डैशबोर्ड पेज -->
+    <div id="page-dashboard" class="page">
         <!-- साइडबार -->
         <div class="sidebar" id="sidebar">
-            <div class="menu-header">OmniData Menu</div>
-            <div class="sidebar-link" onclick="toggleSidebar()">⬅️ बंद करें</div>
-            <div class="sidebar-link" onclick="alert('डैशबोर्ड पर आपका स्वागत है')">📊 डैशबोर्ड होम</div>
-            <div class="sidebar-link" onclick="alert('प्रोफाइल सेटिंग: अपना डेटा मैनेज करें')">👤 प्रोफाइल सेटिंग्स</div>
-            <div class="sidebar-link" onclick="alert('टास्क रिपोर्ट: 12 पेंडिंग, 0 कंप्लीट')">📝 टास्क रिपोर्ट</div>
-            <div class="sidebar-link" onclick="alert('सिंक: ऑनलाइन डेटा सुरक्षित है')">🔄 सिंक स्टेटस</div>
-            <div class="sidebar-link" onclick="alert('सेटिंग्स: ऐप कॉन्फ़िगरेशन')">⚙️ मुख्य सेटिंग्स</div>
-            <div class="sidebar-link logout-btn" onclick="location.reload()">🚪 लॉग आउट</div>
+            <div style="padding: 20px; font-weight: bold; font-size: 1.2rem; border-bottom: 2px solid #0f172a;">OmniData Control</div>
+            <div class="s-item" onclick="toggleSidebar()">⬅️ Hide Menu</div>
+            <div class="s-item" onclick="alert('Dashboard Active')">📊 Dashboard</div>
+            <div class="s-item" onclick="alert('Profile Loading...')">👤 Profile Settings</div>
+            <div class="s-item" onclick="alert('Syncing Commercial Data...')">🔄 Sync Status</div>
+            <div class="s-item" onclick="alert('System Config Open')">⚙️ App Configuration</div>
+            <div class="s-item" style="color: #ef4444; margin-top: 20px;" onclick="location.reload()">🚪 Logout System</div>
         </div>
 
-        <!-- हेडर -->
         <div class="header">
-            <div onclick="toggleSidebar()">☰ Menu</div>
-            <div>OMNIDATA PRO</div>
-            <div style="width: 40px;"></div>
+            <div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+            <div style="font-weight: bold;">OMNIDATA PRO</div>
+            <div style="width: 50px;"></div>
         </div>
 
-        <!-- टास्क ग्रिड -->
         <div class="grid" id="task-grid"></div>
+
+        <div class="footer-nav">
+            <button class="danger-btn" onclick="location.reload()">Back to Home</button>
+        </div>
     </div>
 
     <script>
-        // फंक्शन: साइडबार टॉगल
+        // कमर्शियल कंट्रोल फंक्शन
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-
-        // फंक्शन: लॉगिन
-        function login() { 
-            document.getElementById('screen-login').classList.remove('active'); 
-            document.getElementById('screen-dashboard').classList.add('active'); 
+        
+        function validateLogin() {
+            if(document.getElementById('uid').value !== "") {
+                document.getElementById('page-login').classList.remove('active');
+                document.getElementById('page-dashboard').classList.add('active');
+            } else { alert("Authentication Required!"); }
         }
 
-        // फंक्शन: टास्क ग्रिड बनाना
-        const tasks = ["बेसिक डेटा", "ऑनलाइन", "ईकॉमर्स", "ट्रांसक्रिप्शन", "इमेज", "वेब रिसर्च", "क्लीनिंग", "सर्वे", "मेडिकल", "लीगल", "माइनिंग", "अदर"];
+        // टास्क डाटा एंट्री (कमर्शियल वर्शन)
+        const tasks = ["1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", "5. इमेज", "6. वेब रिसर्च", "7. क्लीनिंग", "8. सर्वे", "9. मेडिकल", "10. लीगल", "11. माइनिंग", "12. अदर"];
         const grid = document.getElementById('task-grid');
-        tasks.forEach(t => {
-            grid.innerHTML += `<div class="card" onclick="alert('${t} फॉर्म खुल रहा है...')">${t}</div>`;
+        tasks.forEach(task => {
+            grid.innerHTML += `<div class="card" onclick="alert('Initializing ${task} module...')">${task}</div>`;
         });
     </script>
 </body>
