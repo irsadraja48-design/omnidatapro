@@ -134,13 +134,15 @@
         <!-- साइडबार ओवरले -->
         <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
         
-        <!-- साइडबार मेनू -->
-        <div class="sidebar" id="sidebar">
-            <h3>OmniData Menu</h3>
-            <div class="sidebar-link" onclick="closeSidebar()">📊 डैशबोर्ड होम</div>
-            <div class="sidebar-link" onclick="alert('प्रोफाइल सेटिंग्स जल्द आ रही है')">⚙️ सेटिंग्स</div>
-            <div class="sidebar-link" style="color: #f87171; margin-top: auto;" onclick="logout()">🚪 लॉग आउट करें</div>
-        </div>
+        <!-- नया साइडबार कोड (इसे पुरानी लाइन 138-143 की जगह पेस्ट करें) -->
+<div class="sidebar" id="sidebar">
+    <h3>OmniData Control</h3>
+    <div class="sidebar-link" onclick="closeSidebar()">📊 डैशबोर्ड (Home)</div>
+    <div class="sidebar-link" onclick="alert('प्रोफाइल सेटिंग: अपना डेटा यहाँ देखें')">👤 प्रोफाइल देखें</div>
+    <div class="sidebar-link" onclick="alert('रिपोर्ट: अभी 12 टास्क पेंडिंग हैं')">📝 टास्क रिपोर्ट</div>
+    <div class="sidebar-link" onclick="alert('सेटिंग्स: थीम और प्रेफरेंस बदलें')">⚙️ सेटिंग्स</div>
+    <div class="sidebar-link" style="color: #f87171; margin-top: auto; border-top: 1px solid #334155; padding-top: 15px;" onclick="logout()">🚪 लॉग आउट</div>
+</div>
 
         <!-- हेडर बार -->
         <div class="app-header">
