@@ -2,83 +2,74 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>OmniData Pro | Complete Dashboard</title>
+    <title>OmniData Pro | Secure Login</title>
     <style>
         body { font-family: sans-serif; background: #f4f4f4; margin: 0; }
         .screen { display: none; }
         .active { display: block; }
-        
-        /* Auth Styles */
         .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .google-btn { background: #dd4b39; margin-bottom: 15px; }
         .link { color: #007bff; cursor: pointer; text-decoration: underline; display: block; margin-top: 10px; }
-
-        /* Dashboard Layout */
-        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; position: fixed; top: 0; left: -250px; transition: 0.3s; padding: 20px; z-index: 1000; }
-        .sidebar.open { left: 0; }
-        .menu-item { padding: 15px 0; border-bottom: 1px solid #3e4f5f; cursor: pointer; }
         
-        /* 12 Button Grid Layout */
+        /* Dashboard Styles */
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 20px; }
         .card { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #ddd; cursor: pointer; font-weight: bold; }
-        
-        /* Modal for Work-Space */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:3000; }
         iframe { width: 100%; height: 90vh; border: none; }
     </style>
 </head>
 <body>
 
-<!-- AUTH SECTION -->
+<!-- 1. AUTH SCREENS -->
 <div id="auth-wrapper" class="active">
+    <!-- Login Screen -->
     <div id="login-box" class="screen active container">
-        <h1>OmniData Pro</h1>
+        <h1>Login</h1>
+        <button class="google-btn" onclick="alert('Google Auth यहाँ कनेक्ट होगा')">Google से लॉगिन करें</button>
+        <p>या</p>
         <input type="text" id="uid-input" placeholder="User ID">
         <input type="password" placeholder="Password">
         <button onclick="login()">Login</button>
-        <span class="link" onclick="showScreen('signup-box')">Sign Up</span>
-        <span class="link" onclick="showScreen('forget-box')">Forgot Password?</span>
+        <span class="link" onclick="showScreen('signup-box')">नया अकाउंट बनाएँ (Sign Up)</span>
+        <span class="link" onclick="showScreen('forget-box')">पासवर्ड भूल गए?</span>
     </div>
+
+    <!-- Sign Up Screen -->
     <div id="signup-box" class="screen container">
         <h1>Sign Up</h1>
-        <input type="text" placeholder="New User ID">
-        <input type="password" placeholder="Password">
-        <button onclick="login()">Create Account</button>
-        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
+        <input type="text" placeholder="अपना ईमेल/ID डालें">
+        <input type="password" placeholder="नया पासवर्ड">
+        <button onclick="showScreen('login-box')">अकाउंट बनाएँ</button>
+        <span class="link" onclick="showScreen('login-box')">वापस लॉगिन पर जाएं</span>
     </div>
+
+    <!-- Forget Password Screen -->
     <div id="forget-box" class="screen container">
-        <h1>Reset Password</h1>
-        <input type="text" placeholder="Enter User ID">
-        <button onclick="alert('Link sent!')">Send Link</button>
-        <span class="link" onclick="showScreen('login-box')">Back to Login</span>
+        <h1>पासवर्ड रीसेट</h1>
+        <input type="text" placeholder="अपना ईमेल/ID डालें">
+        <button onclick="alert('रीसेट लिंक भेज दिया गया है')">लिंक भेजें</button>
+        <span class="link" onclick="showScreen('login-box')">वापस लॉगिन पर जाएं</span>
     </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- 2. DASHBOARD -->
 <div id="dashboard-wrapper" style="display:none;">
-    <div class="sidebar" id="sidebar">
-        <h2>Menu</h2>
-        <div class="menu-item" onclick="toggleSidebar()">⬅️ बैक</div>
-        <div class="menu-item" onclick="location.reload()">🚪 लॉग आउट</div>
-    </div>
     <div class="header">
-        <span onclick="toggleSidebar()" style="cursor:pointer; font-weight:bold;">☰ Menu</span>
-        <button onclick="location.reload()" style="background:#e74c3c; color:white; border:none; padding:8px 12px; border-radius:4px; cursor:pointer;">⬅️ बैक</button>
+        <button onclick="location.reload()" style="background:#e74c3c; width:auto;">⬅️ बैक</button>
         <strong>OmniData Pro</strong>
-        <span id="display-uid">User ID: ---</span>
+        <span id="display-uid">User: ---</span>
     </div>
-    <!-- Grid Layout Starts Here -->
     <div class="grid" id="task-grid"></div>
 </div>
 
-<!-- WORK SPACE (with Back Button inside) -->
+<!-- 3. WORK SPACE MODAL -->
 <div id="work-modal" class="modal">
-    <div style="padding:15px; background:#f4f4f4; display:flex; justify-content:space-between; align-items:center;">
-        <h2 id="modal-title" style="margin:0;">Work Space</h2>
-        <!-- Back button inside workspace -->
-        <button onclick="document.getElementById('work-modal').style.display='none'" style="padding:10px 20px; background:#2c3e50; color:white; border:none; cursor:pointer;">⬅️ बैक (डैशबोर्ड)</button>
+    <div style="padding:15px; background:#f4f4f4; display:flex; justify-content:space-between;">
+        <h2>Work Space</h2>
+        <button onclick="document.getElementById('work-modal').style.display='none'">⬅️ बैक</button>
     </div>
     <iframe src="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUqptlbsY4OgvB2_5XM8/edit"></iframe>
 </div>
@@ -86,18 +77,14 @@
 <script>
     function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     function login() { 
-        const uid = document.getElementById('uid-input').value; 
-        document.getElementById('display-uid').innerText = "User ID: " + uid;
+        document.getElementById('display-uid').innerText = "User: " + document.getElementById('uid-input').value;
         document.getElementById('auth-wrapper').style.display = 'none'; 
         document.getElementById('dashboard-wrapper').style.display = 'block'; 
     }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
     
-    // Grid Setup
     const tasks = ["1. बेसिक डेटा", "2. ऑनलाइन डेटा", "3. ईकॉमर्स", "4. ट्रांसक्रिप्शन", "5. इमेज टू टेक्स्ट", "6. वेब रिसर्च", "7. डेटा क्लीनिंग", "8. सर्वे फॉर्म", "9. मेडिकल एंट्री", "10. लीगल एंट्री", "11. माइनिंग", "12. अदर टास्क"];
     const grid = document.getElementById('task-grid');
-    tasks.forEach(task => { grid.innerHTML += `<div class="card" onclick="openWork('${task}')">${task}</div>`; });
-    function openWork(name) { document.getElementById('modal-title').innerText = name; document.getElementById('work-modal').style.display = 'block'; }
+    tasks.forEach(task => { grid.innerHTML += `<div class="card" onclick="document.getElementById('work-modal').style.display='block'">${task}</div>`; });
 </script>
 </body>
 </html>
