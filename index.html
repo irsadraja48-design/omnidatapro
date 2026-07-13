@@ -1,39 +1,16 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <title>Omni Data Pro</title>
-    <style>
-        /* लेआउट और साइडबार का कोड */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0b1117; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; height: 100vh; overflow: hidden; }
-
-        #sidebar { width: 280px; background: rgba(20, 30, 40, 0.95); padding: 25px; border-right: 1px solid #333; display: flex; flex-direction: column; }
-        .user-profile { text-align: center; margin-bottom: 40px; }
-        .user-profile img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3498db; }
-        .menu-item { padding: 15px; color: #95a5a6; cursor: pointer; border-bottom: 1px solid #222; transition: 0.3s; }
-        .menu-item:hover { color: #fff; background: rgba(52, 152, 219, 0.1); }
-        #content-area { flex-grow: 1; padding: 40px; background: radial-gradient(circle at top right, #1a2a3a, #0b1117); }
-    </style>
-</head>
-<body>
-
-    <!-- नेविगेशन साइडबार -->
-    <div id="sidebar">
-        <div class="user-profile">
-            <img src="https://via.placeholder.com/80" alt="CEO">
-            <p style="font-size: 13px; color: #3498db;">CEO, Omni Data Pro</p>
-        </div>
-        <div class="menu-item">डैशबोर्ड</div>
-        <div class="menu-item">सेटिंग्स</div>
-        <div class="menu-item">मेरे प्रोजेक्ट्स</div>
-        <div class="menu-item" style="margin-top: auto;">लॉग आउट</div>
+<!-- यह साइडबार का पूरा प्रोफेशनल कोड है -->
+<div id="sidebar" style="width: 280px; background: rgba(20, 30, 40, 0.95); padding: 25px; border-right: 1px solid #333; display: flex; flex-direction: column; color: white;">
+    <div class="user-profile" style="text-align: center; margin-bottom: 40px;">
+        <img src="https://via.placeholder.com/80" alt="CEO" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3498db; margin-bottom: 10px;">
+        <h3>Rajesh Gupta</h3>
+        <p style="font-size: 13px; color: #3498db;">CEO, Omni Data Pro</p>
     </div>
-
-    <!-- मुख्य एरिया -->
-    <div id="content-area">
-        <h1>वर्किंग एरिया</h1>
-    </div>
-
-</body>
-</html>
+    
+    <!-- मेन्यू आइकन्स के साथ -->
+    <div class="menu-item" style="padding: 15px; cursor: pointer; border-bottom: 1px solid #222;">📁 मेरी प्रोफाइल</div>
+    <div class="menu-item" style="padding: 15px; cursor: pointer; border-bottom: 1px solid #222;">⚙️ सेटिंग्स</div>
+    <div class="menu-item" style="padding: 15px; cursor: pointer; border-bottom: 1px solid #222;">📂 मेरे प्रोजेक्ट्स</div>
+    <div class="menu-item" style="padding: 15px; cursor: pointer; border-bottom: 1px solid #222;">❓ यूजर गाइड</div>
+    
+    <div class="menu-item" style="padding: 15px; cursor: pointer; margin-top: auto; border-top: 1px solid #333;">↪️ लॉग आउट</div>
+</div>
