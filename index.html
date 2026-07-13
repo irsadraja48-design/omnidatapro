@@ -2,63 +2,74 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omni Data Pro - Full System</title>
+    <title>Omni Data Pro</title>
     <style>
+        /* लेआउट और बेसिक डिजाइन */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: sans-serif; background: #f4f7f6; height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: sans-serif; background-color: #f4f7f6; height: 100vh; }
+        .view { display: none; height: 100vh; width: 100%; }
+        .active { display: flex !important; }
         
-        .page-view { display: none; height: 100vh; width: 100%; }
-        .page-view.show { display: flex; }
-        
-        .auth-container { justify-content: center; align-items: center; background: #2c3e50; }
-        .box { background: white; padding: 40px; border-radius: 8px; width: 350px; text-align: center; }
-        .input-box { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-act { width: 100%; padding: 12px; background: #3498db; color: white; border: none; cursor: pointer; }
-        .link-text { margin-top: 15px; color: #3498db; cursor: pointer; font-size: 14px; }
+        /* लॉगिन/साइन-अप स्क्रीन */
+        .auth-bg { display: none; justify-content: center; align-items: center; background: #2c3e50; }
+        .card { background: white; padding: 30px; border-radius: 10px; width: 350px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .link { margin-top: 15px; color: #3498db; cursor: pointer; font-size: 14px; text-decoration: underline; }
 
-        #dashboard { display: none; flex-direction: row; }
-        #sidebar { width: 260px; background: #1a252f; color: white; padding: 20px; }
-        .nav-link { padding: 15px; border-bottom: 1px solid #34495e; cursor: pointer; }
-        #main-work { flex-grow: 1; padding: 20px; background: #ecf0f1; }
-        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
-        th, td { border: 1px solid #bdc3c7; padding: 12px; text-align: left; }
+        /* डैशबोर्ड स्क्रीन */
+        #dashboard-view { display: none; flex-direction: row; }
+        #sidebar { width: 250px; background: #1a252f; color: white; padding: 20px; }
+        .nav-item { padding: 15px 0; border-bottom: 1px solid #34495e; cursor: pointer; }
+        #work-area { flex-grow: 1; padding: 20px; background: #ecf0f1; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
     </style>
 </head>
 <body>
 
-    <!-- 1. लॉगिन पेज -->
-    <div id="login-page" class="page-view show auth-container">
-        <div class="box">
-            <h2>Login</h2>
-            <input type="text" class="input-box" placeholder="Username">
-            <input type="password" class="input-box" placeholder="Password">
-            <button class="btn-act" onclick="changePage('dashboard')">Sign In</button>
-            <div class="link-text" onclick="changePage('signup')">Sign Up | Forgot Password</div>
+    <!-- 1. लॉगिन -->
+    <div id="login-view" class="view auth-bg active">
+        <div class="card">
+            <h2>Omni Data Pro</h2>
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
+            <button onclick="show('dashboard-view')">Sign In</button>
+            <div class="link" onclick="show('signup-view')">Sign Up</div>
+            <div class="link" onclick="show('forgot-view')">Forgot Password?</div>
         </div>
     </div>
 
-    <!-- 2. साइन-अप पेज (पासवर्ड फ़ील्ड के साथ) -->
-    <div id="signup-page" class="page-view auth-container">
-        <div class="box">
+    <!-- 2. साइन-अप -->
+    <div id="signup-view" class="view auth-bg">
+        <div class="card">
             <h2>Create Account</h2>
-            <input type="text" class="input-box" placeholder="Full Name">
-            <input type="email" class="input-box" placeholder="Email Address">
-            <input type="password" class="input-box" placeholder="Create Password">
-            <button class="btn-act" onclick="changePage('login')">Register</button>
-            <div class="link-text" onclick="changePage('login')">Back to Login</div>
+            <input type="text" placeholder="Full Name">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Create Password">
+            <button onclick="show('login-view')">Register</button>
+            <div class="link" onclick="show('login-view')">Back to Login</div>
         </div>
     </div>
 
-    <!-- 3. डैशबोर्ड पेज -->
-    <div id="dashboard" class="page-view" style="flex-direction: row;">
+    <!-- 3. फॉरगेट पासवर्ड -->
+    <div id="forgot-view" class="view auth-bg">
+        <div class="card">
+            <h2>Reset Password</h2>
+            <input type="email" placeholder="Enter Registered Email">
+            <button onclick="show('login-view')">Send Reset Link</button>
+            <div class="link" onclick="show('login-view')">Back to Login</div>
+        </div>
+    </div>
+
+    <!-- 4. डैशबोर्ड -->
+    <div id="dashboard-view" class="view">
         <div id="sidebar">
             <h3>OMNI DATA PRO</h3>
-            <div class="nav-link">Dashboard</div>
-            <div class="nav-link">My Projects</div>
-            <div class="nav-link" style="margin-top: 150px;" onclick="changePage('login')">Logout</div>
+            <div class="nav-item">Dashboard</div>
+            <div class="nav-item" onclick="show('login-view')">Logout</div>
         </div>
-        <div id="main-work">
+        <div id="work-area">
             <h3>Work Area</h3>
             <button onclick="addRow()">Add New Entry</button>
             <table id="data-table">
@@ -69,19 +80,13 @@
     </div>
 
     <script>
-        function changePage(pageId) {
-            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('show'));
-            if(pageId === 'dashboard') {
-                document.getElementById('dashboard').classList.add('show');
-            } else if(pageId === 'signup') {
-                document.getElementById('signup-page').classList.add('show');
-            } else {
-                document.getElementById('login-page').classList.add('show');
-            }
+        function show(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
         }
         function addRow() {
-            let table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-            let row = table.insertRow();
+            let tbody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            let row = tbody.insertRow();
             for(let i=0; i<4; i++) row.insertCell(i).innerHTML = "-";
         }
     </script>
